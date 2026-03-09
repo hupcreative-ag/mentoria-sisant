@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentoria em Análises de Exames Laboratoriais | Dr. Gustavo Sisant</title>
+    <meta name="description"
+        content="Formação para profissionais da saúde que buscam aprofundamento em análise funcional de exames e prescrição médica avançada.">
+
+    <!-- Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons (Phosphor Icons - clean and outline) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#1a273c',
+                        'blue-medium': '#2167b0',
+                        beige: '#957854',
+                        'beige-light': '#e7e0d0',
+                        'gray-light': '#f8f8f8',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'premium': '0 4px 20px rgba(0,0,0,0.05)',
+                        'premium-hover': '0 8px 30px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css?v=6">
+</head>
+
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden bg-gray-light">
+    <!-- Navbar / Header Simples -->
+    <header class="absolute top-0 left-0 w-full z-10 py-8 px-4 md:py-10 md:px-8 lg:px-[10%]">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-center lg:justify-start">
+            <img src="assets/images/Logo_Horizontal_Preta.png" alt="Dr. Gustavo Sisant - Medicina, Saúde, Longevidade"
+                class="h-12 md:h-16 object-contain" />
+        </div>
+    </header>
+
+    <!-- 1. Hero Section -->
+    <section
+        class="relative pt-32 pb-16 md:pt-40 md:pb-20 bg-gradient-to-b from-beige-light/30 to-white overflow-hidden"
+        id="hero">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%] relative z-10">
+
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+                <!-- Coluna de Texto -->
+                <div
+                    class="hero-content w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-3 bg-white text-navy px-4 py-2 rounded-full shadow-sm mb-6 border border-gray-100 mt-4 md:mt-0">
+                        <div class="bg-blue-medium/20 text-blue-medium rounded-full p-1">
+                            <i class="ph-fill ph-check-circle"></i>
+                        </div>
+                        <span class="text-sm font-semibold tracking-wide flex items-center gap-1">
+                            A Mentoria Definitiva em
+                            <span class="text-blue-medium font-bold">Análises Clínicas</span>
+                        </span>
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-navy leading-tight mb-6 relative">
+                        Domine a análise de exames laboratoriais
+                        <span class="text-blue-medium block mt-2">com a abordagem integrativa.</span>
+                    </h1>
+                    <p class="text-lg text-gray-700 max-w-xl mb-6 md:mb-10 leading-relaxed font-medium">
+                        Adquira raciocínio clínico refinado para interpretar exames e precrever o tratamento certo para
+                        o seu paciente de forma avançada.
+                    </p>
+
+                    <a href="#investimento"
+                        class="magnetic-btn bg-navy text-white font-bold py-4 px-10 rounded-full text-lg inline-flex items-center gap-3 mt-2 md:mt-4">
+                        <span class="relative z-10">Quero me especializar agora</span>
+                        <i class="ph-bold ph-arrow-up-right relative z-10 bg-white/20 p-1.5 rounded-full"></i>
+                    </a>
+
+
+                </div>
+
+                <!-- Coluna da Imagem e Badges Flutuantes -->
+                <div class="w-full lg:w-1/2 relative flex justify-center mt-10 lg:mt-0 hero-image-container">
+
+                    <!-- Box Flutuante 1 (Esq Sup) -->
+                    <div
+                        class="floating-badge delay-1 flex absolute top-[20%] left-[2%] md:top-[25%] md:-left-[10%] bg-white rounded-full py-1.5 px-3 md:py-2 md:px-4 shadow-xl border border-gray-100 items-center gap-2 md:gap-3 z-30 scale-90 md:scale-100">
+                        <div class="bg-blue-medium/10 text-blue-medium rounded-full p-1.5 hidden md:block">
+                            <i class="ph-bold ph-microscope text-lg"></i>
+                        </div>
+                        <span class="text-xs md:text-sm font-semibold text-navy">Pesquisador</span>
+                    </div>
+
+                    <!-- Box Flutuante 2 (Esq Inf) -->
+                    <div
+                        class="floating-badge delay-2 flex absolute bottom-[15%] left-[5%] md:bottom-[10%] md:-left-[15%] bg-white rounded-full py-1.5 px-3 md:py-2 md:px-4 shadow-xl border border-gray-100 items-center gap-2 md:gap-3 z-30 scale-90 md:scale-100">
+                        <div class="bg-blue-medium/10 text-blue-medium rounded-full p-1.5 hidden md:block">
+                            <i class="ph-bold ph-graduation-cap text-lg"></i>
+                        </div>
+                        <span class="text-xs md:text-sm font-semibold text-navy">Medicina com base científica</span>
+                    </div>
+
+                    <!-- Box Flutuante 3 (Dir Centro) -->
+                    <div
+                        class="floating-badge flex absolute top-[50%] right-[2%] md:top-[55%] md:-right-[10%] bg-white rounded-full py-1.5 px-3 md:py-2 md:px-4 shadow-xl border border-gray-100 items-center gap-2 md:gap-3 z-30 scale-90 md:scale-100">
+                        <div class="bg-blue-medium/10 text-blue-medium rounded-full p-1.5 hidden md:block">
+                            <i class="ph-bold ph-check text-lg"></i>
+                        </div>
+                        <span class="text-xs md:text-sm font-semibold text-navy">12 anos de Medicina integrativa</span>
+                    </div>
+
+                    <!-- Imagem principal do Dr. Gustavo (placeholder formatado com bg azul do paletó) -->
+                    <div class="relative z-10 flex min-h-[400px]">
+                        <img src="assets/images/img_gustavo_hero.png" alt="Dr. Gustavo Sisant"
+                            class="w-full max-w-[450px] object-contain drop-shadow-2xl hero-person-img filter contrast-[1.05]" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Decoration wave -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none" class="relative block w-full h-[50px] md:h-[80px]">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C73.81,40.1,146.59,65.2,213.39,69.5,250.2,71.86,286.5,63.14,321.39,56.44Z"
+                    fill="#ffffff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 2. Problema + Agitação -->
+    <section class="py-16 md:py-20 bg-white" id="desafio">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%]">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-blue-medium text-white text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+                    O SEU DESAFIO
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy">O problema da formação tradicional</h2>
+            </div>
+
+            <div
+                class="card-reveal bg-beige-light/40 rounded-2xl p-8 md:p-10 shadow-premium border-l-4 border-navy mb-12">
+                <p class="text-lg md:text-xl text-navy leading-relaxed font-semibold italic flex items-start gap-4">
+                    <i class="ph-fill ph-quotes text-3xl text-blue-medium opacity-50 shrink-0"></i>
+                    Um exemplo simples: Você saberia dizer qual seria o nível ideal da homocisteína, mas sabe dizer qual
+                    seria a relação com obesidade ou disfunção tireoidiana?
+                </p>
+            </div>
+
+            <div
+                class="card-reveal bg-navy text-white rounded-2xl p-8 md:p-12 shadow-premium text-center mb-16 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 text-blue-medium/20">
+                    <i class="ph ph-warning-circle text-9xl"></i>
+                </div>
+                <p class="text-xl md:text-2xl font-medium leading-relaxed relative z-10">
+                    A maioria dos profissionais aprende a observar números isolados. Poucos aprendem a identificar
+                    padrões biológicos integrados.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-reveal">
+                <div class="flex items-start gap-4">
+                    <div
+                        class="mt-1 bg-red-100 text-red-500 rounded-full p-1 min-w-[24px] flex justify-center items-center">
+                        <i class="ph-bold ph-x text-sm"></i>
+                    </div>
+                    <p class="text-lg text-gray-700">Aprende-se o número, mas não se entende o mecanismo.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="mt-1 bg-red-100 text-red-500 rounded-full p-1 min-w-[24px] flex justify-center items-center">
+                        <i class="ph-bold ph-x text-sm"></i>
+                    </div>
+                    <p class="text-lg text-gray-700">Aprende-se o protocolo, mas não se domina o raciocínio.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="mt-1 bg-red-100 text-red-500 rounded-full p-1 min-w-[24px] flex justify-center items-center">
+                        <i class="ph-bold ph-x text-sm"></i>
+                    </div>
+                    <p class="text-lg text-gray-700">Prescrições incoerentes e sem fundamento bioquímico sólido.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="mt-1 bg-red-100 text-red-500 rounded-full p-1 min-w-[24px] flex justify-center items-center">
+                        <i class="ph-bold ph-x text-sm"></i>
+                    </div>
+                    <p class="text-lg text-gray-700">Ausência de individualização clínica.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Transformação + Solução -->
+    <section class="py-16 md:py-24 bg-gray-50 border-t border-gray-100" id="solucao">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%]">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-blue-medium text-white text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+                    A MENTORIA DESENVOLVE
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy max-w-2xl mx-auto">Raciocínio clínico refinado sem
+                    reprodução automática</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Card 1 -->
+                <div
+                    class="card-hover bg-navy rounded-2xl p-8 shadow-premium text-white relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -top-4 w-32 h-32 bg-blue-medium/20 rounded-full blur-2xl group-hover:bg-blue-medium/30 transition-all">
+                    </div>
+                    <i class="ph ph-brain text-5xl text-blue-medium mb-6 relative z-10"></i>
+                    <h3 class="text-xl font-bold mb-3 relative z-10">Entender o mecanismo antes da conduta</h3>
+                    <p class="text-gray-300 relative z-10">A base fisiológica que justifica cada decisão.</p>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="card-hover bg-navy rounded-2xl p-8 shadow-premium text-white relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -top-4 w-32 h-32 bg-blue-medium/20 rounded-full blur-2xl group-hover:bg-blue-medium/30 transition-all">
+                    </div>
+                    <i class="ph ph-dna text-5xl text-blue-medium mb-6 relative z-10"></i>
+                    <h3 class="text-xl font-bold mb-3 relative z-10">Compreender a fisiologia antes da suplementação
+                    </h3>
+                    <p class="text-gray-300 relative z-10">Bioquímica aplicada à prática médica real.</p>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="card-hover bg-navy rounded-2xl p-8 shadow-premium text-white relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -top-4 w-32 h-32 bg-blue-medium/20 rounded-full blur-2xl group-hover:bg-blue-medium/30 transition-all">
+                    </div>
+                    <i class="ph ph-strategy text-5xl text-blue-medium mb-6 relative z-10"></i>
+                    <h3 class="text-xl font-bold mb-3 relative z-10">Correlacionar sistemas antes de prescrever</h3>
+                    <p class="text-gray-300 relative z-10">Observar o paciente como um sistema integrado.</p>
+                </div>
+                <!-- Card 4 -->
+                <div
+                    class="card-hover bg-navy rounded-2xl p-8 shadow-premium text-white relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -top-4 w-32 h-32 bg-blue-medium/20 rounded-full blur-2xl group-hover:bg-blue-medium/30 transition-all">
+                    </div>
+                    <i class="ph ph-user-focus text-5xl text-blue-medium mb-6 relative z-10"></i>
+                    <h3 class="text-xl font-bold mb-3 relative z-10">Individualizar antes de intervir</h3>
+                    <p class="text-gray-300 relative z-10">Tratar pessoas, não apenas interpretar números laboratoriais.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card-reveal outer shadow-premium max-w-4xl mx-auto rounded-3xl group">
+                <div class="card p-8 md:p-14 text-center">
+                    <div class="ray"></div>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-white relative z-10">
+                        Você não sairá apenas com protocolos.<br>
+                        Você sairá com raciocínio clínico refinado.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Competências -->
+    <section class="py-16 md:py-24 bg-[#cfdce8]" id="competencias">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%]">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-blue-medium/10 text-blue-medium text-xs font-bold uppercase tracking-wider mb-4">
+                    COMPETÊNCIAS
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy">O que você vai desenvolver</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                <!-- Competencia Cards -->
+                <div
+                    class="card-reveal bg-white rounded-xl p-6 md:p-8 border-t-4 border-blue-medium shadow-premium flex items-start gap-6">
+                    <div class="text-blue-medium mt-1"><i class="ph ph-chart-line-up text-3xl"></i></div>
+                    <p class="text-lg text-navy font-semibold">Leitura funcional além dos valores de referência</p>
+                </div>
+                <div
+                    class="card-reveal bg-white rounded-xl p-6 md:p-8 border-t-4 border-blue-medium shadow-premium flex items-start gap-6">
+                    <div class="text-blue-medium mt-1"><i class="ph ph-fire text-3xl"></i></div>
+                    <p class="text-lg text-navy font-semibold">Identificação de inflamação subclínica</p>
+                </div>
+                <div
+                    class="card-reveal bg-white rounded-xl p-6 md:p-8 border-t-4 border-blue-medium shadow-premium flex items-start gap-6">
+                    <div class="text-blue-medium mt-1"><i class="ph ph-drop text-3xl"></i></div>
+                    <p class="text-lg text-navy font-semibold">Análise de padrões metabólicos e hormonais</p>
+                </div>
+                <div
+                    class="card-reveal bg-white rounded-xl p-6 md:p-8 border-t-4 border-blue-medium shadow-premium flex items-start gap-6">
+                    <div class="text-blue-medium mt-1"><i class="ph ph-bezier-curve text-3xl"></i></div>
+                    <p class="text-lg text-navy font-semibold">Correlação entre sistemas (intestino, imunidade,
+                        metabolismo e eixo hormonal)</p>
+                </div>
+                <div
+                    class="card-reveal md:col-span-2 md:mx-auto md:max-w-xl w-full bg-white rounded-xl p-6 md:p-8 border-t-4 border-blue-medium shadow-premium flex items-start gap-6">
+                    <div class="text-blue-medium mt-1"><i class="ph ph-prescription text-3xl"></i></div>
+                    <p class="text-lg text-navy font-semibold">Prescrição estratégica baseada em evidências</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-16 scale-reveal">
+                <a href="#investimento"
+                    class="magnetic-btn bg-[#16a34a] text-white font-bold py-4 px-8 rounded-lg text-lg inline-flex items-center">
+                    <span class="relative z-10">QUERO DESENVOLVER MEU RACIOCÍNIO CLÍNICO</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Estrutura da Mentoria -->
+    <section class="py-16 md:py-24 bg-navy text-white relative" id="estrutura">
+        <!-- SVG background pattern optional -->
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%] relative z-10">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-white text-navy text-xs font-bold uppercase tracking-wider mb-4">
+                    PROGRAMA
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Estrutura da Mentoria</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 text-reveal">
+                <!-- Lista 1 -->
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Aulas ao vivo semanais (60 min) ou quinzenais (120
+                            min)</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Interpretação funcional baseada em evidências</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Discussão prática de casos clínicos reais (inclusive os
+                            seus)</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Elaboração de protocolos personalizados</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">2 aulas online com o estrategista Dr. Anderson
+                            Freitas</span>
+                    </li>
+                </ul>
+                <!-- Lista 2 -->
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Prescrição oral e injetável com segurança</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Acesso aos protocolos validados pelo Dr. Gustavo há mais de
+                            10 anos</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Grupo exclusivo de networking</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph-fill ph-check-circle text-blue-medium text-xl shrink-0 mt-1"></i>
+                        <span class="text-lg text-gray-200">Aplicação supervisionada na sua rotina clínica</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Cards Detalhados da Mentoria -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-12">
+                <div
+                    class="card-hover rounded-2xl p-8 border-t-4 border-blue-medium relative overflow-hidden group bg-white">
+                    <div class="absolute inset-0 bg-white group-hover:bg-navy transition-colors duration-500 z-0"></div>
+                    <div class="absolute inset-0 opacity-[0.43] group-hover:opacity-40 transition-opacity duration-500 z-0 grayscale"
+                        style="background-image: url('assets/images/atendimento.jpg'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="relative z-10 transition-colors duration-500 text-navy group-hover:text-white">
+                        <h3 class="text-lg font-bold mb-6 tracking-tight">HANDS-ON EM TERAPIA INJETÁVEL E
+                            IMPLANTES HORMONAIS</h3>
+                        <ul class="space-y-3">
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Terapias
+                                injetáveis
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Planejamento
+                                e
+                                execução de protocolos hormonais
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Implantes
+                                hormonais
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Técnica,
+                                segurança e manejo de intercorrências
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    class="card-hover rounded-2xl p-8 border-t-4 border-blue-medium relative overflow-hidden group bg-white">
+                    <div class="absolute inset-0 bg-white group-hover:bg-navy transition-colors duration-500 z-0"></div>
+                    <div class="absolute inset-0 opacity-[0.43] group-hover:opacity-40 transition-opacity duration-500 z-0 grayscale"
+                        style="background-image: url('assets/images/pratica.jpg'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="relative z-10 transition-colors duration-500 text-navy group-hover:text-white">
+                        <h3 class="text-lg font-bold mb-6 tracking-tight">1 FINAL DE SEMANA DE VIVÊNCIA CLÍNICA
+                        </h3>
+                        <ul class="space-y-3">
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Acompanhar
+                                atendimentos reais
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Observar
+                                análise
+                                funcional de exames ao vivo
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Entender a
+                                tomada de decisão clínica
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Vivenciar
+                                protocolos injetáveis e implantes hormonais
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Consolidar o
+                                raciocínio funcional na prática
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    class="card-hover rounded-2xl p-8 border-t-4 border-blue-medium relative overflow-hidden group bg-white">
+                    <div class="absolute inset-0 bg-white group-hover:bg-navy transition-colors duration-500 z-0"></div>
+                    <div class="absolute inset-0 opacity-[0.43] group-hover:opacity-40 transition-opacity duration-500 z-0 grayscale"
+                        style="background-image: url('assets/images/mentoria.jpg'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="relative z-10 transition-colors duration-500 text-navy group-hover:text-white">
+                        <h3 class="text-lg font-bold mb-6 tracking-tight">2 SESSÕES INDIVIDUAIS ESTRATÉGICAS</h3>
+                        <ul class="space-y-3">
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Discussão
+                                aprofundada de casos próprios
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Ajuste fino
+                                de
+                                prescrição
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Correção de
+                                raciocínio clínico
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Refinamento
+                                de
+                                posicionamento profissional
+                            </li>
+                            <li
+                                class="text-gray-700 group-hover:text-gray-300 transition-colors duration-500 text-sm flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-medium mt-1.5 shrink-0"></div> Segurança em
+                                casos complexos
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Diferenciais / Formação vs Mercado -->
+    <section class="py-16 md:py-24 bg-gray-light" id="diferenciais">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%]">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-blue-medium/10 text-blue-medium text-xs font-bold uppercase tracking-wider mb-4">
+                    DIFERENCIAIS
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy max-w-3xl mx-auto">Uma formação estruturada para
+                    quem deseja atuar em alto nível</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Problema do Mercado -->
+                <div
+                    class="card-reveal bg-white rounded-2xl p-8 border-t-4 border-gray-300 shadow-premium flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-navy mb-4">O mercado da saúde está saturado de cursos
+                        fragmentados:</h3>
+                    <ul class="space-y-3 mb-6">
+                        <li class="text-gray-600 flex items-start gap-2"><i
+                                class="ph ph-x-circle text-red-400 mt-1"></i> Cursos de análise laboratorial que não
+                            conversam com prescrição.</li>
+                        <li class="text-gray-600 flex items-start gap-2"><i
+                                class="ph ph-x-circle text-red-400 mt-1"></i> Treinamentos em hormonioterapia
+                            desconectados da bioquímica.</li>
+                        <li class="text-gray-600 flex items-start gap-2"><i
+                                class="ph ph-x-circle text-red-400 mt-1"></i> Capacitações técnicas isoladas.</li>
+                    </ul>
+                    <p class="font-bold text-navy bg-gray-100 p-4 rounded-lg">O resultado? Profissionais com informações
+                        soltas e insegurança clínica.</p>
+                </div>
+
+                <!-- A Solução Sisant -->
+                <div class="card-reveal relative rounded-2xl p-[3px] shadow-premium overflow-hidden group">
+                    <!-- Spinning Glow -->
+                    <div class="absolute -inset-[100%] z-0"
+                        style="background: conic-gradient(from 0deg, transparent 75%, rgba(96, 165, 250, 0.4) 85%, #60a5fa 100%); animation: rotate-glow 4s linear infinite;">
+                    </div>
+
+                    <!-- Inner Content -->
+                    <div
+                        class="bg-navy rounded-[14px] h-full w-full p-8 flex flex-col justify-center text-white text-center md:text-left relative z-10">
+                        <div class="absolute -right-5 -bottom-5 text-blue-medium/20 z-0 pointer-events-none">
+                            <i class="ph-fill ph-check-circle text-9xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-6 relative z-10">A Nossa Abordagem</h3>
+                        <p class="text-xl font-medium leading-relaxed relative z-10 border-l-4 border-blue-medium pl-4">
+                            Esta formação integra tudo em uma linha lógica, progressiva e coerente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evolução -->
+            <div class="bg-white rounded-2xl p-8 md:p-12 shadow-premium text-reveal">
+                <h3 class="text-2xl font-bold text-navy mb-6 text-center">Do Fundamento à Alta Complexidade</h3>
+                <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-10">
+                    Você inicia compreendendo profundamente os mecanismos fisiológicos, avança para leitura funcional
+                    estratégica e evolui para <span class="font-bold text-navy">prescrições complexas. </span>incluindo
+                    <span class="font-bold text-navy">terapias injetáveis e implantes hormonais,</span> sustentadas por
+                    raciocínio clínico sólido e prática supervisionada.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-14 mt-12 w-full max-w-5xl mx-auto">
+                    <!-- Item 1 -->
+                    <div class="flex flex-col items-center text-center max-w-[140px]">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#f0f4f8] text-[#3b5998] flex items-center justify-center mb-4 shadow-sm">
+                            <i class="ph ph-check text-2xl"></i>
+                        </div>
+                        <span class="font-bold text-navy text-sm leading-tight">Capacidade analítica</span>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex flex-col items-center text-center max-w-[140px]">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#f0f4f8] text-[#3b5998] flex items-center justify-center mb-4 shadow-sm">
+                            <i class="ph ph-check text-2xl"></i>
+                        </div>
+                        <span class="font-bold text-navy text-sm leading-tight">Segurança na tomada de decisão</span>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex flex-col items-center text-center max-w-[140px]">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#f0f4f8] text-[#3b5998] flex items-center justify-center mb-4 shadow-sm">
+                            <i class="ph ph-check text-2xl"></i>
+                        </div>
+                        <span class="font-bold text-navy text-sm leading-tight">Coerência bioquímica</span>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="flex flex-col items-center text-center max-w-[140px]">
+                        <div
+                            class="w-14 h-14 rounded-full bg-[#f0f4f8] text-[#3b5998] flex items-center justify-center mb-4 shadow-sm">
+                            <i class="ph ph-check text-2xl"></i>
+                        </div>
+                        <span class="font-bold text-navy text-sm leading-tight">Aplicação prática supervisionada</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Para quem é -->
+    <section class="py-16 md:py-24 relative bg-cover bg-center bg-fixed"
+        style="background-image: url('assets/images/paraqueme.jpg');" id="publico">
+        <div class="absolute inset-0 bg-white/50"></div>
+        <div class="max-w-4xl mx-auto px-4 md:px-8 relative z-10">
+            <div class="text-center mb-16 section-reveal">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-navy/10 text-navy text-xs font-bold uppercase tracking-wider mb-4">
+                    PARA QUEM É
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy">Formação de elite</h2>
+            </div>
+
+            <div class="bg-beige-light/30 rounded-2xl p-8 md:p-12 shadow-premium card-reveal border border-beige-light">
+                <h3 class="text-2xl font-bold text-navy mb-8 text-center">Profissionais da saúde que desejam:</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex items-center gap-4 card-hover">
+                        <div class="text-blue-medium"><i class="ph-fill ph-target text-3xl"></i></div>
+                        <p class="font-semibold text-gray-800">Atuar com profundidade técnica</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex items-center gap-4 card-hover">
+                        <div class="text-blue-medium"><i class="ph-fill ph-shield-check text-3xl"></i></div>
+                        <p class="font-semibold text-gray-800">Prescrever com segurança</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex items-center gap-4 card-hover">
+                        <div class="text-blue-medium"><i class="ph-fill ph-plant text-3xl"></i></div>
+                        <p class="font-semibold text-gray-800">Trabalhar com medicina integrativa</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex items-center gap-4 card-hover">
+                        <div class="text-blue-medium"><i class="ph-fill ph-star text-3xl"></i></div>
+                        <p class="font-semibold text-gray-800">Diferenciar-se no mercado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Sobre Dr. Gustavo Sisant -->
+    <section class="py-16 md:py-24 bg-gray-light" id="sobre">
+        <div class="max-w-6xl mx-auto px-4 md:px-8 lg:px-[10%]">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Imagem Placeholder - Pode ser preenchida com estilo premium depois -->
+                <div class="section-reveal order-2 lg:order-1 relative">
+                    <div
+                        class="w-full aspect-[4/5] bg-gray-300 rounded-2xl overflow-hidden shadow-premium relative z-10">
+                        <img src="assets/images/img_apresentacao.jpg" alt="Dr. Gustavo Sisant"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <!-- Decorative element behind image -->
+                    <div class="absolute -bottom-6 -left-6 w-full h-full border-2 border-blue-medium rounded-2xl z-0">
+                    </div>
+                </div>
+
+                <div class="section-reveal order-1 lg:order-2">
+                    <span
+                        class="inline-block py-2 px-4 rounded-full bg-blue-medium/10 text-blue-medium text-xs font-bold uppercase tracking-wider mb-6">
+                        O MENTOR
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-navy mb-4">Dr. Gustavo Sisant</h2>
+                    <h3 class="text-xl text-[#37608c] mb-8 font-medium">Médico há 12 anos e pesquisador em medicina da
+                        longevidade.</h3>
+
+                    <ul class="space-y-4 mb-8 text-gray-700">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-blue-medium text-lg mt-0.5"></i>
+                            <span>Formação em Tecnologia e Ciência, pós-graduação pela PUC.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-blue-medium text-lg mt-0.5"></i>
+                            <span>Professor e fundador da Clinic Sisant em Salvador (BA).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-blue-medium text-lg mt-0.5"></i>
+                            <span>Especialista em saúde hormonal, metabolismo, envelhecimento e medicina
+                                integrativa.</span>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray-700 mb-8 leading-relaxed">
+                        Metodologia <span class="font-bold text-navy"> Funcional </span> com abordagem
+                        que integra dados laboratoriais, fatores genéticos, estilo de vida e rotina emocional para
+                        estratégias médicas personalizadas.
+                    </p>
+
+                    <blockquote class="border-l-4 border-beige pl-6 italic text-xl text-navy font-semibold my-8">
+                        "Medicina com propósito: investigar a causa, tratar a raiz, restaurar o equilíbrio."
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Investimento + CTA Final -->
+    <section class="py-20 md:py-24 bg-[#0a111a] border-t-4 border-blue-medium relative overflow-hidden"
+        id="investimento">
+        <div class="max-w-4xl mx-auto px-4 md:px-8 relative z-10 text-center scale-reveal">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-12">Garanta sua vaga</h2>
+
+            <div class="bg-[#111a28] border border-[#1e2d45] rounded-3xl p-8 md:p-14 shadow-2xl relative">
+                <!-- Shine effect -->
+                <div
+                    class="absolute inset-0 w-full h-full bg-gradient-to-tr from-transparent via-white/5 to-transparent rounded-3xl pointer-events-none">
+                </div>
+
+                <p
+                    class="text-blue-medium font-semibold mb-4 uppercase tracking-wider text-sm flex justify-center items-center gap-2">
+                    <i class="ph-fill ph-check-circle"></i> Mentoria Completa
+                </p>
+
+                <div class="mb-8 flex flex-col items-center justify-center">
+                    <span class="text-gray-400 text-lg mb-2">12x de</span>
+                    <div class="text-6xl md:text-7xl font-bold text-beige-light leading-none mb-4">R$ 999<span
+                            class="text-4xl">,75</span></div>
+                    <span class="text-white/80 text-lg mb-2">ou 1x de R$ 11.997,00</span>
+                    <span
+                        class="bg-green-500/10 text-green-400 px-4 py-1.5 rounded-full text-sm font-medium mt-1 inline-flex items-center gap-2 border border-green-500/20">
+                        <i class="ph-fill ph-tag"></i> Desconto especial no pagamento à vista
+                    </span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-6 mb-10 text-gray-300">
+                    <span class="flex items-center justify-center gap-2">
+                        <i class="ph ph-calendar-blank text-blue-medium text-xl"></i>
+                        Duração: 6 meses
+                    </span>
+                    <span class="flex items-center justify-center gap-2">
+                        <i class="ph ph-flag text-blue-medium text-xl"></i>
+                        Início: 06/04/2026
+                    </span>
+                </div>
+
+                <div
+                    class="bg-blue-medium/10 text-blue-200 py-3 px-6 rounded-lg inline-block font-semibold mb-10 text-sm">
+                    <i class="ph-fill ph-warning-circle mr-2"></i>Vagas limitadas para garantir acompanhamento
+                    individualizado
+                </div>
+
+                <a href="#"
+                    class="magnetic-btn bg-[#16a34a] text-white font-bold w-full py-5 rounded-xl text-xl inline-flex items-center justify-center transition-all">
+                    <span class="relative z-10">QUERO ME INSCREVER AGORA</span>
+                </a>
+
+                <p class="text-beige-light text-sm mt-6">Parcele em até 12x ou receba desconto à vista</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Footer -->
+    <footer class="bg-[#111a28] text-gray-400 py-16 border-t border-[#1e2d45]">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <!-- Brand -->
+            <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                <h2 class="text-2xl font-bold text-white mb-4">Dr. Gustavo Sisant</h2>
+                <p class="text-sm text-gray-500 leading-relaxed mb-6">Medicina integrativa avançada e raciocínio clínico
+                    de excelência.</p>
+            </div>
+
+            <!-- Contato -->
+            <div>
+                <h3 class="text-white font-semibold mb-4 uppercase tracking-wider text-sm">Contato</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3">
+                        <i class="ph ph-whatsapp-logo text-xl"></i>
+                        <span>(71) 99994-5001</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph ph-instagram-logo text-xl text-beige"></i>
+                        <a href="https://www.instagram.com/drgustavosisantoficial/" target="_blank"
+                            class="hover:text-white transition-colors">@drgustavosisantoficial</a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ph ph-globe text-xl"></i>
+                        <a href="#" class="hover:text-white transition-colors">drgustavosisant.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Endereço -->
+            <div>
+                <h3 class="text-white font-semibold mb-4 uppercase tracking-wider text-sm">Endereço</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3">
+                        <i class="ph ph-map-pin text-xl shrink-0 mt-0.5"></i>
+                        <span class="text-sm leading-relaxed">Rua Arthur de Azevêdo Machado, 1459 – Sala 1108 – STIEP,
+                            Salvador – BA</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Links -->
+            <div>
+                <h3 class="text-white font-semibold mb-4 uppercase tracking-wider text-sm">Legal</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-sm hover:text-white transition-colors">Política de Privacidade</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition-colors">Termos de Uso</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="max-w-7xl mx-auto px-4 md:px-8 mt-16 pt-8 border-t border-[#1e2d45] flex flex-col md:flex-row justify-between items-center text-sm">
+            <p>&copy; 2026 Dr. Gustavo Sisant. Todos os direitos reservados.</p>
+            <p class="mt-4 md:mt-0 font-medium opacity-50">Developed with Antigravity</p>
+        </div>
+    </footer>
+
+    <!-- Scripts da aplicação no final do body -->
+    <!-- GSAP Core & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
