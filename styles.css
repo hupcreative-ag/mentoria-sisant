@@ -170,3 +170,82 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
+
+/* ------------------------------------- */
+/* Neon Glow & Pulse Glow Elements       */
+/* ------------------------------------- */
+
+/* Green Pulse Glow (For tags/boxes) */
+@keyframes softPulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.pulse-glow {
+  animation: softPulseGlow 2.5s infinite;
+}
+
+/* Neon Glow (For Main Action Buttons) */
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(22, 163, 74, 0.5), 
+                0 0 20px rgba(22, 163, 74, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.8), 
+                0 0 35px rgba(34, 197, 94, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(22, 163, 74, 0.5), 
+                0 0 20px rgba(22, 163, 74, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.neon-glow {
+  animation: neonPulse 2s infinite alternate;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.neon-glow:hover {
+  animation: none;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 1), 
+              0 0 50px rgba(34, 197, 94, 0.6),
+              inset 0 0 20px rgba(255, 255, 255, 0.3);
+  border-color: rgba(74, 222, 128, 0.8);
+}
+
+/* ------------------------------------- */
+/* Wave Ripple & Hero Pulse Elements     */
+/* ------------------------------------- */
+
+/* Hero Badge Icon Loop Pulse */
+@keyframes badgeIconPulse {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(33, 103, 176, 0.3); }
+    50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(33, 103, 176, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(33, 103, 176, 0); }
+}
+
+.hero-badge-pulse {
+    animation: badgeIconPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Ripple CTA Effect */
+@keyframes rippleWaves {
+    0% { box-shadow: 0 0 0 0 rgba(26, 39, 60, 0.4), 0 0 0 0 rgba(26, 39, 60, 0.2); }
+    50% { box-shadow: 0 0 0 15px rgba(26, 39, 60, 0), 0 0 0 5px rgba(26, 39, 60, 0.2); }
+    100% { box-shadow: 0 0 0 0 rgba(26, 39, 60, 0), 0 0 0 20px rgba(26, 39, 60, 0); }
+}
+
+.btn-ripple {
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
+}
+
+.btn-ripple:hover {
+    transform: scale(1.05);
+    background-color: #263857; /* Slightly lighter navy */
+    animation: rippleWaves 1.2s linear infinite;
+}

@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
     initHeroAnimations();
+    initHeroGridAnimation();
     initMagneticButtons();
     initScrollAnimations();
 });
@@ -36,6 +37,56 @@ function initHeroAnimations() {
         stagger: 0.15,
         ease: "back.out(1.5)"
     }, "-=0.2");
+}
+
+function initHeroGridAnimation() {
+    const heroGridPaths = document.querySelectorAll('.hero-grid-pattern');
+    const heroSection = document.getElementById('hero');
+    const maskLayer = document.querySelector('.hero-grid-mask');
+
+    if (!heroGridPaths.length || !heroSection || !maskLayer) return;
+
+    // Constant flow of the grid lines
+    let offsetX = 0;
+    let offsetY = 0;
+    const speedX = 0.5;
+    const speedY = 0.5;
+
+    function animateGrid() {
+        offsetX = (offsetX + speedX) % 40;
+        offsetY = (offsetY + speedY) % 40;
+
+        heroGridPaths.forEach(pattern => {
+            pattern.setAttribute('x', offsetX);
+            pattern.setAttribute('y', offsetY);
+        });
+
+        requestAnimationFrame(animateGrid);
+    }
+    requestAnimationFrame(animateGrid);
+
+    // Initial mask positioning (hidden far away)
+    maskLayer.style.webkitMaskImage = `radial-gradient(circle at -1000px -1000px, black 0%, transparent 400px)`;
+    maskLayer.style.maskImage = `radial-gradient(circle at -1000px -1000px, black 0%, transparent 400px)`;
+    maskLayer.style.transition = 'opacity 0.6s ease';
+    
+    // Track mouse over the hero section
+    heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        maskLayer.style.webkitMaskImage = `radial-gradient(circle at ${x}px ${y}px, black 0%, transparent 400px)`;
+        maskLayer.style.maskImage = `radial-gradient(circle at ${x}px ${y}px, black 0%, transparent 400px)`;
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+        maskLayer.style.opacity = '0'; // Hide mask smoothly when leaving
+    });
+    
+    heroSection.addEventListener('mouseenter', () => {
+        maskLayer.style.opacity = '0.25'; // Show back when active (subdued)
+    });
 }
 
 function initMagneticButtons() {

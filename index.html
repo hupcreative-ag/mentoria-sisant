@@ -43,7 +43,7 @@
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=9">
 </head>
 
 <body class="font-sans text-gray-800 antialiased overflow-x-hidden bg-gray-light">
@@ -57,22 +57,57 @@
 
     <!-- 1. Hero Section -->
     <section
-        class="relative pt-32 pb-16 md:pt-40 md:pb-20 bg-gradient-to-b from-beige-light/30 to-white overflow-hidden"
+        class="relative pt-32 pb-10 md:pt-40 md:pb-10 bg-gradient-to-b from-beige-light/30 to-white overflow-hidden group"
         id="hero">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%] relative z-10">
+
+        <!-- Interactive Infinite Grid & Blobs -->
+        <!-- Base Grid (Subtle) -->
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid-pattern-base" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" class="hero-grid-pattern text-navy/30" stroke="currentColor" stroke-width="1.5"></path>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern-base)"></rect>
+            </svg>
+        </div>
+        
+        <!-- Hover Grid (Highlighted) -->
+        <div class="absolute inset-0 z-0 opacity-0 hero-grid-mask pointer-events-none transition-opacity duration-500" style="filter: drop-shadow(0 0 4px rgba(33, 103, 176, 0.3));">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid-pattern-mask" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" class="hero-grid-pattern text-blue-medium/70" stroke="currentColor" stroke-width="2"></path>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern-mask)"></rect>
+            </svg>
+        </div>
+
+        <!-- Ambient Blurs -->
+        <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            <div class="absolute right-[-10%] top-[-10%] w-[30%] h-[40%] rounded-full bg-blue-medium/30 blur-[100px]"></div>
+            <div class="absolute left-[5%] top-[20%] w-[20%] h-[20%] rounded-full bg-beige/20 blur-[80px]"></div>
+            <div class="absolute left-[-10%] bottom-[-10%] w-[40%] h-[40%] rounded-full bg-navy/20 blur-[120px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%] relative z-10 hero-grid-content">
 
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
                 <!-- Coluna de Texto -->
                 <div
                     class="hero-content w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
                     <div
-                        class="inline-flex items-center gap-3 bg-white text-navy px-4 py-2 rounded-full shadow-sm mb-6 border border-gray-100 mt-4 md:mt-0">
-                        <div class="bg-blue-medium/20 text-blue-medium rounded-full p-1">
-                            <i class="ph-fill ph-check-circle"></i>
+                        class="inline-flex items-center gap-3 bg-white text-navy pl-2 pr-5 py-2 rounded-full shadow-md mb-6 border border-gray-100 transition-shadow hover:shadow-lg relative z-20">
+                        <div class="bg-[#e6f0fa] rounded-full p-1.5 hero-badge-pulse flex items-center justify-center">
+                            <div class="bg-blue-medium text-white rounded-full w-6 h-6 flex items-center justify-center shadow-sm">
+                                <i class="ph-bold ph-check text-[11px]"></i>
+                            </div>
                         </div>
-                        <span class="text-sm font-semibold tracking-wide flex items-center gap-1">
+                        <span class="text-sm md:text-[15px] font-bold tracking-wide flex items-center gap-1.5 text-navy">
                             A Mentoria Definitiva em
-                            <span class="text-blue-medium font-bold">Análises Clínicas</span>
+                            <span class="text-blue-medium">Análises Clínicas</span>
                         </span>
                     </div>
 
@@ -80,15 +115,17 @@
                         Domine a análise de exames laboratoriais
                         <span class="text-blue-medium block mt-2">com a abordagem integrativa.</span>
                     </h1>
-                    <p class="text-lg text-gray-700 max-w-xl mb-6 md:mb-10 leading-relaxed font-medium">
+                    <p class="text-lg text-gray-700 max-w-xl mb-4 md:mb-6 leading-relaxed font-medium">
                         Adquira raciocínio clínico refinado para interpretar exames e precrever o tratamento certo para
                         o seu paciente de forma avançada.
                     </p>
 
                     <a href="#investimento"
-                        class="magnetic-btn bg-navy text-white font-bold py-4 px-10 rounded-full text-lg inline-flex items-center gap-3 mt-2 md:mt-4">
+                        class="btn-ripple bg-navy text-white font-bold py-3 pl-8 pr-3 rounded-full text-lg inline-flex items-center gap-4">
                         <span class="relative z-10">Quero me especializar agora</span>
-                        <i class="ph-bold ph-arrow-up-right relative z-10 bg-white/20 p-1.5 rounded-full"></i>
+                        <div class="relative z-10 bg-white/10 w-10 h-10 flex items-center justify-center rounded-full">
+                            <i class="ph-bold ph-arrow-up-right"></i>
+                        </div>
                     </a>
 
 
@@ -133,19 +170,17 @@
             </div>
 
         </div>
-        <!-- Decoration wave -->
+        <!-- Decoration Curve Base -->
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
-                preserveAspectRatio="none" class="relative block w-full h-[50px] md:h-[80px]">
-                <path
-                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C73.81,40.1,146.59,65.2,213.39,69.5,250.2,71.86,286.5,63.14,321.39,56.44Z"
-                    fill="#ffffff"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"
+                class="relative block w-full h-[60px] md:h-[100px]">
+                <path d="M0,0 Q600,120 1200,0 L1200,120 L0,120 Z" fill="#ffffff"></path>
             </svg>
         </div>
     </section>
 
     <!-- 2. Problema + Agitação -->
-    <section class="py-16 md:py-20 bg-white" id="desafio">
+    <section class="pt-8 pb-16 md:pt-14 md:pb-20 bg-white" id="desafio">
         <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-[10%]">
             <div class="text-center mb-16 section-reveal">
                 <span
@@ -728,7 +763,7 @@
                             class="text-4xl">,75</span></div>
                     <span class="text-white/80 text-lg mb-2">ou 1x de R$ 11.997,00</span>
                     <span
-                        class="bg-green-500/10 text-green-400 px-4 py-1.5 rounded-full text-sm font-medium mt-1 inline-flex items-center gap-2 border border-green-500/20">
+                        class="bg-green-500/10 pulse-glow text-green-400 px-4 py-1.5 rounded-full text-sm font-medium mt-1 inline-flex items-center gap-2 border border-green-500/20">
                         <i class="ph-fill ph-tag"></i> Desconto especial no pagamento à vista
                     </span>
                 </div>
@@ -751,7 +786,7 @@
                 </div>
 
                 <a href="#"
-                    class="magnetic-btn bg-[#16a34a] text-white font-bold w-full py-5 rounded-xl text-xl inline-flex items-center justify-center transition-all">
+                    class="magnetic-btn neon-glow bg-[#16a34a] text-white font-bold w-full py-5 rounded-xl text-xl inline-flex items-center justify-center transition-all">
                     <span class="relative z-10">QUERO ME INSCREVER AGORA</span>
                 </a>
 
@@ -823,7 +858,7 @@
     <!-- GSAP Core & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="main.js"></script>
+    <script src="main.js?v=2"></script>
 </body>
 
 </html>
