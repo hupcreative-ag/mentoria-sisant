@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras & Testes de Saúde | Dr. Gustavo Sisant</title>
+    <meta name="description"
+        content="Avalie seus sintomas, calcule marcadores metabólicos e acompanhe sua saúde de forma integrativa e científica.">
+
+    <!-- Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons (Phosphor Icons - clean and outline) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#1a273c',
+                        'blue-medium': '#2167b0',
+                        'blue-light': '#e8f1fa',
+                        beige: '#957854',
+                        'beige-light': '#e7e0d0',
+                        'gray-light': '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'premium': '0 4px 25px rgba(0,0,0,0.04)',
+                        'premium-hover': '0 12px 35px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/calculadoras/styles.css">
+</head>
+
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden bg-gray-light min-h-screen flex flex-col">
+    <!-- Navbar / Header -->
+    <header class="w-full bg-white border-b border-gray-100 py-6 px-4 md:px-8 lg:px-[10%] sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-center">
+            <a href="javascript:void(0)" onclick="goToHub()" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <img src="../assets/images/Logo_Horizontal_Preta.png" alt="Dr. Gustavo Sisant" class="h-10 md:h-12 object-contain" />
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 md:px-8 lg:px-[10%] py-12">
+        
+        <!-- Welcome Hub Screen -->
+        <section id="hub-screen" class="w-full">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-blue-light text-blue-medium text-xs font-bold uppercase tracking-wider mb-4">
+                    Ferramentas de Diagnóstico
+                </span>
+                <h1 class="text-3xl md:text-4xl font-bold text-navy mb-4 leading-tight">
+                    Testes de Autoavaliação e Calculadoras Clínicas
+                </h1>
+                <p class="text-gray-600 text-base md:text-lg">
+                    Selecione um dos testes abaixo para analisar seus sintomas e marcadores biológicos. Desenvolvido com base em parâmetros científicos integrativos.
+                </p>
+            </div>
+
+            <!-- Calculators Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Test 1: Fadiga Adrenal -->
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('fadiga-adrenal')">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-light text-blue-medium flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph-bold ph-activity text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-blue-medium uppercase tracking-wider bg-blue-light/50 px-2.5 py-1 rounded">Hormonal</span>
+                        <h3 class="text-xl font-bold text-navy mt-4 mb-2 group-hover:text-blue-medium transition-colors">
+                            Avaliação de Fadiga Adrenal
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                            Analise sintomas associados ao desequilíbrio de cortisol, níveis de estresse e fadiga crônica.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-50 pt-4 text-xs text-gray-400 font-medium">
+                        <span class="flex items-center gap-1">
+                            <i class="ph ph-clock"></i> 3 min
+                        </span>
+                        <span class="text-blue-medium font-bold inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Iniciar Teste <i class="ph-bold ph-caret-right"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Test 2: Risco de Resistência à Insulina (HOMA-IR) -->
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group opacity-75 relative overflow-hidden">
+                    <div class="absolute top-3 right-3 bg-beige/10 text-beige text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
+                        Em breve
+                    </div>
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center mb-6">
+                            <i class="ph-bold ph-drop text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2.5 py-1 rounded">Metabólico</span>
+                        <h3 class="text-xl font-bold text-navy mt-4 mb-2">
+                            Calculadora HOMA-IR & HOMA-Beta
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                            Insira seus exames de glicose e insulina de jejum para calcular a resistência à insulina e a função das células beta do pâncreas.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-50 pt-4 text-xs text-gray-400 font-medium">
+                        <span class="flex items-center gap-1">
+                            <i class="ph ph-clock"></i> 1 min
+                        </span>
+                        <span class="text-gray-400 font-bold inline-flex items-center gap-1">
+                            Bloqueado <i class="ph-bold ph-lock"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Test 3: Risco Cardiovascular -->
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group opacity-75 relative overflow-hidden">
+                    <div class="absolute top-3 right-3 bg-beige/10 text-beige text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
+                        Em breve
+                    </div>
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center mb-6">
+                            <i class="ph-bold ph-heart text-2xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2.5 py-1 rounded">Cardiovascular</span>
+                        <h3 class="text-xl font-bold text-navy mt-4 mb-2">
+                            Relações Lipídicas Avançadas
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                            Calcule a proporção de TG/HDL, Colesterol Total/HDL e LDL/ApoB para avaliar a qualidade e tamanho das partículas de LDL e o risco aterogênico.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-50 pt-4 text-xs text-gray-400 font-medium">
+                        <span class="flex items-center gap-1">
+                            <i class="ph ph-clock"></i> 2 min
+                        </span>
+                        <span class="text-gray-400 font-bold inline-flex items-center gap-1">
+                            Bloqueado <i class="ph-bold ph-lock"></i>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Test Wizard Container (Hidden by Default) -->
+        <section id="test-wizard" class="w-full hidden max-w-3xl mx-auto">
+            <!-- Back to Hub -->
+            <button onclick="closeTest()" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-navy mb-8 transition-colors">
+                <i class="ph-bold ph-arrow-left"></i> Voltar para os testes
+            </button>
+
+            <!-- Test Card -->
+            <div class="bg-white rounded-3xl p-6 md:p-10 shadow-premium border border-gray-100 relative overflow-hidden">
+                <!-- Progress Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <span class="text-xs font-bold text-blue-medium uppercase tracking-wider" id="test-category">
+                        Hormonal
+                    </span>
+                    <span class="text-xs font-semibold text-gray-400" id="step-counter">
+                        Pergunta 1 de 10
+                    </span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-10">
+                    <div id="progress-bar" class="h-full bg-blue-medium w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- Wizard Steps/Questions Container -->
+                <div id="questions-container" class="min-h-[250px] flex flex-col justify-between">
+                    <!-- Current Question will be injected here via JavaScript -->
+                    <div id="question-box" class="opacity-1">
+                        <h2 class="text-xl md:text-2xl font-bold text-navy mb-6 leading-snug" id="question-text">
+                            Carregando pergunta...
+                        </h2>
+                        
+                        <!-- Answers Options -->
+                        <div class="space-y-4" id="options-box">
+                            <!-- Options injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Wizard Buttons -->
+                <div class="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
+                    <button id="prev-btn" onclick="prevStep()" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-navy hover:bg-gray-50 hover:border-gray-300 transition-all opacity-0 pointer-events-none">
+                        <i class="ph-bold ph-arrow-left"></i> Voltar
+                    </button>
+                    <span class="text-xs text-gray-400 italic">
+                        Suas respostas são confidenciais.
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Screen (Displayed between quiz completion and results) -->
+        <section id="loading-screen" class="w-full hidden max-w-xl mx-auto text-center py-16">
+            <div class="flex flex-col items-center">
+                <div class="loader-circle w-16 h-16 rounded-full border-4 border-blue-light border-t-blue-medium animate-spin mb-6"></div>
+                <h3 class="text-xl font-bold text-navy mb-2">Processando Perfil Biológico...</h3>
+                <p class="text-gray-500 text-sm max-w-xs">
+                    Estamos cruzando suas respostas com padrões integrativos de saúde hormonal.
+                </p>
+            </div>
+        </section>
+
+        <!-- Results Screen (Hidden by Default) -->
+        <section id="results-screen" class="w-full hidden max-w-2xl mx-auto">
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-premium border border-gray-100 relative overflow-hidden">
+                
+                <!-- Background decoration element -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-light/50 rounded-bl-full -z-10"></div>
+                
+                <div class="text-center mb-8">
+                    <span class="inline-block py-1.5 px-4 rounded-full bg-blue-light text-blue-medium text-xs font-bold uppercase tracking-wider mb-4">
+                        Resultado da Avaliação
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-navy mb-1" id="result-title">
+                        Seu Resultado
+                    </h2>
+                    <p class="text-gray-400 text-xs font-medium" id="result-test-name">
+                        Avaliação de Fadiga Adrenal
+                    </p>
+                </div>
+
+
+
+                <!-- Visual Score Gauge -->
+                <div class="flex flex-col items-center mb-8">
+                    <div class="relative w-48 h-24 overflow-hidden flex items-end justify-center mb-4">
+                        <!-- Semi-circle Track -->
+                        <div class="absolute inset-0 rounded-t-full border-8 border-gray-100"></div>
+                        <!-- Color Segment -->
+                        <div id="gauge-fill" class="absolute inset-0 rounded-t-full border-8 border-transparent border-t-yellow-500 border-r-yellow-500 transition-all duration-1000 origin-bottom" style="transform: rotate(0deg);"></div>
+                        <!-- Score Display -->
+                        <div class="absolute bottom-0 text-center z-10">
+                            <span class="text-3xl font-black text-navy" id="score-display">0</span>
+                            <span class="text-gray-400 text-xs block font-bold">PONTOS</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Result Status Tag -->
+                    <div id="status-tag" class="px-4 py-1.5 rounded-full text-sm font-bold text-white shadow-sm transition-all duration-300">
+                        Aguardando...
+                    </div>
+                </div>
+
+                <!-- Interpretation Box -->
+                <div class="bg-gray-light rounded-2xl p-6 mb-8 border border-gray-100">
+                    <h4 class="font-bold text-navy mb-2 flex items-center gap-2">
+                        <i class="ph-fill ph-info text-blue-medium"></i>
+                        O que isso significa?
+                    </h4>
+                    <p class="text-gray-600 text-sm leading-relaxed" id="result-interpretation">
+                        Carregando interpretação biológica dos resultados...
+                    </p>
+                </div>
+
+                <!-- Recommendations / Action Plan -->
+                <div class="mb-10">
+                    <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
+                        <i class="ph-bold ph-list-checks text-blue-medium"></i>
+                        Recomendações Iniciais
+                    </h4>
+                    <ul class="space-y-3" id="recommendations-list">
+                        <!-- Dynamic list items -->
+                    </ul>
+                </div>
+
+                <!-- Call to Action Container -->
+                <div class="border-t border-gray-100 pt-8 mt-8 relative overflow-hidden rounded-2xl bg-gray-50/40 p-5 md:p-0 md:bg-transparent md:rounded-none md:border-t md:border-gray-100">
+                    
+                    <!-- Watermark portrait background only on mobile -->
+                    <div class="absolute inset-0 w-full h-full z-0 opacity-[0.06] md:hidden pointer-events-none">
+                        <img src="../assets/images/img_apresentacao.jpg" alt="" class="w-full h-full object-cover object-top" />
+                    </div>
+
+                    <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
+                        <!-- Dr. Gustavo Portrait (Visible only on desktop/tablet) -->
+                        <div class="hidden md:block w-36 h-36 rounded-2xl overflow-hidden border-2 border-blue-medium/20 shadow-premium shrink-0 bg-gray-100 relative group">
+                            <img src="../assets/images/img_apresentacao.jpg" alt="Dr. Gustavo Sisant" class="dr-portrait-img w-full h-full" />
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-xl md:text-2xl font-bold text-navy mb-3 cta-animate-title leading-snug">
+                                Gostaria de investigar a sua saúde de forma individualizada?
+                            </h4>
+                            <p class="text-sm text-gray-500 leading-relaxed">
+                                Agende uma consulta com o Dr. Gustavo Sisant para realizar uma análise integrada de seus exames, rotina e estilo de vida, traçando um plano de saúde totalmente personalizado para você.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Buttons (Stacked vertically to prevent overflow and text wrapping issues) -->
+                    <div class="relative z-10 flex flex-col gap-3.5 w-full mt-6">
+                        <a href="https://api.whatsapp.com/send/?phone=5571999945001" target="_blank" rel="noopener noreferrer" class="bg-[#16a34a] text-white font-bold py-4 px-6 rounded-xl text-sm transition-all hover:bg-[#148e40] shadow-md flex items-center justify-center gap-2 w-full">
+                            <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                            Agendar Consulta no WhatsApp
+                        </a>
+                        <a href="https://drgustavosisant.com.br/" target="_blank" rel="noopener noreferrer" class="bg-navy text-white font-bold py-4 px-6 rounded-xl text-sm transition-all hover:bg-opacity-95 shadow-md flex items-center justify-center gap-2 w-full">
+                            <i class="ph-bold ph-globe text-lg"></i>
+                            Conheça a medicina integrativa
+                        </a>
+                    </div>
+
+                    <div class="relative z-10 text-center mt-6">
+                        <button onclick="restartTest()" class="text-gray-400 hover:text-navy text-xs font-bold transition-all inline-flex items-center gap-1">
+                            <i class="ph-bold ph-arrows-clockwise"></i> Refazer Questionário
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expandable Methodology Accordion (Moved after CTA) -->
+                <div class="mt-8 border border-gray-100 rounded-2xl overflow-hidden bg-white">
+                    <button onclick="toggleMethodology()" class="w-full flex items-center justify-between p-5 text-left font-bold text-navy bg-gray-50 hover:bg-gray-100/70 transition-colors">
+                        <span class="flex items-center gap-2.5 text-sm md:text-base">
+                            <i class="ph-bold ph-microscope text-blue-medium text-lg"></i>
+                            <span id="methodology-title">Como funciona a metodologia deste teste?</span>
+                        </span>
+                        <i id="methodology-arrow" class="ph-bold ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="methodology-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div id="methodology-text" class="p-5 border-t border-gray-100 text-sm text-gray-600 leading-relaxed space-y-4">
+                            <!-- Dynamic text injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Instagram Mini Banner (Positioned underneath the test boxes) -->
+        <div class="mt-8 max-w-2xl mx-auto px-4 sm:px-0">
+            <a href="https://www.instagram.com/drgustavosisantoficial/" target="_blank" rel="noopener noreferrer" class="insta-banner-link relative block overflow-hidden rounded-2xl bg-gradient-to-r from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] p-[1.5px] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+                <!-- Inner card with glass effect -->
+                <div class="bg-[#1a273c]/95 rounded-[14px] p-4 flex items-center justify-between gap-4 relative overflow-hidden backdrop-blur-sm">
+                    
+                    <!-- Shiny light effect animation -->
+                    <div class="insta-shine-effect"></div>
+                    
+                    <div class="flex items-center gap-3.5">
+                        <!-- Instagram Animated Icon Wrapper -->
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center text-white shadow-md animate-pulse">
+                            <i class="ph-bold ph-instagram-logo text-xl"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-300 font-bold uppercase tracking-wider mb-0.5">Siga no Instagram</p>
+                            <p class="text-sm font-bold text-white leading-tight">@drgustavosisantoficial</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Action Label -->
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-white bg-white/10 py-1.5 px-3 rounded-lg border border-white/10 hover:bg-white/20 transition-all">
+                        Acompanhar <i class="ph-bold ph-arrow-right text-xs"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-gray-400 py-10 border-t border-gray-800 mt-12 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <img src="../assets/images/Logo_Compacta_Branca.png" alt="Dr. Gustavo Sisant" class="h-8 mx-auto mb-4 opacity-50 object-contain" />
+            <p class="mb-2">&copy; 2026 Dr. Gustavo Sisant. Todos os direitos reservados.</p>
+            <p class="text-xs text-gray-500 max-w-2xl mx-auto leading-relaxed mt-4 pt-4 border-t border-gray-800">
+                <strong>Importante:</strong> Os questionários e calculadoras contidos neste site são ferramentas educativas de autoconhecimento preventivo e <strong>não substituem uma consulta médica</strong>. Os resultados obtidos são apenas estimativas de triagem e não configuram diagnóstico clínico, prescrição ou parecer terapêutico formal. Sempre consulte um profissional de saúde qualificado para avaliação e tratamento adequado.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Wizard Core Logic Script -->
+    <script type="module" src="/calculadoras/calculadora.js"></script>
+</body>
+
+</html>
