@@ -338,7 +338,7 @@ function renderStep() {
         const actionBtn = document.createElement('button');
         actionBtn.id = 'submit-numeric-btn';
         actionBtn.onclick = () => submitNumericStep();
-        actionBtn.className = 'w-full bg-blue-medium hover:bg-opacity-95 text-white font-bold py-4.5 px-6 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2 mt-4 hover:shadow-lg active:scale-[0.98]';
+        actionBtn.className = 'w-full bg-blue-medium hover:bg-opacity-95 text-white font-extrabold py-5 px-6 rounded-xl text-base transition-all shadow-md flex items-center justify-center gap-2 mt-4 hover:shadow-lg active:scale-[0.98] animate-pulse-btn';
         actionBtn.innerHTML = `
             Calcular Resultado
             <i class="ph-bold ph-caret-right"></i>
@@ -511,20 +511,35 @@ function showResults(score) {
     
     // Calculate angle: standard rotation. 
     // Since full rotation is 180deg for semicircle:
-    let angle;
+    let targetAngle;
     if (currentTest === 'iap') {
-        // Clamp and scale [-0.3, 0.5] range to 180 degrees
-        const clampedScore = Math.max(-0.3, Math.min(0.5, score));
-        angle = ((clampedScore + 0.3) / 0.8) * 180;
+        if (score <= 0.109) {
+            // Map [-0.3, 0.109] to [0, 60] degrees
+            const minS = -0.3;
+            const maxS = 0.109;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 60;
+        } else if (score <= 0.24) {
+            // Map [0.11, 0.24] to [60, 120] degrees
+            const minS = 0.11;
+            const maxS = 0.24;
+            targetAngle = 60 + ((score - minS) / (maxS - minS)) * 60;
+        } else {
+            // Map [0.241, 0.5] to [120, 180] degrees
+            const minS = 0.241;
+            const maxS = 0.5;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
+        }
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
-        angle = (score / maxScore) * 180;
+        targetAngle = (score / maxScore) * 180;
     }
     
-    // Set colors & rotation
+    // Set colors & reset rotation to start position (-90deg)
     gaugeFill.style.borderTopColor = resultBand.color;
     gaugeFill.style.borderRightColor = resultBand.color;
-    gaugeFill.style.transform = `rotate(${angle - 90}deg)`; // Offset rotation to start from left (-90deg) to right (90deg)
+    gaugeFill.style.transform = 'rotate(-90deg)';
 
     // Render Recommendations
     const recList = document.getElementById('recommendations-list');
@@ -553,9 +568,38 @@ function showResults(score) {
             const results = document.getElementById('results-screen');
             results.classList.remove('hidden');
             
+            // Set initial score display
+            document.getElementById('score-display').textContent = (currentTest === 'iap') ? '0.00' : '0';
+            
             gsap.fromTo('#results-screen',
                 { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.5, 
+                    ease: "power2.out",
+                    onComplete: () => {
+                        // Count up score display
+                        const scoreObj = { val: 0 };
+                        const isIAP = currentTest === 'iap';
+                        
+                        gsap.to(scoreObj, {
+                            val: score,
+                            duration: 1.2,
+                            ease: "power2.out",
+                            onUpdate: () => {
+                                document.getElementById('score-display').textContent = isIAP ? scoreObj.val.toFixed(2) : Math.round(scoreObj.val);
+                            }
+                        });
+
+                        // Rotate gauge
+                        gsap.to(gaugeFill, {
+                            rotation: targetAngle - 90,
+                            duration: 1.2,
+                            ease: "power2.out"
+                        });
+                    }
+                }
             );
         }
     });
