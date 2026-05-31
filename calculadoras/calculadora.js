@@ -491,6 +491,9 @@ function showResults(score) {
     }
 
     // Setup Results UI Text
+    const testData = testsDatabase[currentTest];
+    document.getElementById('result-test-name').textContent = testData.title;
+
     const displayScore = (currentTest === 'iap') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
     document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : 'PONTOS';
@@ -537,7 +540,6 @@ function showResults(score) {
     });
 
     // Render Dynamic Methodology Accordion
-    const testData = testsDatabase[currentTest];
     document.getElementById('methodology-title').textContent = testData.methodologyTitle || 'Como funciona a metodologia deste teste?';
     document.getElementById('methodology-text').innerHTML = testData.methodologyText || '';
 
