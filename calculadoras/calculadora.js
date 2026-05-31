@@ -97,6 +97,32 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'iap': {
+        title: 'Índice Aterogênico do Plasma (IAP)',
+        category: 'Cardiovascular',
+        maxScore: 0.5,
+        methodologyTitle: 'Como funciona a pontuação deste teste?',
+        methodologyText: `
+            <p>O Índice Aterogênico do Plasma (IAP ou AIP) é uma relação matemática avançada entre os Triglicerídeos e o HDL-Colesterol, calculada através do logaritmo de sua proporção molar: <strong>log10(Triglicerídeos / HDL-C)</strong>.</p>
+            <p class="mt-2">Diferente de analisar o colesterol isoladamente, o IAP reflete o diâmetro das partículas de lipoproteínas. Valores elevados de IAP indicam que as partículas de LDL-Colesterol são predominantemente pequenas, densas e altamente propensas à oxidação, o que acelera o acúmulo de placas de gordura (aterogênese) nas artérias.</p>
+            <p class="mt-2">A classificação de risco cardiovascular é dividida em:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Baixo Risco (menor que 0.11):</strong> Predomínio de partículas de LDL maiores e menos aterogênicas.</li>
+                <li><strong>Risco Moderado (entre 0.11 e 0.24):</strong> Perfil intermediário que requer atenção preventiva e ajustes de hábitos.</li>
+                <li><strong>Alto Risco (maior que 0.24):</strong> Forte associação com risco de infarto, aterosclerose e resistência à insulina.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os valores do seu painel lipídico:',
+                type: 'numeric',
+                inputs: [
+                    { label: 'Triglicerídeos (mg/dL)', id: 'triglycerides', placeholder: 'Ex: 120', min: 10, max: 1000 },
+                    { label: 'HDL-Colesterol (mg/dL)', id: 'hdl', placeholder: 'Ex: 50', min: 5, max: 150 }
+                ]
+            }
+        ]
     }
 };
 
@@ -152,6 +178,49 @@ const adrenalResults = [
             'Consulte um profissional de saúde qualificado para realizar exames de cortisol e marcadores integrativos.',
             'Reduza gradativamente o uso de estimulantes artificiais que apenas mascaram o cansaço do corpo.',
             'Foque no descanso biológico e em um suporte nutricional de recuperação.'
+        ]
+    }
+];
+
+// Results mapping for Atherogenic Index of Plasma (IAP)
+const iapResults = [
+    {
+        min: -999,
+        max: 0.109,
+        status: 'Baixo Risco Cardiovascular',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Seu Índice Aterogênico do Plasma (IAP) está na faixa de baixo risco. Isso indica uma proporção saudável e equilibrada entre Triglicerídeos e HDL-C, sugerindo que suas partículas de LDL-Colesterol são predominantemente grandes e flutuantes, apresentando baixo potencial inflamatório e de aderência nas artérias.',
+        recommendations: [
+            'Mantenha uma dieta limpa, rica em gorduras monoinsaturadas (azeite de oliva extra virgem, abacate, sementes).',
+            'Continue praticando atividade física regular para dar suporte metabólico à função do HDL.',
+            'Refaça seu painel lipídico anualmente para acompanhamento clínico preventivo.'
+        ]
+    },
+    {
+        min: 0.11,
+        max: 0.24,
+        status: 'Risco Cardiovascular Moderado',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Seu IAP está em uma faixa intermediária de alerta. Isto indica um desequilíbrio metabólico inicial com presença moderada de partículas de LDL menores e mais densas (mais propensas à oxidação). É um excelente momento para intervenções preventivas focadas no estilo de vida.',
+        recommendations: [
+            'Reduza o consumo de açúcares refinados, farinhas e bebidas açucaradas para diminuir os Triglicerídeos.',
+            'Incremente exercícios físicos de resistência e treinos aeróbicos (cardio) para otimizar os níveis e a qualidade do HDL.',
+            'Considere avaliar outros fatores metabólicos, como a insulina e a glicose de jejum.'
+        ]
+    },
+    {
+        min: 0.241,
+        max: 999,
+        status: 'Alto Risco Cardiovascular',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Seu IAP está elevado. Este padrão tem forte associação clínica com a presença de partículas de LDL pequenas e densas, que penetram facilmente na parede das artérias e causam aterogênese. É um forte sinalizador de resistência insulínica e disfunção metabólica.',
+        recommendations: [
+            'Consulte um médico integrativo para avaliar marcadores vasculares avançados (como ApoB, PCR-ultrassensível e homocisteína).',
+            'Adote uma estratégia nutricional de baixo índice glicêmico (como alimentação Low Carb ou de baixo índice glicêmico) para reduzir a trigliceridemia.',
+            'Priorize a melhora da sensibilidade à insulina com atividade física regular e suporte nutricional direcionado.'
         ]
     }
 ];
@@ -234,31 +303,77 @@ function renderStep() {
     // Set Question Text
     document.getElementById('question-text').textContent = question.text;
 
-    // Set Options List
+    // Set Options/Inputs List
     const optionsBox = document.getElementById('options-box');
     optionsBox.innerHTML = '';
 
-    question.options.forEach((opt, idx) => {
-        const optionBtn = document.createElement('button');
-        optionBtn.className = 'option-btn';
+    if (question.type === 'numeric') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'space-y-6 text-left';
         
-        // If this option was previously selected
-        if (answers[currentStep] !== undefined && answers[currentStep].index === idx) {
-            optionBtn.classList.add('selected');
-        }
+        question.inputs.forEach(input => {
+            const container = document.createElement('div');
+            container.className = 'flex flex-col gap-1.5';
+            
+            const savedValue = answers[currentStep] ? answers[currentStep][input.id] : '';
+            
+            container.innerHTML = `
+                <label for="input-${input.id}" class="text-sm font-semibold text-navy leading-none">
+                    ${input.label}
+                </label>
+                <input 
+                    type="number" 
+                    id="input-${input.id}" 
+                    placeholder="${input.placeholder}" 
+                    min="${input.min}" 
+                    max="${input.max}" 
+                    step="any"
+                    value="${savedValue !== undefined ? savedValue : ''}"
+                    class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-medium focus:ring-2 focus:ring-blue-light outline-none font-medium transition-all text-base"
+                />
+            `;
+            wrapper.appendChild(container);
+        });
 
-        optionBtn.onclick = () => selectOption(idx, opt.value);
-        
-        optionBtn.innerHTML = `
-            <div class="option-circle"></div>
-            <span>${opt.text}</span>
+        const actionBtn = document.createElement('button');
+        actionBtn.id = 'submit-numeric-btn';
+        actionBtn.onclick = () => submitNumericStep();
+        actionBtn.className = 'w-full bg-blue-medium hover:bg-opacity-95 text-white font-bold py-4.5 px-6 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2 mt-4 hover:shadow-lg active:scale-[0.98]';
+        actionBtn.innerHTML = `
+            Calcular Resultado
+            <i class="ph-bold ph-caret-right"></i>
         `;
-        
-        optionsBox.appendChild(optionBtn);
-    });
+        wrapper.appendChild(actionBtn);
+        optionsBox.appendChild(wrapper);
+
+        // Auto-focus first input field
+        setTimeout(() => {
+            const firstInput = document.getElementById(`input-${question.inputs[0].id}`);
+            if (firstInput) firstInput.focus();
+        }, 150);
+    } else {
+        question.options.forEach((opt, idx) => {
+            const optionBtn = document.createElement('button');
+            optionBtn.className = 'option-btn';
+            
+            // If this option was previously selected
+            if (answers[currentStep] !== undefined && answers[currentStep].index === idx) {
+                optionBtn.classList.add('selected');
+            }
+
+            optionBtn.onclick = () => selectOption(idx, opt.value);
+            
+            optionBtn.innerHTML = `
+                <div class="option-circle"></div>
+                <span>${opt.text}</span>
+            `;
+            
+            optionsBox.appendChild(optionBtn);
+        });
+    }
 }
 
-// Handle Option selection and auto-advancing
+// Handle Option selection and auto-advancing for choice questions
 function selectOption(index, value) {
     // Save answer
     answers[currentStep] = { index, value };
@@ -277,6 +392,31 @@ function selectOption(index, value) {
     setTimeout(() => {
         nextStep();
     }, 250);
+}
+
+// Validate and process input for numeric steps
+function submitNumericStep() {
+    const question = testQuestions[currentStep];
+    const stepAnswers = {};
+    let hasError = false;
+
+    question.inputs.forEach(input => {
+        const inputEl = document.getElementById(`input-${input.id}`);
+        const val = parseFloat(inputEl.value);
+        
+        if (isNaN(val) || val < input.min || val > input.max) {
+            inputEl.classList.add('border-red-500', 'focus:ring-red-100');
+            hasError = true;
+        } else {
+            inputEl.classList.remove('border-red-500', 'focus:ring-red-100');
+            stepAnswers[input.id] = val;
+        }
+    });
+
+    if (hasError) return;
+
+    answers[currentStep] = stepAnswers;
+    nextStep();
 }
 
 // Move to next step
@@ -320,7 +460,16 @@ function finishTest() {
             );
 
             // Calculate results during loading delay (simulate processing)
-            const score = answers.reduce((acc, curr) => acc + curr.value, 0);
+            let score;
+            if (currentTest === 'iap') {
+                const tg = answers[0].triglycerides;
+                const hdl = answers[0].hdl;
+                const tgMmol = tg / 88.57;
+                const hdlMmol = hdl / 38.67;
+                score = Math.log10(tgMmol / hdlMmol);
+            } else {
+                score = answers.reduce((acc, curr) => acc + curr.value, 0);
+            }
             
             setTimeout(() => {
                 showResults(score);
@@ -332,13 +481,19 @@ function finishTest() {
 // Display results based on final score
 function showResults(score) {
     // Find correct result band
-    let resultBand = adrenalResults.find(band => score >= band.min && score <= band.max);
-    
-    // Fallback if score goes out of bounds
-    if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
+    let resultBand;
+    if (currentTest === 'iap') {
+        resultBand = iapResults.find(band => score >= band.min && score <= band.max);
+        if (!resultBand) resultBand = iapResults[iapResults.length - 1];
+    } else {
+        resultBand = adrenalResults.find(band => score >= band.min && score <= band.max);
+        if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
+    }
 
     // Setup Results UI Text
-    document.getElementById('score-display').textContent = score;
+    const displayScore = (currentTest === 'iap') ? score.toFixed(2) : score;
+    document.getElementById('score-display').textContent = displayScore;
+    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -350,10 +505,18 @@ function showResults(score) {
     const gaugeFill = document.getElementById('gauge-fill');
     // Clear previous color borders
     gaugeFill.className = "absolute inset-0 rounded-t-full border-8 border-transparent transition-all duration-1000 origin-bottom";
+    
     // Calculate angle: standard rotation. 
     // Since full rotation is 180deg for semicircle:
-    const maxScore = testsDatabase[currentTest].maxScore;
-    const angle = (score / maxScore) * 180;
+    let angle;
+    if (currentTest === 'iap') {
+        // Clamp and scale [-0.3, 0.5] range to 180 degrees
+        const clampedScore = Math.max(-0.3, Math.min(0.5, score));
+        angle = ((clampedScore + 0.3) / 0.8) * 180;
+    } else {
+        const maxScore = testsDatabase[currentTest].maxScore;
+        angle = (score / maxScore) * 180;
+    }
     
     // Set colors & rotation
     gaugeFill.style.borderTopColor = resultBand.color;
@@ -474,3 +637,4 @@ window.goToHub = goToHub;
 window.prevStep = prevStep;
 window.restartTest = restartTest;
 window.toggleMethodology = toggleMethodology;
+window.submitNumericStep = submitNumericStep;
