@@ -210,13 +210,23 @@
         </section>
 
         <!-- Loading Screen (Displayed between quiz completion and results) -->
-        <section id="loading-screen" class="w-full hidden max-w-xl mx-auto text-center py-16">
+        <section id="loading-screen" class="w-full hidden max-w-xl mx-auto text-center py-16 px-4">
             <div class="flex flex-col items-center">
                 <div class="loader-circle w-16 h-16 rounded-full border-4 border-blue-light border-t-blue-medium animate-spin mb-6"></div>
+                
+                <!-- Text 1: About the test (Dynamic) -->
                 <h3 class="text-xl font-bold text-navy mb-2" id="loading-title">Processando Perfil Biológico...</h3>
-                <p class="text-gray-500 text-sm max-w-xs" id="loading-subtitle">
+                <p class="text-gray-500 text-sm max-w-sm mb-8" id="loading-subtitle">
                     Estamos cruzando suas respostas com padrões integrativos de saúde hormonal.
                 </p>
+
+                <!-- Text 2: Medical disclaimer box with attention icon -->
+                <div class="max-w-md mx-auto p-4 bg-amber-50/80 border border-amber-200 rounded-2xl flex items-start gap-3 text-left shadow-sm">
+                    <i class="ph-fill ph-warning-circle text-amber-600 text-xl shrink-0 mt-0.5 animate-pulse"></i>
+                    <p class="text-xs text-amber-800 leading-relaxed">
+                        <strong>Atenção:</strong> Este teste é uma ferramenta educativa de autoconhecimento preventivo e <strong>não substitui a consulta ou análise de um médico</strong>.
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -383,13 +393,26 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-navy text-gray-400 py-10 border-t border-gray-800 mt-12 text-center text-sm">
+    <footer class="bg-navy text-gray-400 py-12 border-t border-gray-800 mt-12 text-center text-sm">
         <div class="max-w-7xl mx-auto px-4">
             <img src="../assets/images/Logo_Compacta_Branca.png" alt="Dr. Gustavo Sisant" class="h-8 mx-auto mb-4 opacity-50 object-contain" />
-            <p class="mb-2">&copy; 2026 Dr. Gustavo Sisant. Todos os direitos reservados.</p>
-            <p class="text-xs text-gray-500 max-w-2xl mx-auto leading-relaxed mt-4 pt-4 border-t border-gray-800">
-                <strong>Importante:</strong> Os questionários e calculadoras contidos neste site são ferramentas educativas de autoconhecimento preventivo e <strong>não substituem uma consulta médica</strong>. Os resultados obtidos são apenas estimativas de triagem e não configuram diagnóstico clínico, prescrição ou parecer terapêutico formal. Sempre consulte um profissional de saúde qualificado para avaliação e tratamento adequado.
+            <p class="mb-1 text-white font-bold">Dr. Gustavo Sisant &bull; CRM-BA 25878</p>
+            <p class="mb-2 text-xs">&copy; 2026 Dr. Gustavo Sisant. Todos os direitos reservados.</p>
+            <p class="mb-8 text-xs">
+                Desenvolvido por 
+                <a href="https://www.instagram.com/hupcreative" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-medium transition-colors font-bold underline">
+                    Hup Creative
+                </a>
             </p>
+            
+            <!-- Highlighted Disclaimer box -->
+            <div class="max-w-2xl mx-auto bg-[#131e31]/80 border border-gray-800 rounded-2xl p-6 text-xs text-gray-400 leading-relaxed text-left md:text-center shadow-inner">
+                <p class="flex items-start md:items-center justify-center gap-2 mb-2.5 font-bold text-gray-300">
+                    <i class="ph-fill ph-warning-octagon text-amber-500 text-lg shrink-0"></i>
+                    Aviso Importante
+                </p>
+                Os questionários e calculadoras contidos neste site são ferramentas educativas de autoconhecimento preventivo e <strong>não substituem uma consulta médica</strong>. Os resultados obtidos são apenas estimativas de triagem e não configuram diagnóstico clínico, parecer terapêutico ou prescrição formal. Sempre consulte um profissional de saúde qualificado para diagnóstico e tratamento adequado.
+            </div>
         </div>
     </footer>
 
