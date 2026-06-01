@@ -236,6 +236,15 @@ function openTest(testId) {
     currentStep = 0;
     answers = [];
 
+    // Update URL parameter
+    try {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('test', testId);
+        window.history.pushState({ testId }, '', newUrl.toString());
+    } catch(e) {
+        console.error(e);
+    }
+
     // Setup Wizard UI Text
     document.getElementById('test-category').textContent = testsDatabase[testId].title;
     
@@ -262,6 +271,15 @@ function openTest(testId) {
 
 // Close Test Wizard and return to Hub
 function closeTest() {
+    // Remove URL parameter
+    try {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('test');
+        window.history.pushState({}, '', newUrl.toString());
+    } catch(e) {
+        console.error(e);
+    }
+
     gsap.to('#test-wizard', {
         opacity: 0,
         y: 20,
@@ -686,6 +704,15 @@ function goToHub() {
     const backBtnContainer = document.getElementById('results-back-btn-container');
     if (backBtnContainer) backBtnContainer.classList.add('hidden');
 
+    // Remove URL parameter
+    try {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('test');
+        window.history.pushState({}, '', newUrl.toString());
+    } catch(e) {
+        console.error(e);
+    }
+
     const wizard = document.getElementById('test-wizard');
     const results = document.getElementById('results-screen');
     const hub = document.getElementById('hub-screen');
@@ -715,6 +742,64 @@ function goToHub() {
     }
 }
 
+// Share test result
+function shareResult() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('test', currentTest);
+    
+    const testTitle = testsDatabase[currentTest].title;
+    const shareText = `Fiz a autoavaliação de saúde "${testTitle}" do Dr. Gustavo Sisant. Faça o seu teste também!`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: testTitle,
+            text: shareText,
+            url: url.toString()
+        }).catch(err => console.log('Erro ao compartilhar:', err));
+    } else {
+        // Fallback: Copy to Clipboard
+        navigator.clipboard.writeText(url.toString()).then(() => {
+            showToast('Link do teste copiado para a área de transferência!');
+        }).catch(err => {
+            console.error('Erro ao copiar link:', err);
+        });
+    }
+}
+
+// Show a temporary toast message
+function showToast(message) {
+    let toast = document.getElementById('health-hub-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'health-hub-toast';
+        toast.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-navy text-white text-xs md:text-sm font-bold py-3 px-6 rounded-xl shadow-premium border border-gray-800 transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2';
+        document.body.appendChild(toast);
+    }
+    
+    toast.innerHTML = `<i class="ph-bold ph-check-circle text-green-500 text-lg"></i> ${message}`;
+    
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+    });
+    
+    setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+    }, 3000);
+}
+
+// Immediately check URL params on module execution
+try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get('test') || urlParams.get('teste');
+    if (testId && testsDatabase[testId]) {
+        setTimeout(() => openTest(testId), 150);
+    }
+} catch(e) {
+    console.error(e);
+}
+
 // Expose functions globally for HTML onclick attributes compatibility under Vite ES Modules
 window.openTest = openTest;
 window.closeTest = closeTest;
@@ -723,3 +808,4 @@ window.prevStep = prevStep;
 window.restartTest = restartTest;
 window.toggleMethodology = toggleMethodology;
 window.submitNumericStep = submitNumericStep;
+window.shareResult = shareResult;
