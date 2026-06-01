@@ -213,8 +213,8 @@
         <section id="loading-screen" class="w-full hidden max-w-xl mx-auto text-center py-16">
             <div class="flex flex-col items-center">
                 <div class="loader-circle w-16 h-16 rounded-full border-4 border-blue-light border-t-blue-medium animate-spin mb-6"></div>
-                <h3 class="text-xl font-bold text-navy mb-2">Processando Perfil Biológico...</h3>
-                <p class="text-gray-500 text-sm max-w-xs">
+                <h3 class="text-xl font-bold text-navy mb-2" id="loading-title">Processando Perfil Biológico...</h3>
+                <p class="text-gray-500 text-sm max-w-xs" id="loading-subtitle">
                     Estamos cruzando suas respostas com padrões integrativos de saúde hormonal.
                 </p>
             </div>
@@ -234,24 +234,24 @@
                     <h2 class="text-2xl md:text-3xl font-bold text-navy mb-1" id="result-title">
                         Seu Resultado
                     </h2>
-                    <p class="text-gray-400 text-xs font-medium" id="result-test-name">
-                        Carregando...
-                    </p>
                 </div>
 
 
 
                 <!-- Visual Score Gauge -->
                 <div class="flex flex-col items-center mb-8">
-                    <div class="relative w-48 h-24 overflow-hidden flex items-end justify-center mb-4">
-                        <!-- Semi-circle Track -->
-                        <div class="absolute inset-0 rounded-t-full border-8 border-gray-100"></div>
-                        <!-- Color Segment -->
-                        <div id="gauge-fill" class="absolute inset-0 rounded-t-full border-8 border-transparent border-t-yellow-500 border-r-yellow-500 transition-all duration-1000 origin-bottom" style="transform: rotate(0deg);"></div>
+                    <div class="relative w-48 h-24 flex items-end justify-center mb-4">
+                        <!-- SVG Gauge -->
+                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 50">
+                            <!-- Background Track -->
+                            <path d="M 14 46 A 36 36 0 0 1 86 46" fill="none" stroke="#f1f5f9" stroke-width="8" stroke-linecap="round" />
+                            <!-- Foreground Fill -->
+                            <path id="gauge-fill-path" d="M 14 46 A 36 36 0 0 1 86 46" fill="none" stroke="#eab308" stroke-width="8" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
+                        </svg>
                         <!-- Score Display -->
-                        <div class="absolute bottom-0 text-center z-10">
-                            <span class="text-3xl font-black text-navy" id="score-display">0</span>
-                            <span class="text-gray-400 text-xs block font-bold" id="score-label">PONTOS</span>
+                        <div class="text-center z-10 pb-1">
+                            <span class="text-3xl font-black text-navy block leading-none mb-1" id="score-display">0</span>
+                            <span class="text-gray-400 text-[10px] block font-extrabold tracking-wider" id="score-label">PONTOS</span>
                         </div>
                     </div>
                     
@@ -262,7 +262,7 @@
                 </div>
 
                 <!-- Interpretation Box -->
-                <div class="bg-gray-light rounded-2xl p-6 mb-8 border border-gray-100">
+                <div id="result-interpretation-box" class="bg-gray-light rounded-2xl p-6 mb-8 border border-gray-100 transition-all duration-300">
                     <h4 class="font-bold text-navy mb-2 flex items-center gap-2">
                         <i class="ph-fill ph-info text-blue-medium"></i>
                         O que isso significa?
@@ -273,7 +273,7 @@
                 </div>
 
                 <!-- Recommendations / Action Plan -->
-                <div class="mb-10">
+                <div class="mb-12">
                     <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
                         <i class="ph-bold ph-list-checks text-blue-medium"></i>
                         Recomendações Iniciais
@@ -284,7 +284,7 @@
                 </div>
 
                 <!-- Call to Action Container -->
-                <div class="border-t border-gray-100 pt-8 mt-8 relative overflow-hidden rounded-2xl bg-gray-50/40 p-5 md:p-0 md:bg-transparent md:rounded-none md:border-t md:border-gray-100">
+                <div class="border-t border-gray-100 pt-12 mt-14 relative overflow-hidden rounded-2xl bg-gray-50/40 p-5 md:p-0 md:bg-transparent md:rounded-none md:border-t md:border-gray-100">
                     
                     <!-- Watermark portrait background only on mobile -->
                     <div class="absolute inset-0 w-full h-full z-0 opacity-[0.06] md:hidden pointer-events-none">
@@ -353,23 +353,31 @@
                     <!-- Shiny light effect animation -->
                     <div class="insta-shine-effect"></div>
                     
-                    <div class="flex items-center gap-3.5">
+                    <div class="flex items-center gap-3.5 min-w-0">
                         <!-- Instagram Animated Icon Wrapper -->
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center text-white shadow-md animate-pulse">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center text-white shadow-md animate-pulse shrink-0">
                             <i class="ph-bold ph-instagram-logo text-xl"></i>
                         </div>
-                        <div class="text-left">
-                            <p class="text-xs text-gray-300 font-bold uppercase tracking-wider mb-0.5">Siga no Instagram</p>
-                            <p class="text-sm font-bold text-white leading-tight">@drgustavosisantoficial</p>
+                        <div class="text-left min-w-0">
+                            <p class="text-[10px] sm:text-xs text-gray-300 font-bold uppercase tracking-wider mb-0.5 truncate">Siga no Instagram</p>
+                            <p class="text-xs sm:text-sm font-bold text-white leading-tight truncate">@drgustavosisantoficial</p>
                         </div>
                     </div>
                     
                     <!-- Right Action Label -->
-                    <div class="flex items-center gap-1.5 text-xs font-bold text-white bg-white/10 py-1.5 px-3 rounded-lg border border-white/10 hover:bg-white/20 transition-all">
-                        Acompanhar <i class="ph-bold ph-arrow-right text-xs"></i>
+                    <div class="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-white bg-white/10 py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-lg border border-white/10 hover:bg-white/20 transition-all shrink-0">
+                        Acompanhar <i class="ph-bold ph-arrow-right text-[10px] sm:text-xs"></i>
                     </div>
                 </div>
             </a>
+
+            <!-- "Faça outro teste" Button (Visible only on results screen) -->
+            <div id="results-back-btn-container" class="hidden mt-6 text-center opacity-0">
+                <button onclick="goToHub()" class="bg-white border border-gray-200 text-gray-600 hover:text-navy font-bold py-4 px-8 rounded-xl text-sm transition-all hover:bg-gray-50 shadow-sm flex items-center justify-center gap-2 mx-auto w-full max-w-xs animate-pulse-btn">
+                    <i class="ph-bold ph-arrow-left"></i>
+                    Fazer Outro Teste
+                </button>
+            </div>
         </div>
 
     </main>

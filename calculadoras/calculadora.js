@@ -12,6 +12,8 @@ const testsDatabase = {
         title: 'Avaliação de Fadiga Adrenal',
         category: 'Hormonal',
         maxScore: 32,
+        loadingTitle: 'Processando Perfil Biológico...',
+        loadingSubtitle: 'Estamos cruzando suas respostas com padrões integrativos de saúde hormonal.',
         methodologyTitle: 'Como funciona a pontuação deste teste?',
         methodologyText: `
             <p>Este questionário baseia-se na escala de sintomas clínicos de sobrecarga de estresse e fadiga biológica. As perguntas avaliam parâmetros-chave do ritmo circadiano, como a curva de energia diária, a qualidade do sono e a dependência de estimulantes.</p>
@@ -102,6 +104,8 @@ const testsDatabase = {
         title: 'Índice Aterogênico do Plasma (IAP)',
         category: 'Cardiovascular',
         maxScore: 0.5,
+        loadingTitle: 'Calculando Risco Cardiovascular...',
+        loadingSubtitle: 'Convertendo os marcadores de Triglicerídeos e HDL para estimar o tamanho das partículas de LDL.',
         methodologyTitle: 'Como funciona a pontuação deste teste?',
         methodologyText: `
             <p>O Índice Aterogênico do Plasma (IAP ou AIP) é uma relação matemática avançada entre os Triglicerídeos e o HDL-Colesterol, calculada através do logaritmo de sua proporção molar: <strong>log10(Triglicerídeos / HDL-C)</strong>.</p>
@@ -233,7 +237,7 @@ function openTest(testId) {
     answers = [];
 
     // Setup Wizard UI Text
-    document.getElementById('test-category').textContent = testsDatabase[testId].category;
+    document.getElementById('test-category').textContent = testsDatabase[testId].title;
     
     // Hide Hub Screen and Show Wizard with GSAP transition
     gsap.to('#hub-screen', {
@@ -451,6 +455,10 @@ function finishTest() {
         onComplete: () => {
             document.getElementById('test-wizard').classList.add('hidden');
             
+            const testData = testsDatabase[currentTest];
+            document.getElementById('loading-title').textContent = testData.loadingTitle || 'Processando Perfil Biológico...';
+            document.getElementById('loading-subtitle').textContent = testData.loadingSubtitle || '';
+            
             const loader = document.getElementById('loading-screen');
             loader.classList.remove('hidden');
             
@@ -478,6 +486,14 @@ function finishTest() {
     });
 }
 
+// Helper to convert hex to rgba
+function hexToRgba(hex, alpha) {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const fullHex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+    return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})` : hex;
+}
+
 // Display results based on final score
 function showResults(score) {
     // Find correct result band
@@ -492,7 +508,7 @@ function showResults(score) {
 
     // Setup Results UI Text
     const testData = testsDatabase[currentTest];
-    document.getElementById('result-test-name').textContent = testData.title;
+    document.getElementById('result-title').textContent = testData.title;
 
     const displayScore = (currentTest === 'iap') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
@@ -503,16 +519,25 @@ function showResults(score) {
     // Set Status Tag Colors
     const statusTag = document.getElementById('status-tag');
     statusTag.style.backgroundColor = resultBand.color;
+
+    // Set dynamic interpretation box colors (alert-like matching background and border)
+    const interpretationBox = document.getElementById('result-interpretation-box');
+    if (interpretationBox) {
+        interpretationBox.style.backgroundColor = hexToRgba(resultBand.color, 0.06);
+        interpretationBox.style.borderColor = hexToRgba(resultBand.color, 0.25);
+    }
     
-    // Dynamically update gauge fill rotation and color
-    const gaugeFill = document.getElementById('gauge-fill');
-    // Clear previous color borders
-    gaugeFill.className = "absolute inset-0 rounded-t-full border-8 border-transparent transition-all duration-1000 origin-bottom";
+    // Dynamically update gauge fill path and color
+    const gaugeFillPath = document.getElementById('gauge-fill-path');
+    if (gaugeFillPath) {
+        gaugeFillPath.setAttribute('stroke', resultBand.color);
+        gaugeFillPath.setAttribute('stroke-dashoffset', '113.1'); // Reset to empty
+    }
     
-    // Calculate angle: standard rotation. 
-    // Since full rotation is 180deg for semicircle:
-    let targetAngle;
+    // Calculate percentage for the SVG gauge
+    let percentage;
     if (currentTest === 'iap') {
+        let targetAngle;
         if (score <= 0.109) {
             // Map [-0.3, 0.109] to [0, 60] degrees
             const minS = -0.3;
@@ -531,15 +556,14 @@ function showResults(score) {
             const clamped = Math.min(maxS, score);
             targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
         }
+        percentage = targetAngle / 180;
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
-        targetAngle = (score / maxScore) * 180;
+        percentage = score / maxScore;
     }
     
-    // Set colors & reset rotation to start position (-90deg)
-    gaugeFill.style.borderTopColor = resultBand.color;
-    gaugeFill.style.borderRightColor = resultBand.color;
-    gaugeFill.style.transform = 'rotate(-90deg)';
+    const pathLength = 113.1;
+    const targetOffset = pathLength - (percentage * pathLength);
 
     // Render Recommendations
     const recList = document.getElementById('recommendations-list');
@@ -579,6 +603,13 @@ function showResults(score) {
                     duration: 0.5, 
                     ease: "power2.out",
                     onComplete: () => {
+                        // Show the "Faça outro teste" button container
+                        const backBtnContainer = document.getElementById('results-back-btn-container');
+                        if (backBtnContainer) {
+                            backBtnContainer.classList.remove('hidden');
+                            gsap.fromTo(backBtnContainer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+                        }
+
                         // Count up score display
                         const scoreObj = { val: 0 };
                         const isIAP = currentTest === 'iap';
@@ -592,12 +623,14 @@ function showResults(score) {
                             }
                         });
 
-                        // Rotate gauge
-                        gsap.to(gaugeFill, {
-                            rotation: targetAngle - 90,
-                            duration: 1.2,
-                            ease: "power2.out"
-                        });
+                        // Animate SVG Gauge path
+                        if (gaugeFillPath) {
+                            gsap.to(gaugeFillPath, {
+                                strokeDashoffset: targetOffset,
+                                duration: 1.2,
+                                ease: "power2.out"
+                            });
+                        }
                     }
                 }
             );
@@ -612,6 +645,9 @@ function restartTest() {
     const arrow = document.getElementById('methodology-arrow');
     if (content) content.style.maxHeight = '0px';
     if (arrow) arrow.style.transform = 'rotate(0deg)';
+
+    const backBtnContainer = document.getElementById('results-back-btn-container');
+    if (backBtnContainer) backBtnContainer.classList.add('hidden');
 
     gsap.to('#results-screen', {
         opacity: 0,
@@ -646,6 +682,9 @@ function goToHub() {
     const arrow = document.getElementById('methodology-arrow');
     if (content) content.style.maxHeight = '0px';
     if (arrow) arrow.style.transform = 'rotate(0deg)';
+
+    const backBtnContainer = document.getElementById('results-back-btn-container');
+    if (backBtnContainer) backBtnContainer.classList.add('hidden');
 
     const wizard = document.getElementById('test-wizard');
     const results = document.getElementById('results-screen');
