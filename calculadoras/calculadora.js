@@ -6,8 +6,50 @@ let currentStep = 0;
 let answers = [];
 let testQuestions = [];
 
+// Options for Pure Procrastination Scale (PPS)
+const ppsOptions = [
+    { text: 'Nunca', value: 1 },
+    { text: 'Raramente', value: 2 },
+    { text: 'Às vezes', value: 3 },
+    { text: 'Frequentemente', value: 4 },
+    { text: 'Sempre', value: 5 }
+];
+
 // Questions Database
 const testsDatabase = {
+    'pps': {
+        title: 'Escala de Procrastinação Pura (PPS)',
+        category: 'Comportamental',
+        maxScore: 60,
+        loadingTitle: 'Analisando Padrão Comportamental...',
+        loadingSubtitle: 'Processando suas respostas sobre foco, tomada de decisão e consistência.',
+        methodologyTitle: 'Sobre a Escala de Procrastinação Pura (PPS)',
+        methodologyText: `
+            <p>A Escala de Procrastinação Pura (PPS) é um instrumento psicológico desenvolvido para medir a tendência geral de procrastinação comportamental em adultos. Criada pelo pesquisador canadense Piers Steel em 2010, a escala combina itens de medidas anteriores de procrastinação em um formato mais conciso e validado empiricamente. É amplamente utilizada em pesquisas sobre autorregulação, desempenho acadêmico e produtividade.</p>
+            <p class="mt-2">A escala avalia o domínio da procrastinação comportamental e decisional com base em 12 declarações autodeclaradas.</p>
+            <p class="mt-2">A pontuação final é obtida pela soma das respostas de todos os itens, variando de 12 a 60 pontos:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>12 a 24 pontos:</strong> Baixa Procrastinação (Executores consistentes).</li>
+                <li><strong>25 a 36 pontos:</strong> Procrastinação Moderada (Necessita de pequenos ajustes comportamentais).</li>
+                <li><strong>37 a 48 pontos:</strong> Procrastinação Elevada (Risco de baixa execução).</li>
+                <li><strong>49 a 60 pontos:</strong> Procrastinação Crônica (Alto risco de improdutividade estrutural).</li>
+            </ul>
+        `,
+        questions: [
+            { text: 'Eu atraso tarefas além do que seria razoável', options: ppsOptions },
+            { text: 'Eu deixo tarefas importantes para a última hora', options: ppsOptions },
+            { text: 'Eu começo tarefas tarde demais', options: ppsOptions },
+            { text: 'Eu não consigo começar tarefas quando deveria', options: ppsOptions },
+            { text: 'Eu frequentemente me arrependo de ter procrastinado', options: ppsOptions },
+            { text: 'Eu deixo tarefas importantes sem terminar', options: ppsOptions },
+            { text: 'Eu passo tempo demais pensando antes de agir', options: ppsOptions },
+            { text: 'Eu evito iniciar tarefas difíceis', options: ppsOptions },
+            { text: 'Eu adio decisões importantes', options: ppsOptions },
+            { text: 'Eu tenho dificuldade em manter consistência nas tarefas', options: ppsOptions },
+            { text: 'Eu começo tarefas, mas não consigo finalizá-las', options: ppsOptions },
+            { text: 'Eu troco tarefas importantes por atividades mais fáceis', options: ppsOptions }
+        ]
+    },
     'fadiga-adrenal': {
         title: 'Avaliação de Fadiga Adrenal',
         category: 'Hormonal',
@@ -127,6 +169,34 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'tg-hdl': {
+        title: 'Relação Triglicerídeos/HDL',
+        category: 'Cardiovascular',
+        maxScore: 6,
+        loadingTitle: 'Calculando Relação TG/HDL...',
+        loadingSubtitle: 'Dividindo os níveis de Triglicerídeos pelo HDL-C para analisar a sensibilidade à insulina.',
+        methodologyTitle: 'Sobre a Relação Triglicerídeos/HDL',
+        methodologyText: `
+            <p>A <strong>Relação Triglicerídeos/HDL (TG/HDL)</strong> é calculada dividindo a concentração de Triglicerídeos pelo colesterol HDL, ambos medidos em mg/dL: <strong>Triglicerídeos / HDL</strong>.</p>
+            <p class="mt-2">Esta relação é um dos marcadores indiretos mais valiosos na medicina funcional e cardiovascular. Ela correlaciona-se fortemente com a <strong>Resistência à Insulina</strong> (níveis elevados costumam preceder alterações de glicemia e hemoglobina glicada em anos) e com o <strong>Tamanho das Partículas de LDL (Padrão B)</strong>, sugerindo predomínio de LDL pequeno e denso, altamente inflamatório.</p>
+            <p class="mt-2">A classificação de referência funcional para a relação é:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Excelente / Ótimo (menor que 2.0):</strong> Baixo risco cardiovascular e boa sensibilidade insulínica (idealmente próximo a 1.0).</li>
+                <li><strong>Risco Moderado / Alerta (de 2.0 a 3.0):</strong> Sinais iniciais de resistência à insulina e presença de partículas de LDL menores.</li>
+                <li><strong>Alto Risco (maior que 3.0):</strong> Alta probabilidade de síndrome metabólica, resistência à insulina acentuada e risco cardiovascular aumentado.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os valores do seu painel lipídico:',
+                type: 'numeric',
+                inputs: [
+                    { label: 'Triglicerídeos (mg/dL)', id: 'triglycerides', placeholder: 'Ex: 120', min: 10, max: 1000 },
+                    { label: 'HDL-Colesterol (mg/dL)', id: 'hdl', placeholder: 'Ex: 50', min: 5, max: 150 }
+                ]
+            }
+        ]
     }
 };
 
@@ -225,6 +295,109 @@ const iapResults = [
             'Consulte um médico integrativo para avaliar marcadores vasculares avançados (como ApoB, PCR-ultrassensível e homocisteína).',
             'Adote uma estratégia nutricional de baixo índice glicêmico (como alimentação Low Carb ou de baixo índice glicêmico) para reduzir a trigliceridemia.',
             'Priorize a melhora da sensibilidade à insulina com atividade física regular e suporte nutricional direcionado.'
+        ]
+    }
+];
+
+// Results mapping for Pure Procrastination Scale (PPS)
+const ppsResults = [
+    {
+        min: 12,
+        max: 24,
+        status: 'Baixa Procrastinação',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Sua pontuação indica um excelente funcionamento das funções executivas do córtex pré-frontal, com alta capacidade de autorregulação e controle de impulsos. Seu comportamento é altamente alinhado com a Teoria da Motivação Temporal (TMT), onde a utilidade percebida das tarefas supera com consistência as tentações de gratificação imediata.',
+        recommendations: [
+            'Perfil: Executor Consistente com alta confiabilidade operacional.',
+            'Otimização Cognitiva: Continue utilizando o estabelecimento de metas difíceis, porém específicas (Metas SMART) para manter o engajamento dopaminérgico elevado.',
+            'Mitigação de Fadiga de Decisão: Proteja sua energia cognitiva automatizando decisões triviais na primeira metade do dia, reservando o córtex pré-frontal para tarefas complexas.',
+            'Intenções de Implementação: Para projetos de altíssima complexidade futuros, utilize o planejamento clássico "Se... Então" para prever e neutralizar potenciais obstáculos.'
+        ]
+    },
+    {
+        min: 25,
+        max: 36,
+        status: 'Procrastinação Moderada',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Seus resultados revelam uma vulnerabilidade transitória na autorregulação, caracterizada por oscilações entre o foco deliberado e a busca por alívio emocional imediato. Cientificamente, isso reflete o clássico sequestro temporário do córtex pré-frontal pelo sistema límbico diante de tarefas tediosas, estressantes ou ambíguas (procrastinação como mecanismo ineficaz de regulação emocional de curto prazo).',
+        recommendations: [
+            'Perfil: Necessita de ajustes comportamentais e controle ambiental.',
+            'Regulação Emocional Antecipada: Reconheça o desconforto inicial da tarefa como uma reação límbica natural. Faça 2 minutos de respiração diafragmática lenta para reduzir a reatividade da amígdala antes de começar.',
+            'Micro-passos de Entrada: Reduza a barreira de ativação inicial dividindo a tarefa em frações tão pequenas que a resistência emocional seja nula.',
+            'Controle de Estímulos: Reduza a sobrecarga atencional eliminando gatilhos visuais e notificações digitais de distração antes de iniciar blocos de foco.'
+        ]
+    },
+    {
+        min: 37,
+        max: 48,
+        status: 'Procrastinação Elevada',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Sua pontuação aponta para uma dificuldade acentuada e persistente na conversão de intenções em ações (lacuna intenção-comportamento). Há uma evitação ativa de tarefas complexas que geram ansiedade ou frustração. Do ponto de vista neurobiológico, isso indica uma fadiga crônica das funções executivas, onde o cérebro prioriza sistematicamente a homeostase emocional de curto prazo (alívio imediato) em detrimento dos benefícios futuros (desconto hiperbólico).',
+        recommendations: [
+            'Perfil: Risco de baixa execução e perdas operacionais.',
+            'Regra da Caixa de Foco (5 Minutos): Force-se a iniciar uma tarefa pendente com o acordo neurológico de poder parar após 5 minutos. Isso quebra a inércia cognitiva inicial em mais de 80% das tentativas.',
+            'Criação de Barreiras de Fricção: Aumente a distância física dos seus maiores distratores (ex: colocar o celular em outro cômodo). Dificultar o acesso imediato reduz a tomada de decisão impulsiva.',
+            'Ancoragem de Hábitos: Associe a tarefa evitada a um hábito diário já consolidado na sua rotina (ex: "Assim que terminar meu café da manhã, abrirei o documento X").'
+        ]
+    },
+    {
+        min: 49,
+        max: 60,
+        status: 'Procrastinação Crônica',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Os resultados indicam um padrão crônico de evitação com forte impacto limitante no seu cotidiano e sofrimento psicológico. Cientificamente, a procrastinação crônica não é um defeito de caráter ou falta de gestão de tempo, mas sim uma disfunção severa na regulação emocional e no processamento dopaminérgico. Este padrão costuma estar correlacionado com fadiga crônica (desregulação do cortisol), ansiedade e paralisia por análise.',
+        recommendations: [
+            'Perfil: Alto risco de improdutividade estrutural e sobrecarga mental.',
+            'Suporte Clínico e Diagnóstico: Recomenda-se realizar uma avaliação integrativa dos seus exames laboratoriais (ritmo de cortisol, hormônios tireoidianos e marcadores de inflamação subclínica) para tratar causas biológicas de fadiga mental.',
+            'Foco Único Absoluto (Single-tasking): Abandone listas de tarefas longas. Defina apenas UMA micro-entrega essencial para o dia e execute-a nas primeiras horas da manhã.',
+            'Autocompaixão Ativa: O perdão a si mesmo e a redução da culpa atenuam o estresse psicológico que alimenta novas evasões. Substitua a autocrítica punitiva por uma abordagem de resolução pragmática.'
+        ]
+    }
+];
+
+// Results mapping for Triglyceride/HDL Ratio
+const tgHdlResults = [
+    {
+        min: 0,
+        max: 1.99,
+        status: 'Excelente / Baixo Risco',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Sua relação Triglicerídeos/HDL está abaixo de 2.0, o que é considerado clinicamente excelente. Este valor aponta para uma ótima sensibilidade à insulina periférica e indica que suas partículas de LDL são predominantemente grandes e flutuantes, apresentando baixo potencial inflamatório e de aderência arterial.',
+        recommendations: [
+            'Mantenha seu padrão dietético atual com foco em comida de verdade e baixo teor de açúcares refinados.',
+            'Continue a prática de atividades físicas regulares de força e resistência (como musculação e aeróbicos) para sustentar a função otimizada do HDL.',
+            'Acompanhe este marcador anualmente junto aos seus exames laboratoriais de rotina.'
+        ]
+    },
+    {
+        min: 2.0,
+        max: 3.0,
+        status: 'Risco Moderado / Alerta',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua relação está entre 2.0 e 3.0. Isto representa uma faixa de alerta intermediária, sugerindo o início de uma resistência à insulina periférica e um desequilíbrio na depuração de triglicerídeos. Há uma probabilidade moderada de presença de partículas de LDL menores e mais propensas à oxidação.',
+        recommendations: [
+            'Reduza estrategicamente o consumo de carboidratos refinados, doces e bebidas açucaradas de alto índice glicêmico.',
+            'Otimize os níveis e a função de HDL adicionando gorduras saudáveis à dieta (como azeite de oliva e abacate) e aumentando a intensidade dos treinos.',
+            'Considere realizar exames complementares como glicose, insulina de jejum e hemoglobina glicada.'
+        ]
+    },
+    {
+        min: 3.01,
+        max: 999,
+        status: 'Alto Risco / Resistência à Insulina',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Sua relação está acima de 3.0. Este patamar é fortemente associado a uma resistência insulínica significativa, risco aumentado para síndrome metabólica e predomínio de partículas de LDL pequenas, densas e altamente aterogênicas (Padrão B). Este desequilíbrio metabólico merece atenção ativa e intervenções no estilo de vida.',
+        recommendations: [
+            'Consulte um profissional de saúde integrativo para avaliar o risco cardiovascular global e investigar síndrome metabólica.',
+            'Adote uma abordagem alimentar de baixo carboidrato (Low Carb ou Cetogênica limpa) para reduzir drasticamente a trigliceridemia.',
+            'Priorize a melhora da sinalização da insulina através de treinos resistidos direcionados (musculação) e suporte metabólico.'
         ]
     }
 ];
@@ -493,6 +666,10 @@ function finishTest() {
                 const tgMmol = tg / 88.57;
                 const hdlMmol = hdl / 38.67;
                 score = Math.log10(tgMmol / hdlMmol);
+            } else if (currentTest === 'tg-hdl') {
+                const tg = answers[0].triglycerides;
+                const hdl = answers[0].hdl;
+                score = tg / hdl;
             } else {
                 score = answers.reduce((acc, curr) => acc + curr.value, 0);
             }
@@ -519,6 +696,12 @@ function showResults(score) {
     if (currentTest === 'iap') {
         resultBand = iapResults.find(band => score >= band.min && score <= band.max);
         if (!resultBand) resultBand = iapResults[iapResults.length - 1];
+    } else if (currentTest === 'pps') {
+        resultBand = ppsResults.find(band => score >= band.min && score <= band.max);
+        if (!resultBand) resultBand = ppsResults[ppsResults.length - 1];
+    } else if (currentTest === 'tg-hdl') {
+        resultBand = tgHdlResults.find(band => score >= band.min && score <= band.max);
+        if (!resultBand) resultBand = tgHdlResults[tgHdlResults.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score <= band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -528,9 +711,9 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').textContent = testData.title;
 
-    const displayScore = (currentTest === 'iap') ? score.toFixed(2) : score;
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
-    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : 'PONTOS';
+    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -575,6 +758,11 @@ function showResults(score) {
             targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
         }
         percentage = targetAngle / 180;
+    } else if (currentTest === 'pps') {
+        percentage = (score - 12) / (60 - 12);
+    } else if (currentTest === 'tg-hdl') {
+        const clamped = Math.min(6.0, score);
+        percentage = clamped / 6.0;
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
         percentage = score / maxScore;
