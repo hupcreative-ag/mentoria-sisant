@@ -434,6 +434,37 @@
                 </div>
             </a>
 
+            <!-- Mentoria Interactive Banner -->
+            <a href="../" class="mentoria-banner-link relative block overflow-hidden rounded-2xl bg-gradient-to-r from-[#2167b0] via-[#957854] to-[#2167b0] p-[1.5px] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 mt-4 group">
+                <!-- Inner card with glass effect -->
+                <div class="bg-[#1a273c]/95 rounded-[14px] p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden backdrop-blur-sm">
+                    
+                    <!-- Pixel Canvas for the shiny interactive hover effect -->
+                    <pixel-canvas data-gap="5" data-speed="35" data-colors="#2167b0,#957854,#ffffff" data-variant="default" class="absolute inset-0 pointer-events-none w-full h-full"></pixel-canvas>
+                    
+                    <!-- Content Left -->
+                    <div class="flex items-center gap-4 min-w-0 z-10 w-full md:w-auto">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border border-white/10 shadow-md">
+                            <img src="../assets/images/mentoria.jpg" alt="Mentoria em Análise de Exames" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="text-left min-w-0">
+                            <h4 class="text-[10px] sm:text-xs font-bold text-beige uppercase tracking-wider mb-1">Mentoria Dr. Gustavo Sisant</h4>
+                            <h3 class="text-xs sm:text-sm md:text-base font-bold text-white leading-snug">
+                                Domine a análise de exames laboratoriais com a abordagem integrativa.
+                            </h3>
+                            <p class="text-[11px] sm:text-xs text-gray-400 mt-1 leading-relaxed">
+                                Clique aqui e refine seu raciocínio clínico para interpretar exames e prescrever o tratamento adequado.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Button Right -->
+                    <div class="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-white bg-white/10 py-2 px-4 rounded-lg border border-white/10 group-hover:bg-white/20 transition-all shrink-0 z-10 w-full md:w-auto justify-center">
+                        Conhecer Mentoria <i class="ph-bold ph-caret-right text-xs"></i>
+                    </div>
+                </div>
+            </a>
+
             <!-- "Faça outro teste" Button (Visible only on results screen) -->
             <div id="results-back-btn-container" class="hidden mt-6 text-center opacity-0">
                 <button onclick="goToHub()" class="bg-white border border-gray-200 text-gray-600 hover:text-navy font-bold py-4 px-8 rounded-xl text-sm transition-all hover:bg-gray-50 shadow-sm flex items-center justify-center gap-2 mx-auto w-full max-w-xs animate-pulse-btn">
@@ -476,6 +507,8 @@
         </div>
     </footer>
 
+    <!-- Pixel Canvas Effect Script -->
+    <script type="module" src="/calculadoras/pixel-canvas.js"></script>
     <!-- Wizard Core Logic Script -->
     <script type="module" src="/calculadoras/calculadora.js"></script>
 </body>
