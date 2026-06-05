@@ -197,6 +197,37 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'apob-apoa1': {
+        title: 'Relação Apo B / Apo A1',
+        category: 'Cardiovascular',
+        maxScore: 2.0,
+        loadingTitle: 'Calculando Relação Apo B / Apo A1...',
+        loadingSubtitle: 'Dividindo os níveis de Apolipoproteína B pela Apolipoproteína A1 para avaliar o risco aterogênico.',
+        methodologyTitle: 'Sobre a Relação Apo B / Apo A1',
+        methodologyText: `
+            <p>A <strong>Relação Apo B / Apo A1</strong> é calculada dividindo a concentração de Apolipoproteína B pela de Apolipoproteína A1: <strong>Apo B / Apo A1</strong>. Ambos os marcadores são medidos nas mesmas unidades (geralmente mg/dL ou g/L).</p>
+            <p class="mt-2">A <strong>Apolipoproteína B (Apo B)</strong> está presente em todas as lipoproteínas potencialmente aterogênicas (LDL, VLDL, IDL), fornecendo uma estimativa do número total de partículas que podem se acumular nas paredes arteriais. Já a <strong>Apolipoproteína A1 (Apo A1)</strong> é a principal proteína do HDL, responsável pelo transporte reverso do colesterol (retirando o excesso de colesterol dos tecidos e levando ao fígado).</p>
+            <p class="mt-2">Esta relação reflete o balanço exato entre as forças que promovem o depósito de placas de gordura (aterogênese) e as que protegem o sistema cardiovascular. Por medir o número de partículas e não apenas a quantidade de colesterol transportada (como faz o exame tradicional de LDL-C), esta relação é um preditor muito mais robusto e precoce do risco de infarto, AVC e complicações vasculares.</p>
+            <p class="mt-2">Classificação funcional de risco atualizada:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Excelente (menor que 0,50):</strong> Excelente equilíbrio metabólico e cardiovascular. Risco mínimo de deposição de placas.</li>
+                <li><strong>Baixo Risco (de 0,50 a 0,70):</strong> Perfil de lipoproteínas equilibrado e boa proteção vascular.</li>
+                <li><strong>Risco Intermediário (de 0,70 a 0,90):</strong> Nível moderado de alerta, indicando necessidade de otimização de hábitos e dieta.</li>
+                <li><strong>Alto Risco (maior que 0,90):</strong> Predomínio de partículas aterogênicas sobre as protetoras. Risco cardiovascular aumentado.</li>
+                <li><strong>Muito Alto Risco (maior que 1,00):</strong> Desequilíbrio lipídico severo e alta suscetibilidade a eventos cardiovasculares. Requer intervenção clínica ativa.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os valores das suas apolipoproteínas:',
+                type: 'numeric',
+                inputs: [
+                    { label: 'Apolipoproteína B (Apo B)', id: 'apob', placeholder: 'Ex: 85', min: 10, max: 300 },
+                    { label: 'Apolipoproteína A1 (Apo A1)', id: 'apoa1', placeholder: 'Ex: 130', min: 10, max: 300 }
+                ]
+            }
+        ]
     }
 };
 
@@ -398,6 +429,75 @@ const tgHdlResults = [
             'Consulte um profissional de saúde integrativo para avaliar o risco cardiovascular global e investigar síndrome metabólica.',
             'Adote uma abordagem alimentar de baixo carboidrato (Low Carb ou Cetogênica limpa) para reduzir drasticamente a trigliceridemia.',
             'Priorize a melhora da sinalização da insulina através de treinos resistidos direcionados (musculação) e suporte metabólico.'
+        ]
+    }
+];
+
+// Results mapping for Apo B / Apo A1 Ratio
+const apobApoa1Results = [
+    {
+        min: 0,
+        max: 0.499,
+        status: 'Excelente',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Sua relação Apo B / Apo A1 está abaixo de 0,50, o que é classificado como Excelente. Isso indica uma proporção altamente favorável de partículas protetoras (HDL/Apo A1) em relação às partículas aterogênicas (Apo B). Suas artérias possuem excelente proteção contra o acúmulo de placas de gordura.',
+        recommendations: [
+            'Mantenha seu estilo de vida ativo e dieta equilibrada para preservar essa excelente proteção cardiovascular.',
+            'Continue priorizando fontes de gorduras saudáveis (como azeite de oliva extra virgem e abacate) e atividade física regular.',
+            'Refaça seus exames preventivos anualmente para monitorar a estabilidade metabólica.'
+        ]
+    },
+    {
+        min: 0.50,
+        max: 0.70,
+        status: 'Baixo Risco',
+        color: '#3b82f6', // blue-500
+        gaugeClass: 'border-t-blue-500 border-r-blue-500',
+        interpretation: 'Sua relação Apo B / Apo A1 está entre 0,50 e 0,70, indicando Baixo Risco cardiovascular. Sua depuração de colesterol e a quantidade de partículas aterogênicas estão sob bom controle biológico. Seu perfil lipídico apresenta boa resiliência protetora.',
+        recommendations: [
+            'Mantenha uma rotina consistente de atividade física, combinando treinos de força e cardio.',
+            'Foque em uma alimentação com baixo teor de açúcares simples e rica em fibras e antioxidantes.',
+            'Acompanhe este marcador regularmente em suas rotinas preventivas.'
+        ]
+    },
+    {
+        min: 0.701,
+        max: 0.90,
+        status: 'Risco Intermediário',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua relação Apo B / Apo A1 encontra-se entre 0,70 e 0,90, o que representa um Risco Intermediário. Isso aponta para uma elevação moderada no número de partículas aterogênicas em comparação com as protetoras. É um sinal de alerta de que ajustes de estilo de vida são recomendados para evitar o avanço da aterogênese.',
+        recommendations: [
+            'Reduza carboidratos de alto índice glicêmico e alimentos ultraprocessados para otimizar os níveis de triglicerídeos e VLDL/LDL.',
+            'Aumente a prática de atividades físicas aeróbicas de intensidade moderada a alta para estimular a função do HDL e Apo A1.',
+            'Avalie marcadores adicionais de inflamação vascular, como a PCR-ultrassensível (PCR-us).'
+        ]
+    },
+    {
+        min: 0.901,
+        max: 1.00,
+        status: 'Alto Risco',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Sua relação Apo B / Apo A1 está acima de 0,90, indicando Alto Risco cardiovascular. O número de partículas aterogênicas carregando Apo B está significativamente elevado em relação às partículas protetoras. Esse padrão favorece o acúmulo e oxidação de lipoproteínas na parede das artérias.',
+        recommendations: [
+            'Consulte um profissional de saúde integrativo para realizar uma investigação cardiovascular abrangente e avaliar a espessura médio-intimal carotídea.',
+            'Adote estratégias nutricionais mais rígidas, como uma dieta com restrição de carboidratos refinados (Low Carb) e rica em antioxidantes.',
+            'Trabalhe na otimização de outros fatores de risco relacionados, como gordura visceral e estresse oxidativo.'
+        ]
+    },
+    {
+        min: 1.001,
+        max: 999,
+        status: 'Muito Alto Risco',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Sua relação Apo B / Apo A1 é superior a 1,00, o que configura um Muito Alto Risco cardiovascular. Existe um grave desequilíbrio na proporção de partículas aterogênicas no sangue. A taxa de deposição de gordura nas paredes vasculares supera significativamente a taxa de remoção protetora, requerendo atenção médica e modulação terapêutica ativa.',
+        recommendations: [
+            'Consulte seu médico especialista para uma análise diagnóstica completa e estruturação de plano terapêutico.',
+            'Implemente uma estratégia focada na reversão da resistência à insulina e inflamação sistêmica (fatores que impulsionam o perfil Apo B alto).',
+            'Considere o suporte de nutracêuticos específicos ou intervenções sob orientação médica direta para proteger o endotélio vascular.'
         ]
     }
 ];
@@ -670,6 +770,10 @@ function finishTest() {
                 const tg = answers[0].triglycerides;
                 const hdl = answers[0].hdl;
                 score = tg / hdl;
+            } else if (currentTest === 'apob-apoa1') {
+                const apob = answers[0].apob;
+                const apoa1 = answers[0].apoa1;
+                score = apob / apoa1;
             } else {
                 score = answers.reduce((acc, curr) => acc + curr.value, 0);
             }
@@ -702,6 +806,9 @@ function showResults(score) {
     } else if (currentTest === 'tg-hdl') {
         resultBand = tgHdlResults.find(band => score >= band.min && score <= band.max);
         if (!resultBand) resultBand = tgHdlResults[tgHdlResults.length - 1];
+    } else if (currentTest === 'apob-apoa1') {
+        resultBand = apobApoa1Results.find(band => score >= band.min && score <= band.max);
+        if (!resultBand) resultBand = apobApoa1Results[apobApoa1Results.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score <= band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -711,9 +818,9 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').textContent = testData.title;
 
-    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl') ? score.toFixed(2) : score;
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
-    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl') ? 'RELAÇÃO' : 'PONTOS';
+    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -763,6 +870,11 @@ function showResults(score) {
     } else if (currentTest === 'tg-hdl') {
         const clamped = Math.min(6.0, score);
         percentage = clamped / 6.0;
+    } else if (currentTest === 'apob-apoa1') {
+        const minVal = 0.3;
+        const maxVal = 1.2;
+        const clamped = Math.max(minVal, Math.min(maxVal, score));
+        percentage = (clamped - minVal) / (maxVal - minVal);
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
         percentage = score / maxScore;
@@ -799,7 +911,7 @@ function showResults(score) {
             results.classList.remove('hidden');
             
             // Set initial score display
-            document.getElementById('score-display').textContent = (currentTest === 'iap') ? '0.00' : '0';
+            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? '0.00' : '0';
             
             gsap.fromTo('#results-screen',
                 { opacity: 0, y: 20 },
@@ -818,14 +930,14 @@ function showResults(score) {
 
                         // Count up score display
                         const scoreObj = { val: 0 };
-                        const isIAP = currentTest === 'iap';
+                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1';
                         
                         gsap.to(scoreObj, {
                             val: score,
                             duration: 1.2,
                             ease: "power2.out",
                             onUpdate: () => {
-                                document.getElementById('score-display').textContent = isIAP ? scoreObj.val.toFixed(2) : Math.round(scoreObj.val);
+                                document.getElementById('score-display').textContent = isFloat ? scoreObj.val.toFixed(2) : Math.round(scoreObj.val);
                             }
                         });
 
