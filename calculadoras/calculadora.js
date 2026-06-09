@@ -847,52 +847,8 @@ function finishTest() {
         calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
     }
 
-    // Check if user is registered
-    const isRegistered = localStorage.getItem('sisant_user_registered') === 'true';
-
-    if (isRegistered) {
-        proceedToResults();
-    } else {
-        // Go to registration screen
-        gsap.to('#test-wizard', {
-            opacity: 0,
-            y: -20,
-            duration: 0.3,
-            onComplete: () => {
-                document.getElementById('test-wizard').classList.add('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-                
-                const regScreen = document.getElementById('registration-screen');
-                regScreen.classList.remove('hidden');
-                
-                // Pre-fill form if data is partially available
-                const savedDataStr = localStorage.getItem('sisant_user_data');
-                if (savedDataStr) {
-                    try {
-                        const savedData = JSON.parse(savedDataStr);
-                        if (document.getElementById('reg-name')) document.getElementById('reg-name').value = savedData.nome || '';
-                        if (document.getElementById('reg-email')) document.getElementById('reg-email').value = savedData.email || '';
-                        if (document.getElementById('reg-phone')) document.getElementById('reg-phone').value = savedData.telefone || '';
-                        if (document.getElementById('reg-age')) document.getElementById('reg-age').value = savedData.idade || '';
-                        if (document.getElementById('reg-city')) document.getElementById('reg-city').value = savedData.cidade || '';
-                        if (savedData.sexo) {
-                            const sexRadios = document.getElementsByName('reg-sex');
-                            sexRadios.forEach(radio => {
-                                if (radio.value === savedData.sexo) radio.checked = true;
-                            });
-                        }
-                    } catch(e) {
-                        console.error('Erro ao recuperar dados salvos:', e);
-                    }
-                }
-                
-                gsap.fromTo('#registration-screen', 
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.4 }
-                );
-            }
-        });
-    }
+    // Proceed directly to results, bypassing registration
+    proceedToResults();
 }
 
 // Proceed to results loading and display
