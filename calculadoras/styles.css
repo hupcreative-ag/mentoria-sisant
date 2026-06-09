@@ -182,3 +182,43 @@ body {
 .animate-pulse-btn {
     animation: buttonPulse 2.5s infinite ease-in-out;
 }
+
+/* Custom radio pills for biological sex */
+.custom-radio-pill {
+    display: block;
+    cursor: pointer;
+    text-align: center;
+}
+
+.custom-radio-pill span {
+    display: block;
+    padding: 0.75rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.custom-radio-pill input:checked + span {
+    border-color: #2167b0;
+    background-color: #e8f1fa;
+    color: #1a273c;
+    font-weight: 600;
+}
+
+.custom-radio-pill:hover span {
+    border-color: #cbd5e1;
+}
+
+/* Style input error borders and helper messages */
+.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+
+.input-error:focus {
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+}

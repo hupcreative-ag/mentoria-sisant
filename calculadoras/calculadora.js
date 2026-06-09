@@ -1,10 +1,14 @@
 // main.js - Core Logic for Health Calculators & Test Wizard
 
+// Google Sheets Web App URL (Insira sua URL do script do Google Apps Script aqui)
+const GOOGLE_SHEET_URL = "";
+
 // Global State
 let currentTest = null;
 let currentStep = 0;
 let answers = [];
 let testQuestions = [];
+let calculatedScore = null;
 
 // Options for Pure Procrastination Scale (PPS)
 const ppsOptions = [
@@ -154,9 +158,11 @@ const testsDatabase = {
             <p class="mt-2">Diferente de analisar o colesterol isoladamente, o IAP reflete o diâmetro das partículas de lipoproteínas. Valores elevados de IAP indicam que as partículas de LDL-Colesterol são predominantemente pequenas, densas e altamente propensas à oxidação, o que acelera o acúmulo de placas de gordura (aterogênese) nas artérias.</p>
             <p class="mt-2">A classificação de risco cardiovascular é dividida em:</p>
             <ul class="list-disc pl-5 mt-2 space-y-1">
-                <li><strong>Baixo Risco (menor que 0.11):</strong> Predomínio de partículas de LDL maiores e menos aterogênicas.</li>
-                <li><strong>Risco Moderado (entre 0.11 e 0.24):</strong> Perfil intermediário que requer atenção preventiva e ajustes de hábitos.</li>
-                <li><strong>Alto Risco (maior que 0.24):</strong> Forte associação com risco de infarto, aterosclerose e resistência à insulina.</li>
+                <li><strong>Excelente / Baixo Risco (menor que 0,10):</strong> Predomínio de partículas de LDL maiores e saudáveis.</li>
+                <li><strong>Risco Moderado Leve (de 0,10 a 0,28):</strong> Perfil inicial com tendência a partículas de LDL intermediárias.</li>
+                <li><strong>Risco Moderado (de 0,28 a 0,33):</strong> Nível intermediário de alerta, requerendo ajustes preventivos de hábitos.</li>
+                <li><strong>Risco Moderado Alto (de 0,33 a 0,38):</strong> Tendência acentuada a partículas de LDL menores e densas.</li>
+                <li><strong>Alto Risco (maior que 0,38):</strong> Forte associação com risco cardiovascular, aterosclerose e resistência à insulina.</li>
             </ul>
         `,
         questions: [
@@ -291,11 +297,11 @@ const adrenalResults = [
 const iapResults = [
     {
         min: -999,
-        max: 0.109,
-        status: 'Baixo Risco Cardiovascular',
+        max: 0.10,
+        status: 'Excelente / Baixo Risco',
         color: '#22c55e', // green-500
         gaugeClass: 'border-t-green-500 border-r-green-500',
-        interpretation: 'Seu Índice Aterogênico do Plasma (IAP) está na faixa de baixo risco. Isso indica uma proporção saudável e equilibrada entre Triglicerídeos e HDL-C, sugerindo que suas partículas de LDL-Colesterol são predominantemente grandes e flutuantes, apresentando baixo potencial inflamatório e de aderência nas artérias.',
+        interpretation: 'Seu Índice Aterogênico do Plasma (IAP) está na faixa ideal (baixo risco). Isso indica uma proporção saudável e equilibrada entre Triglicerídeos e HDL-C, sugerindo que suas partículas de LDL-Colesterol são predominantemente grandes e flutuantes, apresentando baixo potencial inflamatório e de aderência nas artérias.',
         recommendations: [
             'Mantenha uma dieta limpa, rica em gorduras monoinsaturadas (azeite de oliva extra virgem, abacate, sementes).',
             'Continue praticando atividade física regular para dar suporte metabólico à função do HDL.',
@@ -303,12 +309,25 @@ const iapResults = [
         ]
     },
     {
-        min: 0.11,
-        max: 0.24,
-        status: 'Risco Cardiovascular Moderado',
+        min: 0.10,
+        max: 0.28,
+        status: 'Risco Moderado Leve',
         color: '#eab308', // yellow-500
         gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
-        interpretation: 'Seu IAP está em uma faixa intermediária de alerta. Isto indica um desequilíbrio metabólico inicial com presença moderada de partículas de LDL menores e mais densas (mais propensas à oxidação). É um excelente momento para intervenções preventivas focadas no estilo de vida.',
+        interpretation: 'Seu IAP aponta para um risco moderado leve. Embora ainda esteja próximo dos limites saudáveis, sugere uma tendência inicial de aumento na proporção de partículas de LDL ligeiramente menores e mais densas, o que merece atenção preventiva precoce.',
+        recommendations: [
+            'Reduza levemente o consumo de carboidratos refinados e açúcares simples para controlar a trigliceridemia.',
+            'Aumente a prática de atividades físicas aeróbicas de intensidade moderada para favorecer o metabolismo lipídico.',
+            'Monitore os níveis de Triglicerídeos e HDL a cada 6 meses para avaliar a evolução.'
+        ]
+    },
+    {
+        min: 0.28,
+        max: 0.33,
+        status: 'Risco Moderado',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Seu IAP está em uma faixa de risco moderado. Isto indica um desequilíbrio metabólico intermediário com presença moderada de partículas de LDL menores e mais densas (mais propensas à oxidação). É um excelente momento para intervenções preventivas estruturadas no estilo de vida.',
         recommendations: [
             'Reduza o consumo de açúcares refinados, farinhas e bebidas açucaradas para diminuir os Triglicerídeos.',
             'Incremente exercícios físicos de resistência e treinos aeróbicos (cardio) para otimizar os níveis e a qualidade do HDL.',
@@ -316,12 +335,25 @@ const iapResults = [
         ]
     },
     {
-        min: 0.241,
+        min: 0.33,
+        max: 0.38,
+        status: 'Risco Moderado Alto',
+        color: '#f43f5e', // rose-500 (pink-red)
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Seu IAP está classificado como risco moderado alto. Há uma tendência acentuada de predomínio de partículas de LDL pequenas, densas e oxidadas, sinalizando um ambiente favorável à formação de placas arteriais (aterogênese) e possíveis sinais de resistência insulínica.',
+        recommendations: [
+            'Restrinja carboidratos de alto índice glicêmico e industrializados, priorizando uma alimentação de base integrativa.',
+            'Pratique treinos de força (musculação) associados a estímulos cardiovasculares para melhorar a flexibilidade metabólica.',
+            'Investigue marcadores avançados como insulina de jejum, hemoglobina glicada e PCR-ultrassensível.'
+        ]
+    },
+    {
+        min: 0.38,
         max: 999,
-        status: 'Alto Risco Cardiovascular',
+        status: 'Alto Risco',
         color: '#ef4444', // red-500
         gaugeClass: 'border-t-red-500 border-r-red-500',
-        interpretation: 'Seu IAP está elevado. Este padrão tem forte associação clínica com a presença de partículas de LDL pequenas e densas, que penetram facilmente na parede das artérias e causam aterogênese. É um forte sinalizador de resistência insulínica e disfunção metabólica.',
+        interpretation: 'Seu IAP está elevado (alto risco). Este padrão tem forte associação clínica com a presença de partículas de LDL pequenas e densas, que penetram facilmente na parede das artérias e causam aterogênese. É um forte sinalizador de resistência insulínica acentuada e disfunção metabólica.',
         recommendations: [
             'Consulte um médico integrativo para avaliar marcadores vasculares avançados (como ApoB, PCR-ultrassensível e homocisteína).',
             'Adote uma estratégia nutricional de baixo índice glicêmico (como alimentação Low Carb ou de baixo índice glicêmico) para reduzir a trigliceridemia.',
@@ -733,18 +765,90 @@ function prevStep() {
     }
 }
 
-// Finish the test: show loader then display results
+// Finish the test: show loader or registration then display results
 function finishTest() {
     // Show final progress
     document.getElementById('progress-bar').style.width = '100%';
 
-    // Animate transition to loading screen
-    gsap.to('#test-wizard', {
+    // Calculate results
+    if (currentTest === 'iap') {
+        const tg = answers[0].triglycerides;
+        const hdl = answers[0].hdl;
+        const tgMmol = tg / 88.57;
+        const hdlMmol = hdl / 38.67;
+        calculatedScore = Math.log10(tgMmol / hdlMmol);
+    } else if (currentTest === 'tg-hdl') {
+        const tg = answers[0].triglycerides;
+        const hdl = answers[0].hdl;
+        calculatedScore = tg / hdl;
+    } else if (currentTest === 'apob-apoa1') {
+        const apob = answers[0].apob;
+        const apoa1 = answers[0].apoa1;
+        calculatedScore = apob / apoa1;
+    } else {
+        calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
+    }
+
+    // Check if user is registered
+    const isRegistered = localStorage.getItem('sisant_user_registered') === 'true';
+
+    if (isRegistered) {
+        proceedToResults();
+    } else {
+        // Go to registration screen
+        gsap.to('#test-wizard', {
+            opacity: 0,
+            y: -20,
+            duration: 0.3,
+            onComplete: () => {
+                document.getElementById('test-wizard').classList.add('hidden');
+                
+                const regScreen = document.getElementById('registration-screen');
+                regScreen.classList.remove('hidden');
+                
+                // Pre-fill form if data is partially available
+                const savedDataStr = localStorage.getItem('sisant_user_data');
+                if (savedDataStr) {
+                    try {
+                        const savedData = JSON.parse(savedDataStr);
+                        if (document.getElementById('reg-name')) document.getElementById('reg-name').value = savedData.nome || '';
+                        if (document.getElementById('reg-email')) document.getElementById('reg-email').value = savedData.email || '';
+                        if (document.getElementById('reg-phone')) document.getElementById('reg-phone').value = savedData.telefone || '';
+                        if (document.getElementById('reg-age')) document.getElementById('reg-age').value = savedData.idade || '';
+                        if (document.getElementById('reg-city')) document.getElementById('reg-city').value = savedData.cidade || '';
+                        if (savedData.sexo) {
+                            const sexRadios = document.getElementsByName('reg-sex');
+                            sexRadios.forEach(radio => {
+                                if (radio.value === savedData.sexo) radio.checked = true;
+                            });
+                        }
+                    } catch(e) {
+                        console.error('Erro ao recuperar dados salvos:', e);
+                    }
+                }
+                
+                gsap.fromTo('#registration-screen', 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.4 }
+                );
+            }
+        });
+    }
+}
+
+// Proceed to results loading and display
+function proceedToResults() {
+    const testWizard = document.getElementById('test-wizard');
+    const regScreen = document.getElementById('registration-screen');
+    const screenToHide = !testWizard.classList.contains('hidden') ? '#test-wizard' : '#registration-screen';
+
+    gsap.to(screenToHide, {
         opacity: 0,
         y: -20,
         duration: 0.3,
         onComplete: () => {
-            document.getElementById('test-wizard').classList.add('hidden');
+            testWizard.classList.add('hidden');
+            regScreen.classList.add('hidden');
             
             const testData = testsDatabase[currentTest];
             document.getElementById('loading-title').textContent = testData.loadingTitle || 'Processando Perfil Biológico...';
@@ -757,31 +861,237 @@ function finishTest() {
                 { opacity: 0 },
                 { opacity: 1, duration: 0.3 }
             );
-
-            // Calculate results during loading delay (simulate processing)
-            let score;
-            if (currentTest === 'iap') {
-                const tg = answers[0].triglycerides;
-                const hdl = answers[0].hdl;
-                const tgMmol = tg / 88.57;
-                const hdlMmol = hdl / 38.67;
-                score = Math.log10(tgMmol / hdlMmol);
-            } else if (currentTest === 'tg-hdl') {
-                const tg = answers[0].triglycerides;
-                const hdl = answers[0].hdl;
-                score = tg / hdl;
-            } else if (currentTest === 'apob-apoa1') {
-                const apob = answers[0].apob;
-                const apoa1 = answers[0].apoa1;
-                score = apob / apoa1;
-            } else {
-                score = answers.reduce((acc, curr) => acc + curr.value, 0);
-            }
             
             setTimeout(() => {
-                showResults(score);
-            }, 1800); // 1.8s delay for professional medical-science feel
+                showResults(calculatedScore);
+            }, 1800);
         }
+    });
+}
+
+// Format phone inputs
+function formatPhone(value) {
+    if (!value) return value;
+    const phone = value.replace(/\D/g, '');
+    if (phone.length <= 10) {
+        return phone.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    }
+    return phone.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+}
+
+// Handle registration submission
+function handleRegistrationSubmit(event) {
+    event.preventDefault();
+
+    const nome = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const phoneEl = document.getElementById('reg-phone');
+    const telefone = phoneEl ? phoneEl.value.trim() : '';
+    const idade = document.getElementById('reg-age').value.trim();
+    const cidade = document.getElementById('reg-city').value.trim();
+    
+    let sexo = '';
+    const sexRadios = document.getElementsByName('reg-sex');
+    sexRadios.forEach(radio => {
+        if (radio.checked) sexo = radio.value;
+    });
+
+    let hasError = false;
+    
+    // Name validation (at least 2 words)
+    const nameParts = nome.split(/\s+/);
+    const errorName = document.getElementById('error-reg-name');
+    if (nameParts.length < 2 || nameParts[1].length < 1) {
+        document.getElementById('reg-name').classList.add('input-error');
+        if (errorName) {
+            errorName.textContent = 'Por favor, insira seu nome completo.';
+            errorName.classList.remove('hidden');
+        }
+        hasError = true;
+    } else {
+        document.getElementById('reg-name').classList.remove('input-error');
+        if (errorName) errorName.classList.add('hidden');
+    }
+
+    // Phone validation (min 10 digits)
+    const rawPhone = telefone.replace(/\D/g, '');
+    const errorPhone = document.getElementById('error-reg-phone');
+    if (rawPhone.length < 10) {
+        document.getElementById('reg-phone').classList.add('input-error');
+        if (errorPhone) {
+            errorPhone.textContent = 'Insira um telefone válido com DDD.';
+            errorPhone.classList.remove('hidden');
+        }
+        hasError = true;
+    } else {
+        document.getElementById('reg-phone').classList.remove('input-error');
+        if (errorPhone) errorPhone.classList.add('hidden');
+    }
+
+    if (hasError) return;
+
+    // Save to LocalStorage
+    const userData = { nome, email, telefone, idade, sexo, cidade };
+    localStorage.setItem('sisant_user_data', JSON.stringify(userData));
+    localStorage.setItem('sisant_user_registered', 'true');
+    localStorage.setItem('sisant_user_email', email);
+
+    // Show loading on submit button
+    const submitBtn = document.getElementById('reg-submit-btn');
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+        <div class="loader-circle w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin inline-block mr-2 align-middle"></div>
+        <span>Salvando dados...</span>
+    `;
+
+    const testTitle = testsDatabase[currentTest]?.title || currentTest;
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') 
+        ? calculatedScore.toFixed(2) 
+        : calculatedScore;
+    
+    const payload = { nome, email, telefone, idade, sexo, cidade, teste: testTitle, resultado: formattedScore };
+
+    sendLeadToGoogleSheets(payload, () => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+        proceedToResults();
+    });
+}
+
+// Handle login submission
+function handleLoginSubmit(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('login-email').value.trim();
+    const errorEmail = document.getElementById('error-login-email');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        document.getElementById('login-email').classList.add('input-error');
+        if (errorEmail) {
+            errorEmail.textContent = 'Por favor, insira um e-mail válido.';
+            errorEmail.classList.remove('hidden');
+        }
+        return;
+    } else {
+        document.getElementById('login-email').classList.remove('input-error');
+        if (errorEmail) errorEmail.classList.add('hidden');
+    }
+
+    localStorage.setItem('sisant_user_registered', 'true');
+    localStorage.setItem('sisant_user_email', email);
+
+    const submitBtn = document.getElementById('login-submit-btn');
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+        <div class="loader-circle w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin inline-block mr-2 align-middle"></div>
+        <span>Acessando...</span>
+    `;
+
+    let nome = 'Usuário Retornante';
+    let telefone = '-';
+    let idade = '-';
+    let sexo = '-';
+    let cidade = '-';
+
+    const savedDataStr = localStorage.getItem('sisant_user_data');
+    if (savedDataStr) {
+        try {
+            const savedData = JSON.parse(savedDataStr);
+            if (savedData.email === email) {
+                nome = savedData.nome || nome;
+                telefone = savedData.telefone || telefone;
+                idade = savedData.idade || idade;
+                sexo = savedData.sexo || sexo;
+                cidade = savedData.cidade || cidade;
+            }
+        } catch(e) {}
+    }
+
+    const testTitle = testsDatabase[currentTest]?.title || currentTest;
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') 
+        ? calculatedScore.toFixed(2) 
+        : calculatedScore;
+
+    const payload = { nome, email, telefone, idade, sexo, cidade, teste: testTitle, resultado: formattedScore };
+
+    sendLeadToGoogleSheets(payload, () => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+        proceedToResults();
+    });
+}
+
+// Toggle between registration and login forms
+function toggleRegMode(mode) {
+    const regContainer = document.getElementById('reg-mode-container');
+    const loginContainer = document.getElementById('login-mode-container');
+
+    if (mode === 'login') {
+        gsap.to(regContainer, {
+            opacity: 0,
+            y: -10,
+            duration: 0.2,
+            onComplete: () => {
+                regContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+                gsap.fromTo(loginContainer, 
+                    { opacity: 0, y: 10 },
+                    { opacity: 1, y: 0, duration: 0.2 }
+                );
+            }
+        });
+    } else {
+        gsap.to(loginContainer, {
+            opacity: 0,
+            y: -10,
+            duration: 0.2,
+            onComplete: () => {
+                loginContainer.classList.add('hidden');
+                regContainer.classList.remove('hidden');
+                gsap.fromTo(regContainer, 
+                    { opacity: 0, y: 10 },
+                    { opacity: 1, y: 0, duration: 0.2 }
+                );
+            }
+        });
+    }
+}
+
+// Send Lead Data to Google Sheets Web App
+function sendLeadToGoogleSheets(payload, callback) {
+    if (!GOOGLE_SHEET_URL) {
+        console.warn('GOOGLE_SHEET_URL não configurada. Salvando localmente.');
+        if (callback) callback();
+        return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+    fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+    })
+    .then(response => {
+        clearTimeout(timeoutId);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Lead salvo com sucesso no Google Sheets:', data);
+        if (callback) callback();
+    })
+    .catch(error => {
+        clearTimeout(timeoutId);
+        console.error('Erro ao salvar no Google Sheets:', error);
+        if (callback) callback();
     });
 }
 
@@ -798,7 +1108,7 @@ function showResults(score) {
     // Find correct result band
     let resultBand;
     if (currentTest === 'iap') {
-        resultBand = iapResults.find(band => score >= band.min && score <= band.max);
+        resultBand = iapResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = iapResults[iapResults.length - 1];
     } else if (currentTest === 'pps') {
         resultBand = ppsResults.find(band => score >= band.min && score <= band.max);
@@ -846,23 +1156,33 @@ function showResults(score) {
     let percentage;
     if (currentTest === 'iap') {
         let targetAngle;
-        if (score <= 0.109) {
-            // Map [-0.3, 0.109] to [0, 60] degrees
+        if (score < 0.10) {
+            // Map [-0.3, 0.10] to [0, 36] degrees
             const minS = -0.3;
-            const maxS = 0.109;
+            const maxS = 0.10;
             const clamped = Math.max(minS, score);
-            targetAngle = ((clamped - minS) / (maxS - minS)) * 60;
-        } else if (score <= 0.24) {
-            // Map [0.11, 0.24] to [60, 120] degrees
-            const minS = 0.11;
-            const maxS = 0.24;
-            targetAngle = 60 + ((score - minS) / (maxS - minS)) * 60;
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.28) {
+            // Map [0.10, 0.28] to [36, 72] degrees
+            const minS = 0.10;
+            const maxS = 0.28;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.33) {
+            // Map [0.28, 0.33] to [72, 108] degrees
+            const minS = 0.28;
+            const maxS = 0.33;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.38) {
+            // Map [0.33, 0.38] to [108, 144] degrees
+            const minS = 0.33;
+            const maxS = 0.38;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
         } else {
-            // Map [0.241, 0.5] to [120, 180] degrees
-            const minS = 0.241;
-            const maxS = 0.5;
+            // Map [0.38, 0.69] to [144, 180] degrees
+            const minS = 0.38;
+            const maxS = 0.69;
             const clamped = Math.min(maxS, score);
-            targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
         }
         percentage = targetAngle / 180;
     } else if (currentTest === 'pps') {
@@ -1089,12 +1409,22 @@ function showToast(message) {
     }, 3000);
 }
 
-// Immediately check URL params on module execution
+// Immediately check URL params on module execution and attach event listeners
 try {
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('test') || urlParams.get('teste');
     if (testId && testsDatabase[testId]) {
         setTimeout(() => openTest(testId), 150);
+    }
+
+    // Attach phone input formatting listener
+    const phoneInput = document.getElementById('reg-phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            const cleaned = e.target.value.replace(/\D/g, '');
+            const truncated = cleaned.slice(0, 11);
+            e.target.value = formatPhone(truncated);
+        });
     }
 } catch(e) {
     console.error(e);
@@ -1109,3 +1439,6 @@ window.restartTest = restartTest;
 window.toggleMethodology = toggleMethodology;
 window.submitNumericStep = submitNumericStep;
 window.shareResult = shareResult;
+window.handleRegistrationSubmit = handleRegistrationSubmit;
+window.handleLoginSubmit = handleLoginSubmit;
+window.toggleRegMode = toggleRegMode;
