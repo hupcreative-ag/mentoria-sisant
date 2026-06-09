@@ -616,6 +616,7 @@ function openTest(testId) {
         duration: 0.3,
         onComplete: () => {
             document.getElementById('hub-screen').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'instant' });
             
             const wizard = document.getElementById('test-wizard');
             wizard.classList.remove('hidden');
@@ -647,6 +648,7 @@ function closeTest() {
         duration: 0.3,
         onComplete: () => {
             document.getElementById('test-wizard').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'instant' });
             
             const hub = document.getElementById('hub-screen');
             hub.classList.remove('hidden');
@@ -858,6 +860,7 @@ function finishTest() {
             duration: 0.3,
             onComplete: () => {
                 document.getElementById('test-wizard').classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'instant' });
                 
                 const regScreen = document.getElementById('registration-screen');
                 regScreen.classList.remove('hidden');
@@ -905,6 +908,7 @@ function proceedToResults() {
         onComplete: () => {
             testWizard.classList.add('hidden');
             regScreen.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'instant' });
             
             const testData = testsDatabase[currentTest];
             document.getElementById('loading-title').textContent = testData.loadingTitle || 'Processando Perfil Biológico...';
@@ -1376,6 +1380,7 @@ function showResults(score) {
         duration: 0.3,
         onComplete: () => {
             document.getElementById('loading-screen').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'instant' });
             
             const results = document.getElementById('results-screen');
             results.classList.remove('hidden');
@@ -1494,6 +1499,7 @@ function goToHub() {
             duration: 0.3,
             onComplete: () => {
                 wizard.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'instant' });
                 hub.classList.remove('hidden');
                 gsap.fromTo('#hub-screen', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4 });
             }
@@ -1505,6 +1511,7 @@ function goToHub() {
             duration: 0.3,
             onComplete: () => {
                 results.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'instant' });
                 hub.classList.remove('hidden');
                 gsap.fromTo('#hub-screen', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4 });
             }
