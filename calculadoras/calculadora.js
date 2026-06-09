@@ -33,10 +33,11 @@ const testsDatabase = {
             <p class="mt-2">A escala avalia o domínio da procrastinação comportamental e decisional com base em 12 declarações autodeclaradas.</p>
             <p class="mt-2">A pontuação final é obtida pela soma das respostas de todos os itens, variando de 12 a 60 pontos:</p>
             <ul class="list-disc pl-5 mt-2 space-y-1">
-                <li><strong>12 a 24 pontos:</strong> Baixa Procrastinação (Executores consistentes).</li>
-                <li><strong>25 a 36 pontos:</strong> Procrastinação Moderada (Necessita de pequenos ajustes comportamentais).</li>
-                <li><strong>37 a 48 pontos:</strong> Procrastinação Elevada (Risco de baixa execução).</li>
-                <li><strong>49 a 60 pontos:</strong> Procrastinação Crônica (Alto risco de improdutividade estrutural).</li>
+                <li><strong>Baixa Procrastinação (12 a 21 pontos):</strong> Executores consistentes com alta autorregulação e foco.</li>
+                <li><strong>Procrastinação Moderada Leve (22 a 31 pontos):</strong> Pequenos desvios de foco, facilmente corrigíveis com hábitos de entrada.</li>
+                <li><strong>Procrastinação Moderada (32 a 41 pontos):</strong> Conflito inicial entre sistema límbico e córtex pré-frontal, exigindo controle de distrações.</li>
+                <li><strong>Procrastinação Elevada (42 a 51 pontos):</strong> Dificuldade acentuada na conversão de intenções em ações, necessitando fricção ambiental.</li>
+                <li><strong>Procrastinação Crônica (52 a 60 pontos):</strong> Alto risco de improdutividade estrutural e esgotamento mental.</li>
             </ul>
         `,
         questions: [
@@ -65,10 +66,11 @@ const testsDatabase = {
             <p>Este questionário baseia-se na escala de sintomas clínicos de sobrecarga de estresse e fadiga biológica. As perguntas avaliam parâmetros-chave do ritmo circadiano, como a curva de energia diária, a qualidade do sono e a dependência de estimulantes.</p>
             <p class="mt-2">A pontuação é dividida de acordo com as fases de resposta ao estresse adaptativo:</p>
             <ul class="list-disc pl-5 mt-2 space-y-1">
-                <li><strong>0 a 6 pontos:</strong> Fase de Equilíbrio (Homeostase adaptativa).</li>
-                <li><strong>7 a 14 pontos:</strong> Fase de Alarme (Resposta adrenérgica ativa).</li>
-                <li><strong>15 a 24 pontos:</strong> Fase de Resistência (Instabilidade do cortisol).</li>
-                <li><strong>25+ pontos:</strong> Fase de Exaustão (Esgotamento da capacidade compensatória).</li>
+                <li><strong>Excelente / Equilíbrio (0 a 6 pontos):</strong> Boa resiliência ao estresse, ritmo circadiano e energia equilibrados.</li>
+                <li><strong>Alerta Inicial (7 a 12 pontos):</strong> Fase de alarme inicial, indicando sobrecarga ativa leve e esforço compensatório do corpo.</li>
+                <li><strong>Sobrecarga Moderada (13 a 18 pontos):</strong> Instabilidade de cortisol, fadiga diurna e dependência leve de estimulantes.</li>
+                <li><strong>Sobrecarga Acentuada (19 a 24 pontos):</strong> Sinais evidentes de resistência ao estresse, fadiga persistente e sono instável.</li>
+                <li><strong>Exaustão / Esgotamento (25 a 32 pontos):</strong> Fase de exaustão, esgotamento das reservas funcionais e fadiga crônica.</li>
             </ul>
         `,
         questions: [
@@ -188,9 +190,11 @@ const testsDatabase = {
             <p class="mt-2">Esta relação é um dos marcadores indiretos mais valiosos na medicina funcional e cardiovascular. Ela correlaciona-se fortemente com a <strong>Resistência à Insulina</strong> (níveis elevados costumam preceder alterações de glicemia e hemoglobina glicada em anos) e com o <strong>Tamanho das Partículas de LDL (Padrão B)</strong>, sugerindo predomínio de LDL pequeno e denso, altamente inflamatório.</p>
             <p class="mt-2">A classificação de referência funcional para a relação é:</p>
             <ul class="list-disc pl-5 mt-2 space-y-1">
-                <li><strong>Excelente / Ótimo (menor que 2.0):</strong> Baixo risco cardiovascular e boa sensibilidade insulínica (idealmente próximo a 1.0).</li>
-                <li><strong>Risco Moderado / Alerta (de 2.0 a 3.0):</strong> Sinais iniciais de resistência à insulina e presença de partículas de LDL menores.</li>
-                <li><strong>Alto Risco (maior que 3.0):</strong> Alta probabilidade de síndrome metabólica, resistência à insulina acentuada e risco cardiovascular aumentado.</li>
+                <li><strong>Excelente (menor que 1,0):</strong> Risco mínimo, sensibilidade à insulina ideal e perfil lipídico excelente.</li>
+                <li><strong>Baixo Risco (de 1,0 a 2,0):</strong> Perfil saudável, bom controle glicêmico e baixo risco metabólico.</li>
+                <li><strong>Risco Moderado Leve (de 2,0 a 3,0):</strong> Alerta inicial, indicando início de resistência à insulina periférica.</li>
+                <li><strong>Risco Moderado Alto (de 3,0 a 4,0):</strong> Resistência insulínica evidente e presença de partículas de LDL menores e densas.</li>
+                <li><strong>Alto Risco (maior que 4,0):</strong> Alta probabilidade de síndrome metabólica e alto risco de eventos cardiovasculares.</li>
             </ul>
         `,
         questions: [
@@ -241,8 +245,8 @@ const testsDatabase = {
 const adrenalResults = [
     {
         min: 0,
-        max: 6,
-        status: 'Bom Equilíbrio e Resiliência ao Estresse',
+        max: 7,
+        status: 'Bom Equilíbrio',
         color: '#22c55e', // green-500
         gaugeClass: 'border-t-green-500 border-r-green-500',
         interpretation: 'Suas respostas indicam uma boa capacidade de adaptação biológica ao estresse cotidiano. Os sinais corporais apontam que seus níveis de energia e ritmo de descanso encontram-se equilibrados.',
@@ -254,8 +258,8 @@ const adrenalResults = [
     },
     {
         min: 7,
-        max: 14,
-        status: 'Alerta Inicial de Sobrecarga de Estresse',
+        max: 13,
+        status: 'Alerta Inicial',
         color: '#eab308', // yellow-500
         gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
         interpretation: 'Sua pontuação sugere sinais de alerta iniciais relacionados à sobrecarga física ou mental. O corpo pode estar trabalhando de forma compensatória para lidar com demandas elevadas recentes, o que costuma gerar pequenas oscilações de energia.',
@@ -266,9 +270,9 @@ const adrenalResults = [
         ]
     },
     {
-        min: 15,
-        max: 24,
-        status: 'Sobrecarga Moderada e Instabilidade de Energia',
+        min: 13,
+        max: 19,
+        status: 'Sobrecarga Moderada',
         color: '#f97316', // orange-500
         gaugeClass: 'border-t-orange-500 border-r-orange-500',
         interpretation: 'Suas respostas apontam para uma sobrecarga de estresse moderada com instabilidade na regulação energética. É comum sentir cansaço ao acordar e melhora tardia no final do dia, recorrendo frequentemente a café ou doces para manter o foco.',
@@ -279,9 +283,22 @@ const adrenalResults = [
         ]
     },
     {
+        min: 19,
+        max: 25,
+        status: 'Sobrecarga Acentuada',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Sua pontuação sugere uma sobrecarga acentuada e persistente. O corpo demonstra sinais claros de dificuldade de recuperação e resistência ao estresse, afetando a qualidade do sono e a constância da energia diurna.',
+        recommendations: [
+            'Monitore seus níveis de cortisol salivar ao longo do dia para avaliar o ritmo circadiano.',
+            'Evite exercícios extenuantes à noite, priorizando atividades regenerativas.',
+            'Evite o uso abusivo de estimulantes e considere chás relaxantes à noite.'
+        ]
+    },
+    {
         min: 25,
-        max: 32,
-        status: 'Sobrecarga Acentuada / Sinais de Exaustão',
+        max: 999,
+        status: 'Exaustão / Esgotamento',
         color: '#ef4444', // red-500
         gaugeClass: 'border-t-red-500 border-r-red-500',
         interpretation: 'Sua pontuação indica indícios de sobrecarga acentuada com sinais de fadiga e cansaço persistentes. Quando o organismo é submetido a demandas contínuas de estresse sem descanso adequado, a vitalidade geral e o foco mental podem ser temporariamente comprometidos. Recomenda-se orientação profissional.',
@@ -366,7 +383,7 @@ const iapResults = [
 const ppsResults = [
     {
         min: 12,
-        max: 24,
+        max: 22,
         status: 'Baixa Procrastinação',
         color: '#22c55e', // green-500
         gaugeClass: 'border-t-green-500 border-r-green-500',
@@ -379,11 +396,24 @@ const ppsResults = [
         ]
     },
     {
-        min: 25,
-        max: 36,
-        status: 'Procrastinação Moderada',
+        min: 22,
+        max: 32,
+        status: 'Procrastinação Moderada Leve',
         color: '#eab308', // yellow-500
         gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua pontuação sugere desvios eventuais de foco e procrastinação ocasional. Costuma ocorrer principalmente diante de tarefas com prazos longos ou menor apelo de interesse imediato. Pequenos ajustes de hábitos e método de início rápido ajudam a manter a consistência.',
+        recommendations: [
+            'Utilize a técnica de iniciar imediatamente por apenas 5 minutos para vencer a inércia.',
+            'Defina prazos intermediários (micro-prazos) para criar senso de urgência saudável.',
+            'Monitore e remova pequenas distrações do seu ambiente de trabalho antes de iniciar tarefas importantes.'
+        ]
+    },
+    {
+        min: 32,
+        max: 42,
+        status: 'Procrastinação Moderada',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
         interpretation: 'Seus resultados revelam uma vulnerabilidade transitória na autorregulação, caracterizada por oscilações entre o foco deliberado e a busca por alívio emocional imediato. Cientificamente, isso reflete o clássico sequestro temporário do córtex pré-frontal pelo sistema límbico diante de tarefas tediosas, estressantes ou ambíguas (procrastinação como mecanismo ineficaz de regulação emocional de curto prazo).',
         recommendations: [
             'Perfil: Necessita de ajustes comportamentais e controle ambiental.',
@@ -393,11 +423,11 @@ const ppsResults = [
         ]
     },
     {
-        min: 37,
-        max: 48,
+        min: 42,
+        max: 52,
         status: 'Procrastinação Elevada',
-        color: '#f97316', // orange-500
-        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
         interpretation: 'Sua pontuação aponta para uma dificuldade acentuada e persistente na conversão de intenções em ações (lacuna intenção-comportamento). Há uma evitação ativa de tarefas complexas que geram ansiedade ou frustração. Do ponto de vista neurobiológico, isso indica uma fadiga crônica das funções executivas, onde o cérebro prioriza sistematicamente a homeostase emocional de curto prazo (alívio imediato) em detrimento dos benefícios futuros (desconto hiperbólico).',
         recommendations: [
             'Perfil: Risco de baixa execução e perdas operacionais.',
@@ -407,8 +437,8 @@ const ppsResults = [
         ]
     },
     {
-        min: 49,
-        max: 60,
+        min: 52,
+        max: 999,
         status: 'Procrastinação Crônica',
         color: '#ef4444', // red-500
         gaugeClass: 'border-t-red-500 border-r-red-500',
@@ -426,11 +456,11 @@ const ppsResults = [
 const tgHdlResults = [
     {
         min: 0,
-        max: 1.99,
-        status: 'Excelente / Baixo Risco',
+        max: 1.0,
+        status: 'Excelente',
         color: '#22c55e', // green-500
         gaugeClass: 'border-t-green-500 border-r-green-500',
-        interpretation: 'Sua relação Triglicerídeos/HDL está abaixo de 2.0, o que é considerado clinicamente excelente. Este valor aponta para uma ótima sensibilidade à insulina periférica e indica que suas partículas de LDL são predominantemente grandes e flutuantes, apresentando baixo potencial inflamatório e de aderência arterial.',
+        interpretation: 'Sua relação Triglicerídeos/HDL está abaixo de 1.0, o que representa uma excelente flexibilidade metabólica e sensibilidade à insulina ideal. O perfil lipídico indica que o transporte de lipoproteínas está altamente eficiente, com risco cardiovascular mínimo.',
         recommendations: [
             'Mantenha seu padrão dietético atual com foco em comida de verdade e baixo teor de açúcares refinados.',
             'Continue a prática de atividades físicas regulares de força e resistência (como musculação e aeróbicos) para sustentar a função otimizada do HDL.',
@@ -438,11 +468,24 @@ const tgHdlResults = [
         ]
     },
     {
-        min: 2.0,
-        max: 3.0,
-        status: 'Risco Moderado / Alerta',
+        min: 1.0,
+        max: 2.0,
+        status: 'Baixo Risco',
         color: '#eab308', // yellow-500
         gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua relação Triglicerídeos/HDL está entre 1.0 e 2.0, indicando um perfil metabólico saudável e sob controle. A sensibilidade à insulina está preservada e o risco cardiovascular é considerado baixo.',
+        recommendations: [
+            'Foque em manter uma rotina consistente de exercícios físicos.',
+            'Evite o consumo frequente de açúcares simples e alimentos ultraprocessados.',
+            'Monitore este marcador anualmente para prevenção continuada.'
+        ]
+    },
+    {
+        min: 2.0,
+        max: 3.0,
+        status: 'Risco Moderado Leve',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
         interpretation: 'Sua relação está entre 2.0 e 3.0. Isto representa uma faixa de alerta intermediária, sugerindo o início de uma resistência à insulina periférica e um desequilíbrio na depuração de triglicerídeos. Há uma probabilidade moderada de presença de partículas de LDL menores e mais propensas à oxidação.',
         recommendations: [
             'Reduza estrategicamente o consumo de carboidratos refinados, doces e bebidas açucaradas de alto índice glicêmico.',
@@ -451,12 +494,25 @@ const tgHdlResults = [
         ]
     },
     {
-        min: 3.01,
+        min: 3.0,
+        max: 4.0,
+        status: 'Risco Moderado Alto',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Sua relação está entre 3.0 e 4.0, sinalizando resistência insulínica evidente e provável presença de partículas de LDL pequenas, densas e oxidadas. Há um ambiente favorável à sobrecarga cardiovascular, merecendo intervenção focada no estilo de vida.',
+        recommendations: [
+            'Reduza significativamente o consumo de farinhas, açúcares e bebidas alcoólicas.',
+            'Pratique treinos de força de forma consistente para melhorar a captação de glicose pelo músculo.',
+            'Investigue outros marcadores metabólicos de gordura visceral e inflamação.'
+        ]
+    },
+    {
+        min: 4.0,
         max: 999,
         status: 'Alto Risco / Resistência à Insulina',
         color: '#ef4444', // red-500
         gaugeClass: 'border-t-red-500 border-r-red-500',
-        interpretation: 'Sua relação está acima de 3.0. Este patamar é fortemente associado a uma resistência insulínica significativa, risco aumentado para síndrome metabólica e predomínio de partículas de LDL pequenas, densas e altamente aterogênicas (Padrão B). Este desequilíbrio metabólico merece atenção ativa e intervenções no estilo de vida.',
+        interpretation: 'Sua relação está acima de 4.0. Este patamar é fortemente associado a uma resistência insulínica significativa, risco aumentado para síndrome metabólica e predomínio de partículas de LDL pequenas, densas e altamente aterogênicas (Padrão B). Este desequilíbrio metabólico merece atenção ativa e intervenções no estilo de vida.',
         recommendations: [
             'Consulte um profissional de saúde integrativo para avaliar o risco cardiovascular global e investigar síndrome metabólica.',
             'Adote uma abordagem alimentar de baixo carboidrato (Low Carb ou Cetogênica limpa) para reduzir drasticamente a trigliceridemia.',
@@ -469,7 +525,7 @@ const tgHdlResults = [
 const apobApoa1Results = [
     {
         min: 0,
-        max: 0.499,
+        max: 0.50,
         status: 'Excelente',
         color: '#22c55e', // green-500
         gaugeClass: 'border-t-green-500 border-r-green-500',
@@ -484,8 +540,8 @@ const apobApoa1Results = [
         min: 0.50,
         max: 0.70,
         status: 'Baixo Risco',
-        color: '#3b82f6', // blue-500
-        gaugeClass: 'border-t-blue-500 border-r-blue-500',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
         interpretation: 'Sua relação Apo B / Apo A1 está entre 0,50 e 0,70, indicando Baixo Risco cardiovascular. Sua depuração de colesterol e a quantidade de partículas aterogênicas estão sob bom controle biológico. Seu perfil lipídico apresenta boa resiliência protetora.',
         recommendations: [
             'Mantenha uma rotina consistente de atividade física, combinando treinos de força e cardio.',
@@ -494,11 +550,11 @@ const apobApoa1Results = [
         ]
     },
     {
-        min: 0.701,
+        min: 0.70,
         max: 0.90,
         status: 'Risco Intermediário',
-        color: '#eab308', // yellow-500
-        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
         interpretation: 'Sua relação Apo B / Apo A1 encontra-se entre 0,70 e 0,90, o que representa um Risco Intermediário. Isso aponta para uma elevação moderada no número de partículas aterogênicas em comparação com as protetoras. É um sinal de alerta de que ajustes de estilo de vida são recomendados para evitar o avanço da aterogênese.',
         recommendations: [
             'Reduza carboidratos de alto índice glicêmico e alimentos ultraprocessados para otimizar os níveis de triglicerídeos e VLDL/LDL.',
@@ -507,11 +563,11 @@ const apobApoa1Results = [
         ]
     },
     {
-        min: 0.901,
+        min: 0.90,
         max: 1.00,
         status: 'Alto Risco',
-        color: '#f97316', // orange-500
-        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        color: '#f43f5e', // rose-500 (pink-red)
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
         interpretation: 'Sua relação Apo B / Apo A1 está acima de 0,90, indicando Alto Risco cardiovascular. O número de partículas aterogênicas carregando Apo B está significativamente elevado em relação às partículas protetoras. Esse padrão favorece o acúmulo e oxidação de lipoproteínas na parede das artérias.',
         recommendations: [
             'Consulte um profissional de saúde integrativo para realizar uma investigação cardiovascular abrangente e avaliar a espessura médio-intimal carotídea.',
@@ -520,7 +576,7 @@ const apobApoa1Results = [
         ]
     },
     {
-        min: 1.001,
+        min: 1.00,
         max: 999,
         status: 'Muito Alto Risco',
         color: '#ef4444', // red-500
@@ -1111,16 +1167,16 @@ function showResults(score) {
         resultBand = iapResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = iapResults[iapResults.length - 1];
     } else if (currentTest === 'pps') {
-        resultBand = ppsResults.find(band => score >= band.min && score <= band.max);
+        resultBand = ppsResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = ppsResults[ppsResults.length - 1];
     } else if (currentTest === 'tg-hdl') {
-        resultBand = tgHdlResults.find(band => score >= band.min && score <= band.max);
+        resultBand = tgHdlResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = tgHdlResults[tgHdlResults.length - 1];
     } else if (currentTest === 'apob-apoa1') {
-        resultBand = apobApoa1Results.find(band => score >= band.min && score <= band.max);
+        resultBand = apobApoa1Results.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = apobApoa1Results[apobApoa1Results.length - 1];
     } else {
-        resultBand = adrenalResults.find(band => score >= band.min && score <= band.max);
+        resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
     }
 
@@ -1186,15 +1242,109 @@ function showResults(score) {
         }
         percentage = targetAngle / 180;
     } else if (currentTest === 'pps') {
-        percentage = (score - 12) / (60 - 12);
+        let targetAngle;
+        if (score < 22) {
+            const minS = 12;
+            const maxS = 22;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 32) {
+            const minS = 22;
+            const maxS = 32;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 42) {
+            const minS = 32;
+            const maxS = 42;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 52) {
+            const minS = 42;
+            const maxS = 52;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 52;
+            const maxS = 60;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else if (currentTest === 'tg-hdl') {
-        const clamped = Math.min(6.0, score);
-        percentage = clamped / 6.0;
+        let targetAngle;
+        if (score < 1.0) {
+            const minS = 0.0;
+            const maxS = 1.0;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 2.0) {
+            const minS = 1.0;
+            const maxS = 2.0;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 3.0) {
+            const minS = 2.0;
+            const maxS = 3.0;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 4.0) {
+            const minS = 3.0;
+            const maxS = 4.0;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 4.0;
+            const maxS = 6.0;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else if (currentTest === 'apob-apoa1') {
-        const minVal = 0.3;
-        const maxVal = 1.2;
-        const clamped = Math.max(minVal, Math.min(maxVal, score));
-        percentage = (clamped - minVal) / (maxVal - minVal);
+        let targetAngle;
+        if (score < 0.50) {
+            const minS = 0.30;
+            const maxS = 0.50;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.70) {
+            const minS = 0.50;
+            const maxS = 0.70;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.90) {
+            const minS = 0.70;
+            const maxS = 0.90;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 1.00) {
+            const minS = 0.90;
+            const maxS = 1.00;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 1.00;
+            const maxS = 1.20;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
+    } else if (currentTest === 'fadiga-adrenal') {
+        let targetAngle;
+        if (score < 7) {
+            const minS = 0;
+            const maxS = 7;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 13) {
+            const minS = 7;
+            const maxS = 13;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 19) {
+            const minS = 13;
+            const maxS = 19;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 25) {
+            const minS = 19;
+            const maxS = 25;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 25;
+            const maxS = 32;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
         percentage = score / maxScore;
