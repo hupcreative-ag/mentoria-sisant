@@ -1815,6 +1815,13 @@ const fallbackColors = {
     active: 'bg-blue-600 text-white border-blue-600 shadow-sm'
 };
 
+// Register GSAP Flip plugin
+try {
+    gsap.registerPlugin(Flip);
+} catch (e) {
+    console.warn("GSAP Flip Plugin registration failed:", e);
+}
+
 function filterCategory(category) {
     const cards = document.querySelectorAll('.calculator-card');
     const buttons = document.querySelectorAll('.filter-btn');
@@ -1830,36 +1837,37 @@ function filterCategory(category) {
         }
     });
 
-    // Animate cards filtering
+    // 1. Capture the initial state of the cards (their layout positions)
+    const state = Flip.getState(cards);
+
+    // 2. Instantly update the layout (toggle hidden class)
     cards.forEach(card => {
         const cat = card.getAttribute('data-category');
         const matches = (category === 'Todos' || cat === category);
 
         if (matches) {
-            if (card.classList.contains('hidden')) {
-                // Instantly remove hidden so GSAP can calculate coordinates
-                card.classList.remove('hidden');
-                // Animate showing
-                gsap.fromTo(card, 
-                    { opacity: 0, scale: 0.9, y: 12 },
-                    { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "power2.out", clearProps: "all" }
-                );
-            }
+            card.classList.remove('hidden');
+            // Ensure style transforms and opacities are reset for the final layout state
+            card.style.opacity = '1';
+            card.style.transform = 'none';
         } else {
-            if (!card.classList.contains('hidden')) {
-                // Animate hiding
-                gsap.to(card, {
-                    opacity: 0,
-                    scale: 0.9,
-                    y: 12,
-                    duration: 0.25,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        card.classList.add('hidden');
-                    }
-                });
-            }
+            card.classList.add('hidden');
         }
+    });
+
+    // 3. Animate the transition between states smoothly!
+    Flip.from(state, {
+        duration: 0.5,
+        ease: "power2.inOut",
+        absolute: true, // Absolute is crucial for seamless grid transition without layout thrashing/stuttering
+        stagger: 0.02,  // Premium micro-interaction stagger
+        onEnter: elements => gsap.fromTo(elements, 
+            { opacity: 0, scale: 0.9 }, 
+            { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
+        ),
+        onLeave: elements => gsap.to(elements, 
+            { opacity: 0, scale: 0.9, duration: 0.25, ease: "power2.in" }
+        )
     });
 }
 
