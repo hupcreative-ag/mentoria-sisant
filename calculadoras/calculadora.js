@@ -268,8 +268,108 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'phr': {
+        title: 'Relação Plaquetas / HDL (PHR)',
+        category: 'Cardiovascular',
+        maxScore: 10.0,
+        loadingTitle: 'Calculando Relação Plaquetas / HDL...',
+        loadingSubtitle: 'Dividindo a contagem de plaquetas pelo nível de HDL-C para avaliar o risco tromboinflamatório.',
+        methodologyTitle: 'Sobre a Relação Plaquetas / HDL (PHR)',
+        methodologyText: `
+            <p>A <strong>Relação Plaquetas / HDL (PHR - Platelet-to-HDL Ratio)</strong> é uma ferramenta emergente na avaliação do risco cardiovascular e inflamação sistêmica. Ela combina a contagem de plaquetas com o colesterol de lipoproteína de alta densidade (HDL-C) para refletir o equilíbrio entre o estado pró-trombótico/inflamatório (plaquetas) e o potencial cardioprotetor/anti-inflamatório (HDL-C).</p>
+            <p class="mt-2">Plaquetas elevadas estão diretamente envolvidas no processo de trombose e na resposta inflamatória vascular. Por outro lado, o HDL-C exerce um papel protetor importante através do transporte reverso do colesterol e de suas propriedades antioxidantes. Portanto, um PHR elevado sinaliza um maior potencial tromboinflamatório nas artérias.</p>
+            <p class="mt-2">Pesquisas recentes associam o PHR elevado com o risco de doença arterial coronariana, severidade de lesões vasculares, síndrome coronariana aguda e pior prognóstico pós-infarto.</p>
+            <p class="mt-2">As faixas de referência e interpretação do PHR são descritas a seguir:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Excelente / Baixo Risco (menor que 2,00):</strong> Relação ideal. Equilíbrio saudável entre fatores pró-trombóticos e a proteção oferecida pelo HDL-C.</li>
+                <li><strong>Alerta Inicial (de 2,00 a 3,00):</strong> Leve tendência ao desequilíbrio inflamatório, geralmente corrigível com ajustes simples na rotina de hábitos.</li>
+                <li><strong>Risco Intermediário (de 3,00 a 4,50):</strong> Equilíbrio limítrofe. Sugere atenção redobrada aos fatores inflamatórios sistêmicos e metabólicos.</li>
+                <li><strong>Risco Moderado Alto (de 4,50 a 6,00):</strong> Tendência pró-inflamatória e pró-trombótica evidente. Aconselha-se otimizar hábitos e monitorar a saúde vascular.</li>
+                <li><strong>Risco Aumentado (maior ou igual a 6,00):</strong> Associação documentada com maior risco de doença coronariana, síndrome metabólica e eventos aterotrombóticos. Requer avaliação médica integrada.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os valores das suas plaquetas e HDL:',
+                type: 'numeric',
+                inputs: [
+                    { label: 'Contagem de Plaquetas (mil/µL)', id: 'platelets', placeholder: 'Ex: 250', min: 50, max: 1000 },
+                    { label: 'HDL-Colesterol (mg/dL)', id: 'hdl', placeholder: 'Ex: 50', min: 5, max: 150 }
+                ]
+            }
+        ]
     }
 };
+
+// Results mapping for Platelet / HDL Ratio (PHR)
+const phrResults = [
+    {
+        min: 0,
+        max: 2.0,
+        status: 'Excelente / Baixo Risco',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Sua Relação Plaquetas/HDL (PHR) está na faixa ideal (baixo risco). Isso indica um excelente equilíbrio entre a contagem de plaquetas e o HDL-C, refletindo um ambiente vascular estável, baixo potencial tromboinflamatório e boa proteção cardiovascular contra aterogênese.',
+        recommendations: [
+            'Mantenha sua rotina regular de exercícios físicos para apoiar a função protetora do HDL.',
+            'Conserve hábitos dietéticos limpos, ricos em gorduras saudáveis e antioxidantes naturais.',
+            'Repita seus exames periódicos de rotina para acompanhar a manutenção deste excelente equilíbrio.'
+        ]
+    },
+    {
+        min: 2.0,
+        max: 3.0,
+        status: 'Alerta Inicial',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua relação PHR aponta para um nível de alerta inicial. Embora ainda esteja próximo das faixas de menor risco, sugere uma tendência inicial de aumento no potencial inflamatório subclínico ou leve redução na proteção oferecida pelo HDL-C.',
+        recommendations: [
+            'Avalie a qualidade das gorduras da sua alimentação, priorizando azeite de oliva e reduzindo óleos vegetais refinados.',
+            'Evite o sedentarismo, praticando atividade física regular para otimizar os níveis e a qualidade do HDL.',
+            'Considere refazer exames preventivos a cada 6 meses para acompanhar este marcador.'
+        ]
+    },
+    {
+        min: 3.0,
+        max: 4.5,
+        status: 'Risco Intermediário',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Seu PHR encontra-se em uma faixa de risco intermediário. Indica que o balanço entre os processos inflamatórios/trombóticos e de proteção vascular está limítrofe. Recomenda-se adotar ajustes preventivos estruturados no estilo de vida.',
+        recommendations: [
+            'Reduza o consumo de alimentos ultraprocessados e refinados que estimulam a inflamação subclínica sistêmica.',
+            'Adicione exercícios de força e de resistência aeróbica à sua rotina para otimizar o perfil lipídico e controlar as plaquetas.',
+            'Investigue outros marcadores de inflamação e metabolismo, como PCR-ultrassensível e insulina de jejum.'
+        ]
+    },
+    {
+        min: 4.5,
+        max: 6.0,
+        status: 'Risco Moderado Alto',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Sua pontuação de PHR está classificada como risco moderado alto. Sinaliza uma tendência pró-inflamatória e pró-trombótica mais evidente nas artérias. Há um maior estímulo plaquetário ou uma redução acentuada da atividade protetora do HDL.',
+        recommendations: [
+            'Restrinja açúcares e carboidratos refinados que favorecem a inflamação vascular e a agregação plaquetária.',
+            'Pratique exercícios físicos de forma supervisionada e consistente para estimular a depuração de lipoproteínas.',
+            'Realize uma análise médica integrada dos seus fatores de risco cardiovascular globais.'
+        ]
+    },
+    {
+        min: 6.0,
+        max: 999,
+        status: 'Risco Aumentado',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Seu PHR está elevado (risco aumentado). Estudos clínicos correlacionam valores elevados deste índice com um maior risco de doença arterial coronariana, severidade de lesões vasculares e síndrome metabólica. Indica um ambiente propício à inflamação endotelial.',
+        recommendations: [
+            'Consulte um médico de forma integrada para avaliar a saúde vascular geral e estimar o risco cardiovascular global.',
+            'Foque na melhora da sensibilidade à insulina e no controle da inflamação através de estratégias de estilo de vida saudáveis.',
+            'Monitore de perto os níveis plaquetários e lipídicos sob supervisão médica.'
+        ]
+    }
+];
 
 // Results mapping for Adrenal Fatigue (Non-diagnostic, patient-friendly language)
 const adrenalResults = [
@@ -946,6 +1046,10 @@ function finishTest() {
         const hdl = answers[0].hdl;
         const apoa1 = answers[0].apoa1;
         calculatedScore = hdl / apoa1;
+    } else if (currentTest === 'phr') {
+        const platelets = answers[0].platelets;
+        const hdl = answers[0].hdl;
+        calculatedScore = platelets / hdl;
     } else {
         calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
     }
@@ -1065,7 +1169,7 @@ function handleRegistrationSubmit(event) {
     `;
 
     const testTitle = testsDatabase[currentTest]?.title || currentTest;
-    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') 
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') 
         ? calculatedScore.toFixed(2) 
         : calculatedScore;
     
@@ -1130,7 +1234,7 @@ function handleLoginSubmit(event) {
     }
 
     const testTitle = testsDatabase[currentTest]?.title || currentTest;
-    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') 
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') 
         ? calculatedScore.toFixed(2) 
         : calculatedScore;
 
@@ -1241,6 +1345,9 @@ function showResults(score) {
     } else if (currentTest === 'hdl-apoa1') {
         resultBand = hdlApoa1Results.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = hdlApoa1Results[hdlApoa1Results.length - 1];
+    } else if (currentTest === 'phr') {
+        resultBand = phrResults.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = phrResults[phrResults.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -1250,9 +1357,9 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').textContent = testData.title;
 
-    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? score.toFixed(2) : score;
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
-    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? 'RELAÇÃO' : 'PONTOS';
+    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -1411,6 +1518,32 @@ function showResults(score) {
             targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
         }
         percentage = targetAngle / 180;
+    } else if (currentTest === 'phr') {
+        let targetAngle;
+        if (score < 2.0) {
+            const minS = 0.0;
+            const maxS = 2.0;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 3.0) {
+            const minS = 2.0;
+            const maxS = 3.0;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 4.5) {
+            const minS = 3.0;
+            const maxS = 4.5;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 6.0) {
+            const minS = 4.5;
+            const maxS = 6.0;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 6.0;
+            const maxS = 10.0;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else if (currentTest === 'fadiga-adrenal') {
         let targetAngle;
         if (score < 7) {
@@ -1474,7 +1607,7 @@ function showResults(score) {
             results.classList.remove('hidden');
             
             // Set initial score display
-            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? '0.00' : '0';
+            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? '0.00' : '0';
             
             gsap.fromTo('#results-screen',
                 { opacity: 0, y: 20 },
@@ -1493,7 +1626,7 @@ function showResults(score) {
 
                         // Count up score display
                         const scoreObj = { val: 0 };
-                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1';
+                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr';
                         
                         gsap.to(scoreObj, {
                             val: score,
