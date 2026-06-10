@@ -238,6 +238,36 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'hdl-apoa1': {
+        title: 'Relação HDL / Apo A1',
+        category: 'Cardiovascular',
+        maxScore: 1.0,
+        loadingTitle: 'Calculando Relação HDL / Apo A1...',
+        loadingSubtitle: 'Dividindo os níveis de HDL-Colesterol pela Apolipoproteína A1 para avaliar o risco cardiovascular por quartis.',
+        methodologyTitle: 'Sobre a Relação HDL / Apo A1',
+        methodologyText: `
+            <p>A <strong>Relação HDL-C / Apo A-I</strong> é calculada dividindo a concentração de HDL-Colesterol pela de Apolipoproteína A1: <strong>HDL-C / Apo A-I</strong>. Ambos são medidos na mesma unidade (geralmente mg/dL).</p>
+            <p class="mt-2">A <strong>Apolipoproteína A1 (Apo A-I)</strong> é a principal proteína estrutural do HDL. Um índice HDL-C/ApoA-I inferior a 0,28 está associado a um maior volume de gordura pericárdica, o que sugere um perfil cardiometabólico adverso, aterosclerose subclínica e calcificação coronária.</p>
+            <p class="mt-2">A classificação por quartis de risco é dividida em:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Excelente (Q4 - maior que 0,38):</strong> Ótima proteção cardiovascular e menor risco metabólico.</li>
+                <li><strong>Risco Moderado Leve (Q3 - de 0,33 a 0,38):</strong> Perfil equilibrado, próximo aos níveis ideais de proteção vascular.</li>
+                <li><strong>Risco Moderado (Q2 - de 0,28 a 0,33):</strong> Alerta intermediário, indicando atenção a hábitos dietéticos e metabólicos.</li>
+                <li><strong>Alto Risco (Q1 - de 0,10 a 0,28):</strong> Maior volume de gordura pericárdica, perfil cardiometabólico adverso e risco cardiovascular elevado.</li>
+                <li><strong>Muito Alto Risco (menor que 0,10):</strong> Desequilíbrio severo com baixa funcionalidade de partículas protetoras.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os valores do seu painel lipídico:',
+                type: 'numeric',
+                inputs: [
+                    { label: 'HDL-Colesterol (mg/dL)', id: 'hdl', placeholder: 'Ex: 50', min: 5, max: 150 },
+                    { label: 'Apolipoproteína A1 (Apo A1) (mg/dL)', id: 'apoa1', placeholder: 'Ex: 130', min: 10, max: 300 }
+                ]
+            }
+        ]
     }
 };
 
@@ -590,6 +620,75 @@ const apobApoa1Results = [
     }
 ];
 
+// Results mapping for HDL / Apo A1 Ratio
+const hdlApoa1Results = [
+    {
+        min: 0,
+        max: 0.10,
+        status: 'Muito Alto Risco',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Sua relação HDL/ApoA1 é inferior a 0,10, configurando um Muito Alto Risco cardiovascular. Existe uma desproporção crítica de partículas de HDL funcionais, sugerindo deficiência extrema nos mecanismos de proteção e depuração do colesterol.',
+        recommendations: [
+            'Consulte seu médico para uma avaliação cardiovascular detalhada e investigação de aterosclerose.',
+            'Adote uma estratégia nutricional anti-inflamatória rigorosa e reduza gorduras trans e açúcares.',
+            'Pratique exercícios físicos regulares sob supervisão médica para estimular a funcionalidade das lipoproteínas.'
+        ]
+    },
+    {
+        min: 0.10,
+        max: 0.28,
+        status: 'Alto Risco',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Sua relação HDL/ApoA1 está na faixa de Alto Risco (Q1, inferior a 0,28). Níveis nessa faixa estão estatisticamente associados a um maior volume de gordura pericárdica e maior risco de calcificação coronária e aterosclerose subclínica.',
+        recommendations: [
+            'Consulte um profissional de saúde integrativo para monitorar marcadores inflamatórios.',
+            'Aumente a ingestão de antioxidantes naturais e gorduras saudáveis (como azeite de oliva e abacate).',
+            'Realize atividades aeróbicas regulares para otimizar os níveis e a qualidade do HDL-C.'
+        ]
+    },
+    {
+        min: 0.28,
+        max: 0.33,
+        status: 'Risco Moderado',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Sua relação HDL/ApoA1 está na faixa de Risco Moderado (Q2, entre 0,28 e 0,33). É uma faixa de alerta intermediária que indica uma tendência a um perfil metabólico adverso, exigindo pequenos ajustes no estilo de vida.',
+        recommendations: [
+            'Otimize o consumo de gorduras insaturadas e evite carboidratos refinados.',
+            'Incremente a prática de exercícios resistidos (musculação) para melhorar a flexibilidade metabólica.',
+            'Repita exames periódicos a cada 6 meses para avaliar a evolução deste marcador.'
+        ]
+    },
+    {
+        min: 0.33,
+        max: 0.38,
+        status: 'Risco Moderado Leve',
+        color: '#eab308', // yellow-500
+        gaugeClass: 'border-t-yellow-500 border-r-yellow-500',
+        interpretation: 'Sua relação HDL/ApoA1 está na faixa de Risco Moderado Leve (Q3, entre 0,33 e 0,38). Seu perfil de proteção vascular está próximo aos níveis ideais, demonstrando boa estabilidade e bom transporte de colesterol.',
+        recommendations: [
+            'Mantenha uma rotina consistente de atividade física combinando treinos de força e aeróbicos.',
+            'Priorize comida de verdade e uma dieta rica em fibras vegetais.',
+            'Continue monitorando o marcador anualmente de forma preventiva.'
+        ]
+    },
+    {
+        min: 0.38,
+        max: 999,
+        status: 'Excelente',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Sua relação HDL/ApoA1 é Excelente (Q4, superior a 0,38). Isso indica ótima eficácia na proteção do sistema cardiovascular, menor propensão ao acúmulo de gordura pericárdica e alta funcionalidade no transporte reverso do colesterol.',
+        recommendations: [
+            'Parabéns! Mantenha seus ótimos hábitos de estilo de vida e de nutrição.',
+            'Continue praticando atividade física com regularidade para sustentar esse perfil protetor.',
+            'Refaça seu painel lipídico anualmente como parte do check-up de rotina.'
+        ]
+    }
+];
+
 // Open a test from the Hub
 function openTest(testId) {
     currentTest = testId;
@@ -843,6 +942,10 @@ function finishTest() {
         const apob = answers[0].apob;
         const apoa1 = answers[0].apoa1;
         calculatedScore = apob / apoa1;
+    } else if (currentTest === 'hdl-apoa1') {
+        const hdl = answers[0].hdl;
+        const apoa1 = answers[0].apoa1;
+        calculatedScore = hdl / apoa1;
     } else {
         calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
     }
@@ -962,7 +1065,7 @@ function handleRegistrationSubmit(event) {
     `;
 
     const testTitle = testsDatabase[currentTest]?.title || currentTest;
-    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') 
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') 
         ? calculatedScore.toFixed(2) 
         : calculatedScore;
     
@@ -1027,7 +1130,7 @@ function handleLoginSubmit(event) {
     }
 
     const testTitle = testsDatabase[currentTest]?.title || currentTest;
-    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') 
+    const formattedScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') 
         ? calculatedScore.toFixed(2) 
         : calculatedScore;
 
@@ -1135,6 +1238,9 @@ function showResults(score) {
     } else if (currentTest === 'apob-apoa1') {
         resultBand = apobApoa1Results.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = apobApoa1Results[apobApoa1Results.length - 1];
+    } else if (currentTest === 'hdl-apoa1') {
+        resultBand = hdlApoa1Results.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = hdlApoa1Results[hdlApoa1Results.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -1144,9 +1250,9 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').textContent = testData.title;
 
-    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? score.toFixed(2) : score;
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
-    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? 'RELAÇÃO' : 'PONTOS';
+    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -1279,6 +1385,32 @@ function showResults(score) {
             targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
         }
         percentage = targetAngle / 180;
+    } else if (currentTest === 'hdl-apoa1') {
+        let targetAngle;
+        if (score < 0.10) {
+            const minS = 0.0;
+            const maxS = 0.10;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.28) {
+            const minS = 0.10;
+            const maxS = 0.28;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.33) {
+            const minS = 0.28;
+            const maxS = 0.33;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 0.38) {
+            const minS = 0.33;
+            const maxS = 0.38;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 0.38;
+            const maxS = 0.69;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else if (currentTest === 'fadiga-adrenal') {
         let targetAngle;
         if (score < 7) {
@@ -1342,7 +1474,7 @@ function showResults(score) {
             results.classList.remove('hidden');
             
             // Set initial score display
-            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1') ? '0.00' : '0';
+            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1') ? '0.00' : '0';
             
             gsap.fromTo('#results-screen',
                 { opacity: 0, y: 20 },
@@ -1361,7 +1493,7 @@ function showResults(score) {
 
                         // Count up score display
                         const scoreObj = { val: 0 };
-                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1';
+                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1';
                         
                         gsap.to(scoreObj, {
                             val: score,
