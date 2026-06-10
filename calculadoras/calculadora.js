@@ -789,6 +789,71 @@ const hdlApoa1Results = [
     }
 ];
 
+// Generic screen transition helper to prevent layout collapse and footer jumping
+function transitionScreen(fromScreen, toScreen, onPrepare, onComplete) {
+    const main = document.querySelector('main');
+    const startHeight = main ? main.offsetHeight : 0;
+
+    // Lock main content area height during transition to avoid footer pop/flicker
+    if (main && startHeight) {
+        main.style.minHeight = `${startHeight}px`;
+    }
+
+    const isEnteringWizardOrResults = toScreen.id === 'test-wizard' || toScreen.id === 'results-screen';
+    const exitY = isEnteringWizardOrResults ? -15 : 15;
+    const enterY = isEnteringWizardOrResults ? 15 : -15;
+
+    gsap.to(fromScreen, {
+        opacity: 0,
+        y: exitY,
+        duration: 0.3,
+        ease: "power2.inOut",
+        onComplete: () => {
+            fromScreen.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            if (onPrepare) {
+                onPrepare();
+            }
+
+            toScreen.style.opacity = '0';
+            toScreen.classList.remove('hidden');
+
+            if (main) {
+                // Clear inline height briefly to calculate target height correctly
+                main.style.minHeight = '';
+                const finalHeight = main.offsetHeight;
+                main.style.minHeight = `${startHeight}px`;
+
+                // Animate container height smoothly
+                gsap.fromTo(main,
+                    { minHeight: startHeight },
+                    { 
+                        minHeight: finalHeight, 
+                        duration: 0.4, 
+                        ease: "power2.inOut", 
+                        clearProps: "minHeight" 
+                    }
+                );
+            }
+
+            // Animate target screen entering
+            gsap.fromTo(toScreen,
+                { opacity: 0, y: enterY },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.4, 
+                    ease: "power2.out",
+                    onComplete: () => {
+                        if (onComplete) onComplete();
+                    }
+                }
+            );
+        }
+    });
+}
+
 // Open a test from the Hub
 function openTest(testId) {
     currentTest = testId;
@@ -805,28 +870,13 @@ function openTest(testId) {
         console.error(e);
     }
 
-    // Setup Wizard UI Text
-    document.getElementById('test-category').textContent = testsDatabase[testId].title;
-    
-    // Hide Hub Screen and Show Wizard with GSAP transition
-    gsap.to('#hub-screen', {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        onComplete: () => {
-            document.getElementById('hub-screen').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            
-            const wizard = document.getElementById('test-wizard');
-            wizard.classList.remove('hidden');
-            
-            gsap.fromTo('#test-wizard', 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.4 }
-            );
-            
-            renderStep();
-        }
+    const fromScreen = document.getElementById('hub-screen');
+    const toScreen = document.getElementById('test-wizard');
+
+    transitionScreen(fromScreen, toScreen, () => {
+        // Setup Wizard UI Text
+        document.getElementById('test-category').textContent = testsDatabase[testId].title;
+        renderStep();
     });
 }
 
@@ -841,23 +891,10 @@ function closeTest() {
         console.error(e);
     }
 
-    gsap.to('#test-wizard', {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        onComplete: () => {
-            document.getElementById('test-wizard').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            
-            const hub = document.getElementById('hub-screen');
-            hub.classList.remove('hidden');
-            
-            gsap.fromTo('#hub-screen',
-                { opacity: 0, y: -20 },
-                { opacity: 1, y: 0, duration: 0.4 }
-            );
-        }
-    });
+    const fromScreen = document.getElementById('test-wizard');
+    const toScreen = document.getElementById('hub-screen');
+
+    transitionScreen(fromScreen, toScreen);
 }
 
 // Render the current question step
@@ -1062,34 +1099,18 @@ function finishTest() {
 function proceedToResults() {
     const testWizard = document.getElementById('test-wizard');
     const regScreen = document.getElementById('registration-screen');
-    const screenToHide = !testWizard.classList.contains('hidden') ? '#test-wizard' : '#registration-screen';
+    const fromScreen = !testWizard.classList.contains('hidden') ? testWizard : regScreen;
+    const toScreen = document.getElementById('loading-screen');
 
-    gsap.to(screenToHide, {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        onComplete: () => {
-            testWizard.classList.add('hidden');
-            regScreen.classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            
-            const testData = testsDatabase[currentTest];
-            document.getElementById('loading-title').textContent = testData.loadingTitle || 'Processando Perfil Biológico...';
-            document.getElementById('loading-subtitle').textContent = testData.loadingSubtitle || '';
-            
-            const loader = document.getElementById('loading-screen');
-            loader.classList.remove('hidden');
-            
-            gsap.fromTo('#loading-screen', 
-                { opacity: 0 },
-                { opacity: 1, duration: 0.3 }
-            );
-            
-            setTimeout(() => {
-                showResults(calculatedScore);
-            }, 1800);
-        }
+    transitionScreen(fromScreen, toScreen, () => {
+        const testData = testsDatabase[currentTest];
+        document.getElementById('loading-title').textContent = testData.loadingTitle || 'Processando Perfil Biológico...';
+        document.getElementById('loading-subtitle').textContent = testData.loadingSubtitle || '';
     });
+
+    setTimeout(() => {
+        showResults(calculatedScore);
+    }, 1800);
 }
 
 // Format phone inputs
@@ -1596,58 +1617,43 @@ function showResults(score) {
     document.getElementById('methodology-text').innerHTML = testData.methodologyText || '';
 
     // Hide loader and Show results
-    gsap.to('#loading-screen', {
-        opacity: 0,
-        duration: 0.3,
-        onComplete: () => {
-            document.getElementById('loading-screen').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            
-            const results = document.getElementById('results-screen');
-            results.classList.remove('hidden');
-            
-            // Set initial score display
-            document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? '0.00' : '0';
-            
-            gsap.fromTo('#results-screen',
-                { opacity: 0, y: 20 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.5, 
-                    ease: "power2.out",
-                    onComplete: () => {
-                        // Show the "Faça outro teste" button container
-                        const backBtnContainer = document.getElementById('results-back-btn-container');
-                        if (backBtnContainer) {
-                            backBtnContainer.classList.remove('hidden');
-                            gsap.fromTo(backBtnContainer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
-                        }
+    const fromScreen = document.getElementById('loading-screen');
+    const toScreen = document.getElementById('results-screen');
 
-                        // Count up score display
-                        const scoreObj = { val: 0 };
-                        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr';
-                        
-                        gsap.to(scoreObj, {
-                            val: score,
-                            duration: 1.2,
-                            ease: "power2.out",
-                            onUpdate: () => {
-                                document.getElementById('score-display').textContent = isFloat ? scoreObj.val.toFixed(2) : Math.round(scoreObj.val);
-                            }
-                        });
+    transitionScreen(fromScreen, toScreen, () => {
+        // Set initial score display
+        document.getElementById('score-display').textContent = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? '0.00' : '0';
+        
+        const backBtnContainer = document.getElementById('results-back-btn-container');
+        if (backBtnContainer) backBtnContainer.classList.add('hidden');
+    }, () => {
+        // Show the "Faça outro teste" button container
+        const backBtnContainer = document.getElementById('results-back-btn-container');
+        if (backBtnContainer) {
+            backBtnContainer.classList.remove('hidden');
+            gsap.fromTo(backBtnContainer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+        }
 
-                        // Animate SVG Gauge path
-                        if (gaugeFillPath) {
-                            gsap.to(gaugeFillPath, {
-                                strokeDashoffset: targetOffset,
-                                duration: 1.2,
-                                ease: "power2.out"
-                            });
-                        }
-                    }
-                }
-            );
+        // Count up score display
+        const scoreObj = { val: 0 };
+        const isFloat = currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr';
+        
+        gsap.to(scoreObj, {
+            val: score,
+            duration: 1.2,
+            ease: "power2.out",
+            onUpdate: () => {
+                document.getElementById('score-display').textContent = isFloat ? scoreObj.val.toFixed(2) : Math.round(scoreObj.val);
+            }
+        });
+
+        // Animate SVG Gauge path
+        if (gaugeFillPath) {
+            gsap.to(gaugeFillPath, {
+                strokeDashoffset: targetOffset,
+                duration: 1.2,
+                ease: "power2.out"
+            });
         }
     });
 }
@@ -1663,15 +1669,14 @@ function restartTest() {
     const backBtnContainer = document.getElementById('results-back-btn-container');
     if (backBtnContainer) backBtnContainer.classList.add('hidden');
 
-    gsap.to('#results-screen', {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        onComplete: () => {
-            document.getElementById('results-screen').classList.add('hidden');
-            // Re-open test to reset
-            openTest(currentTest);
-        }
+    const fromScreen = document.getElementById('results-screen');
+    const toScreen = document.getElementById('test-wizard');
+
+    transitionScreen(fromScreen, toScreen, () => {
+        currentStep = 0;
+        answers = [];
+        document.getElementById('test-category').textContent = testsDatabase[currentTest].title;
+        renderStep();
     });
 }
 
@@ -1714,29 +1719,9 @@ function goToHub() {
     const hub = document.getElementById('hub-screen');
 
     if (!wizard.classList.contains('hidden')) {
-        gsap.to('#test-wizard', {
-            opacity: 0,
-            y: 20,
-            duration: 0.3,
-            onComplete: () => {
-                wizard.classList.add('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-                hub.classList.remove('hidden');
-                gsap.fromTo('#hub-screen', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4 });
-            }
-        });
+        transitionScreen(wizard, hub);
     } else if (!results.classList.contains('hidden')) {
-        gsap.to('#results-screen', {
-            opacity: 0,
-            y: 20,
-            duration: 0.3,
-            onComplete: () => {
-                results.classList.add('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-                hub.classList.remove('hidden');
-                gsap.fromTo('#hub-screen', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4 });
-            }
-        });
+        transitionScreen(results, hub);
     }
 }
 
@@ -1825,6 +1810,7 @@ try {
 function filterCategory(category) {
     const cards = document.querySelectorAll('.calculator-card');
     const buttons = document.querySelectorAll('.filter-btn');
+    const grid = document.querySelector('#hub-screen .grid');
     
     // Update button states
     buttons.forEach(btn => {
@@ -1837,7 +1823,8 @@ function filterCategory(category) {
         }
     });
 
-    // 1. Capture the initial state of the cards (their layout positions)
+    // 1. Capture the initial height of the grid container and cards layout positions
+    const startHeight = grid ? grid.offsetHeight : 0;
     const state = Flip.getState(cards);
 
     // 2. Instantly update the layout (toggle hidden class)
@@ -1855,7 +1842,17 @@ function filterCategory(category) {
         }
     });
 
-    // 3. Animate the transition between states smoothly!
+    // 3. Capture the final height of the grid container and animate container height smoothly
+    if (grid) {
+        const finalHeight = grid.offsetHeight;
+        // Lock grid container to startHeight and animate to finalHeight
+        gsap.fromTo(grid, 
+            { height: startHeight, overflow: 'hidden' }, 
+            { height: finalHeight, duration: 0.5, ease: "power2.inOut" }
+        );
+    }
+
+    // 4. Animate the transition between card states smoothly!
     Flip.from(state, {
         duration: 0.5,
         ease: "power2.inOut",
@@ -1867,7 +1864,13 @@ function filterCategory(category) {
         ),
         onLeave: elements => gsap.to(elements, 
             { opacity: 0, scale: 0.9, duration: 0.25, ease: "power2.in" }
-        )
+        ),
+        onComplete: () => {
+            // Once all Flip reordering and animations are complete, clear inline constraints
+            if (grid) {
+                gsap.set(grid, { clearProps: "height,overflow" });
+            }
+        }
     });
 }
 
