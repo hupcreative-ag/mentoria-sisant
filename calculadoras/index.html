@@ -261,11 +261,16 @@
                 </p>
             </div>
 
+            <!-- Category Filters -->
+            <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-10 px-4">
+                <!-- Dynamically generated filters -->
+            </div>
+
             <!-- Calculators Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
                 <!-- Test 1: Escala de Procrastinação Pura (PPS) -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-purple-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('pps')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-purple-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('pps')" data-category="Comportamental">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-hourglass text-2xl"></i>
@@ -289,7 +294,7 @@
                 </div>
 
                 <!-- Test 2: Risco Cardiovascular (IAP) -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('iap')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('iap')" data-category="Cardiovascular">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-heart text-2xl"></i>
@@ -313,7 +318,7 @@
                 </div>
 
                 <!-- Test 3: Relação Triglicerídeos/HDL -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('tg-hdl')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('tg-hdl')" data-category="Cardiovascular">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-heart text-2xl"></i>
@@ -337,7 +342,7 @@
                 </div>
 
                 <!-- Test: Relação Apo B / Apo A1 -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('apob-apoa1')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('apob-apoa1')" data-category="Cardiovascular">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-heart text-2xl"></i>
@@ -361,7 +366,7 @@
                 </div>
 
                 <!-- Test: Relação HDL / Apo A1 -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('hdl-apoa1')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('hdl-apoa1')" data-category="Cardiovascular">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-heart text-2xl"></i>
@@ -385,7 +390,7 @@
                 </div>
 
                 <!-- Test: Relação Plaquetas / HDL (PHR) -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('phr')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-red-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('phr')" data-category="Cardiovascular">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-heart text-2xl"></i>
@@ -409,7 +414,7 @@
                 </div>
 
                 <!-- Test 4: Fadiga Adrenal -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-amber-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('fadiga-adrenal')">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover hover:border-amber-200 transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openTest('fadiga-adrenal')" data-category="Hormonal">
                     <div>
                         <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="ph-bold ph-activity text-2xl"></i>
@@ -433,7 +438,7 @@
                 </div>
 
                 <!-- Test 5: Risco de Resistência à Insulina (HOMA-IR) -->
-                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group opacity-75 relative overflow-hidden">
+                <div class="calculator-card bg-white rounded-2xl p-6 border border-gray-100 shadow-premium hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group opacity-75 relative overflow-hidden" data-category="Metabólico">
                     <div class="absolute top-3 right-3 bg-beige/10 text-beige text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
                         Em breve
                     </div>

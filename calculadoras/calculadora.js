@@ -1787,6 +1787,116 @@ function showToast(message) {
     }, 3000);
 }
 
+const categoryColors = {
+    'todos': {
+        inactive: 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50 hover:text-navy hover:border-navy',
+        active: 'bg-navy text-white border-navy shadow-sm'
+    },
+    'comportamental': {
+        inactive: 'bg-purple-50 text-purple-600 border-purple-100 hover:bg-purple-100/70',
+        active: 'bg-purple-600 text-white border-purple-600 shadow-sm'
+    },
+    'cardiovascular': {
+        inactive: 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100/70',
+        active: 'bg-red-600 text-white border-red-600 shadow-sm'
+    },
+    'hormonal': {
+        inactive: 'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100/70',
+        active: 'bg-amber-600 text-white border-amber-600 shadow-sm'
+    },
+    'metabólico': {
+        inactive: 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100',
+        active: 'bg-gray-600 text-white border-gray-600 shadow-sm'
+    }
+};
+
+const fallbackColors = {
+    inactive: 'bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100/70',
+    active: 'bg-blue-600 text-white border-blue-600 shadow-sm'
+};
+
+function filterCategory(category) {
+    const cards = document.querySelectorAll('.calculator-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    // Update button states
+    buttons.forEach(btn => {
+        const cat = btn.getAttribute('data-cat');
+        const color = categoryColors[cat.toLowerCase()] || fallbackColors;
+        if (cat === category) {
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.active}`;
+        } else {
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.inactive}`;
+        }
+    });
+
+    // Animate cards filtering
+    cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const matches = (category === 'Todos' || cat === category);
+
+        if (matches) {
+            if (card.classList.contains('hidden')) {
+                // Instantly remove hidden so GSAP can calculate coordinates
+                card.classList.remove('hidden');
+                // Animate showing
+                gsap.fromTo(card, 
+                    { opacity: 0, scale: 0.9, y: 12 },
+                    { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "power2.out", clearProps: "all" }
+                );
+            }
+        } else {
+            if (!card.classList.contains('hidden')) {
+                // Animate hiding
+                gsap.to(card, {
+                    opacity: 0,
+                    scale: 0.9,
+                    y: 12,
+                    duration: 0.25,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+        }
+    });
+}
+
+function initFilters() {
+    const cards = document.querySelectorAll('.calculator-card');
+    const categories = new Set();
+    categories.add('Todos');
+
+    cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (cat) {
+            categories.add(cat);
+        }
+    });
+
+    const container = document.getElementById('filter-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.setAttribute('data-cat', cat);
+        btn.onclick = () => filterCategory(cat);
+        btn.textContent = cat;
+
+        const color = categoryColors[cat.toLowerCase()] || fallbackColors;
+        if (cat === 'Todos') {
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.active}`;
+        } else {
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.inactive}`;
+        }
+
+        container.appendChild(btn);
+    });
+}
+
 // Immediately check URL params on module execution and attach event listeners
 try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -1804,6 +1914,9 @@ try {
             e.target.value = formatPhone(truncated);
         });
     }
+
+    // Initialize category filters
+    setTimeout(() => initFilters(), 50);
 } catch(e) {
     console.error(e);
 }
@@ -1820,3 +1933,5 @@ window.shareResult = shareResult;
 window.handleRegistrationSubmit = handleRegistrationSubmit;
 window.handleLoginSubmit = handleLoginSubmit;
 window.toggleRegMode = toggleRegMode;
+window.filterCategory = filterCategory;
+window.initFilters = initFilters;
