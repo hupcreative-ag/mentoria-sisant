@@ -299,8 +299,157 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'ls7-demencia': {
+        title: 'Predisposição à Demência (Life\'s Simple 7 - LS7)',
+        category: 'Neurocognitivo',
+        maxScore: 14,
+        loadingTitle: 'Calculando Escore de Saúde Vascular & Cognitiva...',
+        loadingSubtitle: 'Cruzando seus parâmetros clínicos e de estilo de vida com os critérios da American Heart Association (AHA).',
+        methodologyTitle: 'Sobre o Protocolo Life\'s Simple 7 (LS7) e a Saúde Cerebral',
+        methodologyText: `
+            <p>O protocolo <strong>Life's Simple 7 (LS7)</strong> foi desenvolvido pela <em>American Heart Association (AHA)</em> para quantificar a saúde cardiovascular global através de 7 métricas essenciais (3 comportamentais e 4 biológicas/clínicas).</p>
+            <p class="mt-2">Estudos epidemiológicos de grande porte — com destaque para o célebre estudo <strong>ARIC (Atherosclerosis Risk in Communities)</strong> — demonstraram que a saúde cardiovascular em idades jovens e de meia-idade dita diretamente o envelhecimento cerebral e o risco de demência vascular e Alzheimer no futuro. O fluxo sanguíneo cerebral e a integridade da microcirculação dependem diretamente desses 7 marcadores.</p>
+            <p class="mt-2"><strong>Destaque Científico de Redução de Risco:</strong></p>
+            <p class="mt-1 bg-blue-50/80 p-3 rounded-lg border border-blue-200 text-blue-900 text-xs sm:text-sm leading-relaxed">
+                <strong>Diminuição de ~37,6% no Risco de Demência:</strong> Em estudos longitudinais com ~26 anos de acompanhamento, uma diferença de apenas <strong>5 pontos</strong> no escore LS7 (por exemplo, elevando a pontuação de 5 para 10 pontos) esteve associada a uma redução de aproximadamente <strong>37,6% no risco de desenvolver demência</strong>.
+            </p>
+            <p class="mt-2">A pontuação varia de 0 a 14 pontos (0 a 2 pontos por componente):</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Saúde Baixa (0 a 4 pontos):</strong> Elevado risco de complicação microvascular e declínio cognitivo futuro.</li>
+                <li><strong>Saúde Intermediária (5 a 9 pontos):</strong> Presença de alguns fatores de proteção, porém com margem expressiva para otimização preventivo-clínica.</li>
+                <li><strong>Saúde Ideal (10 a 14 pontos):</strong> Alta proteção vascular e neurocognitiva de longo prazo.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: '1. Tabagismo: Como é o seu histórico de consumo de tabaco/nicotina?',
+                options: [
+                    { text: 'Ideal (2 pts): Nunca fumei OU parei de fumar há mais de 12 meses.', value: 2 },
+                    { text: 'Intermediário (1 pt): Ex-fumante (parei de fumar há 12 meses ou menos).', value: 1 },
+                    { text: 'Ruim (0 pts): Fumante atual (cigarro convencional, eletrônico ou derivados).', value: 0 }
+                ]
+            },
+            {
+                text: '2. Atividade Física: Qual é o seu nível semanal de exercícios?',
+                options: [
+                    { text: 'Ideal (2 pts): ≥ 150 min/sem de atividade moderada OU ≥ 75 min/sem de atividade vigorosa.', value: 2 },
+                    { text: 'Intermediário (1 pt): Prático entre 1 e 149 min/semana de atividade moderada (ou equivalente).', value: 1 },
+                    { text: 'Ruim (0 pts): Sedentarismo (nenhuma atividade física praticada na semana).', value: 0 }
+                ]
+            },
+            {
+                text: '3. Dieta: Quantos dos 5 hábitos saudáveis você cumpre? (1. Frutas/vegetais diários; 2. Peixe ≥2x/sem; 3. Fibras diárias; 4. Baixo sódio; 5. Raras bebidas açucaradas)',
+                options: [
+                    { text: 'Ideal (2 pts): Cumpro de 4 a 5 hábitos alimentares saudáveis.', value: 2 },
+                    { text: 'Intermediário (1 pt): Cumpro de 2 a 3 hábitos alimentares saudáveis.', value: 1 },
+                    { text: 'Ruim (0 pts): Cumpro 0 ou apenas 1 hábito alimentar saudável.', value: 0 }
+                ]
+            },
+            {
+                text: '4. IMC (Índice de Massa Corporal = Peso ÷ Altura²):',
+                options: [
+                    { text: 'Ideal (2 pts): IMC menor que 25,0 kg/m² (peso saudável).', value: 2 },
+                    { text: 'Intermediário (1 pt): IMC entre 25,0 e 29,9 kg/m² (sobrepeso).', value: 1 },
+                    { text: 'Ruim (0 pts): IMC maior ou igual a 30,0 kg/m² (obesidade).', value: 0 }
+                ]
+            },
+            {
+                text: '5. Colesterol Total:',
+                options: [
+                    { text: 'Ideal (2 pts): Menor que 200 mg/dL sem uso de medicação para colesterol.', value: 2 },
+                    { text: 'Intermediário (1 pt): Entre 200 e 239 mg/dL OU menor que 200 mg/dL com medicação.', value: 1 },
+                    { text: 'Ruim (0 pts): Maior ou igual a 240 mg/dL.', value: 0 }
+                ]
+            },
+            {
+                text: '6. Pressão Arterial Habitual:',
+                options: [
+                    { text: 'Ideal (2 pts): Menor que 120/80 mmHg sem medicação anti-hipertensiva.', value: 2 },
+                    { text: 'Intermediário (1 pt): Entre 120-139 / 80-89 mmHg OU tratada e controlada com medicação.', value: 1 },
+                    { text: 'Ruim (0 pts): Maior ou igual a 140/90 mmHg (hipertensão não controlada).', value: 0 }
+                ]
+            },
+            {
+                text: '7. Glicemia de Jejum:',
+                options: [
+                    { text: 'Ideal (2 pts): Menor que 100 mg/dL sem tratamento para diabetes.', value: 2 },
+                    { text: 'Intermediário (1 pt): Entre 100 e 125 mg/dL (pré-diabetes) OU tratada e menor que 100 mg/dL.', value: 1 },
+                    { text: 'Ruim (0 pts): Maior ou igual a 126 mg/dL (diabetes).', value: 0 }
+                ]
+            }
+        ]
     }
 };
+
+// Results mapping for Life's Simple 7 (LS7) Dementia Risk Score
+const ls7Results = [
+    {
+        min: 0,
+        max: 4,
+        status: 'Saúde Baixa / Risco Muito Elevado',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Sua pontuação no Life\'s Simple 7 (LS7) indica saúde cardiovascular e vascular cerebral baixa (0 a 3 pontos). Múltiplos fatores metabolicamente desfavoráveis (como hipertensão, dislipidemia, hiperglicemia ou sedentarismo) estão presentes simultaneamente. Estudos longitudinais (como o estudo ARIC) indicam que perfis nesta faixa apresentam maior suscetibilidade ao declínio cognitivo e desenvolvimento de demência ao longo das décadas.',
+        recommendations: [
+            'Consulte um médico para uma avaliação metabólica e cardiovascular completa, com controle rigoroso da pressão, glicemia e lipídios.',
+            'Inicie modificações imediatas de estilo de vida: cessações do tabagismo, reeducação alimentar e rotina progressiva de exercícios.',
+            'Priorize a redução de carboidratos refinados e açúcares para combater a resistência insulínica e a neuroinflamação.'
+        ]
+    },
+    {
+        min: 4,
+        max: 7,
+        status: 'Alerta Preventivo / Risco Elevado',
+        color: '#f43f5e', // rose-500
+        gaugeClass: 'border-t-rose-500 border-r-rose-500',
+        interpretation: 'Sua pontuação no LS7 está na faixa de alerta preventivo (4 a 6 pontos). Há espaço significativo para otimização dos parâmetros cardiovasculares. Ajustar esses marcadores para faixas ideais pode proporcionar uma redução drástica no risco futuro de demência vascular e Alzheimer.',
+        recommendations: [
+            'Foque em transicionar os marcadores intermediários (como pressão ou glicemia) para os níveis ideais.',
+            'Aumente a prática diária de atividade física aeróbica e de resistência para melhorar a perfusão cerebral e vascular.',
+            'Adote uma dieta cardioprotetora e neuroprotetora rica em antioxidantes, sementes e vegetais folhosos.'
+        ]
+    },
+    {
+        min: 7,
+        max: 10,
+        status: 'Saúde Intermediária / Risco Moderado',
+        color: '#f97316', // orange-500
+        gaugeClass: 'border-t-orange-500 border-r-orange-500',
+        interpretation: 'Sua pontuação situa-se na faixa de saúde cardiovascular e cognitiva intermediária (7 a 9 pontos). Você já possui alguns pilares bem consolidados, mas ainda há margem para alcançar o patamar protetor ideal. Elevar seu escore em 5 pontos está associado a uma redução de aproximadamente 37,6% no risco de demência ao longo do tempo.',
+        recommendations: [
+            'Identifique os pontos que receberam 0 ou 1 ponto (como dieta, IMC ou pressão) e trace metas específicas de melhoria.',
+            'Garanta uma rotina semanal com pelo menos 150 minutos de exercícios físicos moderados.',
+            'Mantenha acompanhamento médico preventivo periódico para otimizar exames de glicemia e colesterol.'
+        ]
+    },
+    {
+        min: 10,
+        max: 13,
+        status: 'Saúde Elevada / Boa Proteção Cognitiva',
+        color: '#84cc16', // lime-500
+        gaugeClass: 'border-t-lime-500 border-r-lime-500',
+        interpretation: 'Excelente! Sua pontuação atinge o patamar de saúde cardiovascular e cognitiva elevada (10 a 12 pontos). Com base no estudo ARIC, manter um escore alto no LS7 reduz em quase 38% a predisposição à demência em um acompanhamento de longo prazo (~26 anos), preservando a saúde microvascular do cérebro.',
+        recommendations: [
+            'Parabéns pela consistência! Continue mantendo os hábitos alimentares e de atividade física atuais.',
+            'Monitore anualmente os marcadores séricos para assegurar que glicemia e pressão sigam nas metas ideais.',
+            'Associe o bom perfil vascular a estímulos de reserva cognitiva (estudos, leitura, desafios mentais e boa qualidade de sono).'
+        ]
+    },
+    {
+        min: 13,
+        max: 999,
+        status: 'Saúde Ideal / Máxima Proteção Cognitiva',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Parabéns! Sua pontuação é máxima ou praticamente perfeita no protocolo Life\'s Simple 7 (13 a 14 pontos). Você apresenta um perfil cardiovascular e metabólico impecável, o que confere a máxima proteção conhecida contra lesões microvasculares cerebrais, declínio cognitivo e demência.',
+        recommendations: [
+            'Sua disciplina e estilo de vida são exemplares. Mantenha essa estrutura de hábitos no longo prazo.',
+            'Refaça seu painel médico e metabólico anualmente para garantir a estabilidade dos excelentes parâmetros.',
+            'Compartilhe esse estilo de vida preventivo com sua família e comunidade.'
+        ]
+    }
+];
 
 // Results mapping for Platelet / HDL Ratio (PHR)
 const phrResults = [
@@ -1369,6 +1518,9 @@ function showResults(score) {
     } else if (currentTest === 'phr') {
         resultBand = phrResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = phrResults[phrResults.length - 1];
+    } else if (currentTest === 'ls7-demencia') {
+        resultBand = ls7Results.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = ls7Results[ls7Results.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -1591,6 +1743,32 @@ function showResults(score) {
             targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
         }
         percentage = targetAngle / 180;
+    } else if (currentTest === 'ls7-demencia') {
+        let targetAngle;
+        if (score < 4) {
+            const minS = 0;
+            const maxS = 4;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 7) {
+            const minS = 4;
+            const maxS = 7;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 10) {
+            const minS = 7;
+            const maxS = 10;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 13) {
+            const minS = 10;
+            const maxS = 13;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 13;
+            const maxS = 14;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
         percentage = score / maxScore;
@@ -1784,6 +1962,10 @@ const categoryColors = {
     'cardiovascular': {
         inactive: 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100/70',
         active: 'bg-red-600 text-white border-red-600 shadow-sm'
+    },
+    'neurocognitivo': {
+        inactive: 'bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100/70',
+        active: 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
     },
     'hormonal': {
         inactive: 'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100/70',
