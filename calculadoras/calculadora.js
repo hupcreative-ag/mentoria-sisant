@@ -323,59 +323,59 @@ const testsDatabase = {
         `,
         questions: [
             {
-                text: '1. Tabagismo: Como é o seu histórico de consumo de tabaco/nicotina?',
+                text: '1. Tabagismo: Como é o seu histórico de consumo de tabaco ou nicotina?',
                 options: [
-                    { text: 'Ideal (2 pts): Nunca fumei OU parei de fumar há mais de 12 meses.', value: 2 },
-                    { text: 'Intermediário (1 pt): Ex-fumante (parei de fumar há 12 meses ou menos).', value: 1 },
-                    { text: 'Ruim (0 pts): Fumante atual (cigarro convencional, eletrônico ou derivados).', value: 0 }
+                    { text: 'Nunca fumei ou parei de fumar há mais de 12 meses', value: 2 },
+                    { text: 'Ex-fumante (parei de fumar há 12 meses ou menos)', value: 1 },
+                    { text: 'Fumante atual (cigarro convencional, eletrônico ou derivados)', value: 0 }
                 ]
             },
             {
                 text: '2. Atividade Física: Qual é o seu nível semanal de exercícios?',
                 options: [
-                    { text: 'Ideal (2 pts): ≥ 150 min/sem de atividade moderada OU ≥ 75 min/sem de atividade vigorosa.', value: 2 },
-                    { text: 'Intermediário (1 pt): Prático entre 1 e 149 min/semana de atividade moderada (ou equivalente).', value: 1 },
-                    { text: 'Ruim (0 pts): Sedentarismo (nenhuma atividade física praticada na semana).', value: 0 }
+                    { text: '≥ 150 min/semana de atividade moderada OU ≥ 75 min/semana de atividade vigorosa', value: 2 },
+                    { text: 'Entre 1 e 149 min/semana de atividade moderada (ou equivalente)', value: 1 },
+                    { text: 'Nenhuma atividade física praticada na semana (sedentarismo)', value: 0 }
                 ]
             },
             {
-                text: '3. Dieta: Quantos dos 5 hábitos saudáveis você cumpre? (1. Frutas/vegetais diários; 2. Peixe ≥2x/sem; 3. Fibras diárias; 4. Baixo sódio; 5. Raras bebidas açucaradas)',
+                text: '3. Dieta: Quantos dos seguintes 5 hábitos alimentares saudáveis você cumpre? (1. Frutas/vegetais diários; 2. Peixe ≥2x/sem; 3. Fibras diárias; 4. Baixo sódio; 5. Raras bebidas açucaradas)',
                 options: [
-                    { text: 'Ideal (2 pts): Cumpro de 4 a 5 hábitos alimentares saudáveis.', value: 2 },
-                    { text: 'Intermediário (1 pt): Cumpro de 2 a 3 hábitos alimentares saudáveis.', value: 1 },
-                    { text: 'Ruim (0 pts): Cumpro 0 ou apenas 1 hábito alimentar saudável.', value: 0 }
+                    { text: 'Cumpro de 4 a 5 hábitos alimentares saudáveis', value: 2 },
+                    { text: 'Cumpro de 2 a 3 hábitos alimentares saudáveis', value: 1 },
+                    { text: 'Cumpro 0 ou apenas 1 hábito alimentar saudável', value: 0 }
                 ]
             },
             {
-                text: '4. IMC (Índice de Massa Corporal = Peso ÷ Altura²):',
+                text: '4. Índice de Massa Corporal (IMC):',
                 options: [
-                    { text: 'Ideal (2 pts): IMC menor que 25,0 kg/m² (peso saudável).', value: 2 },
-                    { text: 'Intermediário (1 pt): IMC entre 25,0 e 29,9 kg/m² (sobrepeso).', value: 1 },
-                    { text: 'Ruim (0 pts): IMC maior ou igual a 30,0 kg/m² (obesidade).', value: 0 }
+                    { text: 'IMC menor que 25,0 kg/m² (peso saudável)', value: 2 },
+                    { text: 'IMC entre 25,0 e 29,9 kg/m² (sobrepeso)', value: 1 },
+                    { text: 'IMC maior ou igual a 30,0 kg/m² (obesidade)', value: 0 }
                 ]
             },
             {
-                text: '5. Colesterol Total:',
+                text: '5. Nível de Colesterol Total:',
                 options: [
-                    { text: 'Ideal (2 pts): Menor que 200 mg/dL sem uso de medicação para colesterol.', value: 2 },
-                    { text: 'Intermediário (1 pt): Entre 200 e 239 mg/dL OU menor que 200 mg/dL com medicação.', value: 1 },
-                    { text: 'Ruim (0 pts): Maior ou igual a 240 mg/dL.', value: 0 }
+                    { text: 'Menor que 200 mg/dL sem uso de medicação para colesterol', value: 2 },
+                    { text: 'Entre 200 e 239 mg/dL, ou menor que 200 mg/dL em uso de medicação', value: 1 },
+                    { text: 'Maior ou igual a 240 mg/dL', value: 0 }
                 ]
             },
             {
-                text: '6. Pressão Arterial Habitual:',
+                text: '6. Nível de Pressão Arterial Habitual:',
                 options: [
-                    { text: 'Ideal (2 pts): Menor que 120/80 mmHg sem medicação anti-hipertensiva.', value: 2 },
-                    { text: 'Intermediário (1 pt): Entre 120-139 / 80-89 mmHg OU tratada e controlada com medicação.', value: 1 },
-                    { text: 'Ruim (0 pts): Maior ou igual a 140/90 mmHg (hipertensão não controlada).', value: 0 }
+                    { text: 'Menor que 120/80 mmHg sem medicação anti-hipertensiva', value: 2 },
+                    { text: 'Entre 120-139 / 80-89 mmHg, ou tratada e controlada com medicação', value: 1 },
+                    { text: 'Maior ou igual a 140/90 mmHg (hipertensão)', value: 0 }
                 ]
             },
             {
-                text: '7. Glicemia de Jejum:',
+                text: '7. Nível de Glicemia de Jejum:',
                 options: [
-                    { text: 'Ideal (2 pts): Menor que 100 mg/dL sem tratamento para diabetes.', value: 2 },
-                    { text: 'Intermediário (1 pt): Entre 100 e 125 mg/dL (pré-diabetes) OU tratada e menor que 100 mg/dL.', value: 1 },
-                    { text: 'Ruim (0 pts): Maior ou igual a 126 mg/dL (diabetes).', value: 0 }
+                    { text: 'Menor que 100 mg/dL sem tratamento para diabetes', value: 2 },
+                    { text: 'Entre 100 e 125 mg/dL (pré-diabetes), ou tratada e menor que 100 mg/dL', value: 1 },
+                    { text: 'Maior ou igual a 126 mg/dL (diabetes)', value: 0 }
                 ]
             }
         ]
