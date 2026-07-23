@@ -339,7 +339,16 @@ const testsDatabase = {
                 ]
             },
             {
-                text: '3. Dieta: Quantos dos seguintes 5 hábitos alimentares saudáveis você cumpre? (1. Frutas/vegetais diários; 2. Peixe ≥2x/sem; 3. Fibras diárias; 4. Baixo sódio; 5. Raras bebidas açucaradas)',
+                text: `
+                    <div>3. Dieta: Quantos dos seguintes 5 hábitos alimentares saudáveis você cumpre na sua rotina?</div>
+                    <ul class="mt-3 mb-2 space-y-1.5 text-sm text-gray-600 list-disc pl-5 font-normal">
+                        <li><strong>Frutas e vegetais:</strong> consumo diário</li>
+                        <li><strong>Peixe / Ômega-3:</strong> no mínimo 2 vezes por semana</li>
+                        <li><strong>Fibras e grãos integrais:</strong> consumo diário</li>
+                        <li><strong>Sódio:</strong> baixo consumo de sal e alimentos embutidos/processados</li>
+                        <li><strong>Bebidas açucaradas:</strong> raras ou nulas (refrigerantes, sucos adoçados)</li>
+                    </ul>
+                `,
                 options: [
                     { text: 'Cumpro de 4 a 5 hábitos alimentares saudáveis', value: 2 },
                     { text: 'Cumpro de 2 a 3 hábitos alimentares saudáveis', value: 1 },
@@ -1071,7 +1080,7 @@ function renderStep() {
     );
 
     // Set Question Text
-    document.getElementById('question-text').textContent = question.text;
+    document.getElementById('question-text').innerHTML = question.text;
 
     // Set Options/Inputs List
     const optionsBox = document.getElementById('options-box');
