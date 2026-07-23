@@ -301,7 +301,7 @@ const testsDatabase = {
         ]
     },
     'ls7-demencia': {
-        title: 'Predisposição à Demência (Life\'s Simple 7 - LS7)',
+        title: 'Predisposição à Demência <span class="block text-sm sm:text-base font-normal text-gray-500 mt-1">(Life\'s Simple 7 - LS7)</span>',
         category: 'Neurocognitivo',
         maxScore: 14,
         loadingTitle: 'Calculando Escore de Saúde Vascular & Cognitiva...',
@@ -1537,7 +1537,7 @@ function showResults(score) {
 
     // Setup Results UI Text
     const testData = testsDatabase[currentTest];
-    document.getElementById('result-title').textContent = testData.title;
+    document.getElementById('result-title').innerHTML = testData.title;
 
     const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? score.toFixed(2) : score;
     document.getElementById('score-display').textContent = displayScore;
