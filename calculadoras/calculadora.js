@@ -1250,67 +1250,106 @@ const hdlApoa1Results = [
 
 // Generic screen transition helper to prevent layout collapse and footer jumping
 function transitionScreen(fromScreen, toScreen, onPrepare, onComplete) {
-    const main = document.querySelector('main');
-    const startHeight = main ? main.offsetHeight : 0;
-
-    // Lock main content area height during transition to avoid footer pop/flicker
-    if (main && startHeight) {
-        main.style.minHeight = `${startHeight}px`;
+    if (!fromScreen || !toScreen) {
+        console.error("transitionScreen: Missing screen elements", { fromScreen, toScreen });
+        return;
     }
 
-    const isEnteringWizardOrResults = toScreen.id === 'test-wizard' || toScreen.id === 'results-screen';
-    const exitY = isEnteringWizardOrResults ? -15 : 15;
-    const enterY = isEnteringWizardOrResults ? 15 : -15;
+    const doInstantTransition = () => {
+        fromScreen.classList.add('hidden');
+        fromScreen.style.opacity = '1';
+        fromScreen.style.transform = 'none';
 
-    gsap.to(fromScreen, {
-        opacity: 0,
-        y: exitY,
-        duration: 0.3,
-        ease: "power2.inOut",
-        onComplete: () => {
-            fromScreen.classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'instant' });
+        if (onPrepare) onPrepare();
 
-            if (onPrepare) {
-                onPrepare();
-            }
+        toScreen.classList.remove('hidden');
+        toScreen.style.opacity = '1';
+        toScreen.style.transform = 'none';
 
-            toScreen.style.opacity = '0';
-            toScreen.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
 
-            if (main) {
-                // Clear inline height briefly to calculate target height correctly
-                main.style.minHeight = '';
-                const finalHeight = main.offsetHeight;
-                main.style.minHeight = `${startHeight}px`;
+        if (onComplete) onComplete();
+    };
 
-                // Animate container height smoothly
-                gsap.fromTo(main,
-                    { minHeight: startHeight },
+    if (typeof gsap === 'undefined') {
+        doInstantTransition();
+        return;
+    }
+
+    let isDone = false;
+    const safeFinish = () => {
+        if (isDone) return;
+        isDone = true;
+        doInstantTransition();
+    };
+
+    try {
+        const main = document.querySelector('main');
+        const startHeight = main ? main.offsetHeight : 0;
+
+        if (main && startHeight) {
+            main.style.minHeight = `${startHeight}px`;
+        }
+
+        const isEnteringWizardOrResults = toScreen.id === 'test-wizard' || toScreen.id === 'results-screen';
+        const exitY = isEnteringWizardOrResults ? -15 : 15;
+        const enterY = isEnteringWizardOrResults ? 15 : -15;
+
+        gsap.to(fromScreen, {
+            opacity: 0,
+            y: exitY,
+            duration: 0.25,
+            ease: "power2.inOut",
+            onComplete: () => {
+                fromScreen.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+
+                if (onPrepare) onPrepare();
+
+                toScreen.style.opacity = '0';
+                toScreen.classList.remove('hidden');
+
+                if (main) {
+                    main.style.minHeight = '';
+                    const finalHeight = main.offsetHeight;
+                    main.style.minHeight = `${startHeight}px`;
+
+                    gsap.fromTo(main,
+                        { minHeight: startHeight },
+                        { 
+                            minHeight: finalHeight, 
+                            duration: 0.3, 
+                            ease: "power2.inOut", 
+                            clearProps: "minHeight" 
+                        }
+                    );
+                }
+
+                gsap.fromTo(toScreen,
+                    { opacity: 0, y: enterY },
                     { 
-                        minHeight: finalHeight, 
-                        duration: 0.4, 
-                        ease: "power2.inOut", 
-                        clearProps: "minHeight" 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 0.3, 
+                        ease: "power2.out",
+                        onComplete: () => {
+                            isDone = true;
+                            if (onComplete) onComplete();
+                        }
                     }
                 );
             }
+        });
 
-            // Animate target screen entering
-            gsap.fromTo(toScreen,
-                { opacity: 0, y: enterY },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.4, 
-                    ease: "power2.out",
-                    onComplete: () => {
-                        if (onComplete) onComplete();
-                    }
-                }
-            );
-        }
-    });
+        // 500ms safety net in case GSAP animation stalls
+        setTimeout(() => {
+            if (!isDone) safeFinish();
+        }, 500);
+
+    } catch (err) {
+        console.warn("GSAP transition failed, fallback:", err);
+        safeFinish();
+    }
 }
 
 // Open a test from the Hub
@@ -2434,7 +2473,25 @@ function filterCategory(category) {
     });
 }
 
+function attachCardClickListeners() {
+    const cards = document.querySelectorAll('.calculator-card');
+    cards.forEach(card => {
+        const onclickAttr = card.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/openTest\('([^']+)'\)/);
+        const testId = match ? match[1] : card.getAttribute('data-test');
+        if (testId) {
+            card.style.cursor = 'pointer';
+            card.onclick = (e) => {
+                e.preventDefault();
+                openTest(testId);
+            };
+        }
+    });
+}
+
 function initFilters() {
+    attachCardClickListeners();
+
     const cards = document.querySelectorAll('.calculator-card');
     const categories = new Set();
     categories.add('Todos');
