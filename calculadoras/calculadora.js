@@ -620,6 +620,37 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'sii': {
+        title: 'Índice de Inflamação Imune Sistêmica <span class="block text-xs sm:text-sm font-normal text-gray-500 mt-0.5">(SII — Systemic Immune-Inflammation Index)</span>',
+        category: 'Cardiovascular',
+        maxScore: 2000,
+        loadingTitle: 'Analisando Marcadores de Inflamação Sistêmica...',
+        loadingSubtitle: 'Calculando a relação (Plaquetas × Neutrófilos) / Linfócitos com base no estudo NHANES (Xia et al., 2023).',
+        methodologyTitle: 'Sobre o Índice de Inflamação Imune Sistêmica (SII)',
+        methodologyText: `
+            <p>O <strong>Índice de Inflamação Imune Sistêmica (SII)</strong> é um marcador inflamatório e imune de última geração, calculated a partir da relação direta entre imunidade inata, hemostasia e imunidade adaptativa extraídas do hemograma simples:</p>
+            <div class="my-3 p-3 bg-gray-50 rounded-lg border border-gray-200 text-center font-mono text-sm text-navy font-bold">
+                SII = (Plaquetas × Neutrófilos) / Linfócitos
+            </div>
+            <p class="mt-2">Estudo de coorte prospectivo com acompanhamento de <strong>20 anos em 42.875 adultos nos EUA</strong> publicado no <em>Journal of Clinical Medicine (Xia et al., 2023)</em> demonstrou que o SII é um preditor independente de mortalidade por todas as causas e por doenças cardiovasculares.</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>SII &lt; 355:</strong> Baixa inflamação imune — padrão ideal associado à maior sobrevida global e cardiovascular.</li>
+                <li><strong>SII 355 – 655:</strong> Nível inflamatório moderado — sinal de alerta preventivo para otimização do estilo de vida.</li>
+                <li><strong>SII &gt; 655:</strong> Inflamação imune elevada — associada a maior aterogênese e remodelamento vascular.</li>
+            </ul>
+        `,
+        questions: [
+            {
+                text: 'Insira os marcadores do seu hemograma completo:',
+                type: 'numeric',
+                inputs: [
+                    { id: 'plaquetas', label: 'Plaquetas (em mil/µL ou /µL, ex: 250 ou 250.000):', placeholder: 'Ex: 250', min: 10, max: 1000000 },
+                    { id: 'neutrofilos', label: 'Neutrófilos Absolutos (em /µL ou mil/µL, ex: 4200 ou 4.2):', placeholder: 'Ex: 4200 ou 4.2', min: 0.1, max: 50000 },
+                    { id: 'linfocitos', label: 'Linfócitos Absolutos (em /µL ou mil/µL, ex: 2100 ou 2.1):', placeholder: 'Ex: 2100 ou 2.1', min: 0.1, max: 50000 }
+                ]
+            }
+        ]
     }
 };
 
