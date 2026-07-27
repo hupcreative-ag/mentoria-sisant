@@ -899,6 +899,49 @@ const adrenalResults = [
     }
 ];
 
+// Results mapping for Systemic Immune-Inflammation Index (SII)
+const siiResults = [
+    {
+        min: 0,
+        max: 355,
+        status: 'Baixo Risco / Baixa Inflamação (< 355)',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Seu Índice de Inflamação Imune Sistêmica (SII) está na faixa ideal (< 355). Isso reflete um excelente equilíbrio entre a imunidade inata (neutrófilos), a regulação hemostática (plaquetas) e a imunidade adaptativa (linfócitos).',
+        recommendations: [
+            'Mantenha seu padrão alimentar anti-inflamatório rico em antioxidantes, fibras e gorduras saudáveis (ex: ômega-3).',
+            'Continue praticando atividade física regular e promovendo uma boa higiene do sono.',
+            'Realize exames de rotina anuais para monitorar a consistência dos seus marcadores biológicos.'
+        ]
+    },
+    {
+        min: 355,
+        max: 655,
+        status: 'Inflamação Moderada / Atenção Preventiva (355 a 655)',
+        color: '#f59e0b', // amber-500
+        gaugeClass: 'border-t-amber-500 border-r-amber-500',
+        interpretation: 'Seu SII encontra-se na faixa intermediária/moderada (entre 355 e 655). Indica uma resposta imunoinflamatória subclínica ativada. É recomendável avaliar estilo de vida, sono e fatores de estresse oxidativo.',
+        recommendations: [
+            'Avalie e reduza o consumo de alimentos ultraprocessados, açúcares refinados e gorduras trans.',
+            'Otimize o manejo do estresse crônico através de técnicas de modulação autonômica e descanso adequado.',
+            'Considere refazer o hemograma em 60 a 90 dias com acompanhamento médico integrativo.'
+        ]
+    },
+    {
+        min: 655,
+        max: 99999,
+        status: 'Inflamação Elevada / Risco Cardiovascular Aumentado (> 655)',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Seu SII está em patamar elevado (> 655). Na literatura científica (Xia et al., Journal of Clinical Medicine 2023), valores elevados de SII associam-se a maior atividade inflamatória crônica vascular e maior risco cardiovascular.',
+        recommendations: [
+            'Agende uma avaliação médica detalhada para investigar possíveis focos inflamatórios e endoteliais.',
+            'Investigue marcadores complementares como PCR ultra-sensível, homocisteína e perfil lipídico completo.',
+            'Adote um protocolo intensivo de estilo de vida focado na redução da inflamação sistêmica.'
+        ]
+    }
+];
+
 // Results mapping for Atherogenic Index of Plasma (IAP)
 const iapResults = [
     {
@@ -1544,6 +1587,12 @@ function finishTest() {
         const platelets = answers[0].platelets;
         const hdl = answers[0].hdl;
         calculatedScore = platelets / hdl;
+    } else if (currentTest === 'sii') {
+        let plaq = Number(answers[0].plaquetas);
+        let neutro = Number(answers[0].neutrofilos);
+        let linfo = Number(answers[0].linfocitos);
+        if (plaq > 1000) plaq = plaq / 1000;
+        calculatedScore = (plaq * neutro) / linfo;
     } else {
         calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
     }
@@ -1861,6 +1910,9 @@ function showResults(score) {
     } else if (currentTest === 'organizacao-pessoal') {
         resultBand = organizacaoResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = organizacaoResults[organizacaoResults.length - 1];
+    } else if (currentTest === 'sii') {
+        resultBand = siiResults.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = siiResults[siiResults.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -1870,9 +1922,9 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').innerHTML = testData.title;
 
-    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? score.toFixed(2) : (currentTest === 'organizacao-pessoal' ? (Number.isInteger(score) ? score : score.toFixed(1)) : score);
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr' || currentTest === 'sii') ? score.toFixed(2) : (currentTest === 'organizacao-pessoal' ? (Number.isInteger(score) ? score : score.toFixed(1)) : score);
     document.getElementById('score-display').textContent = displayScore;
-    document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? 'RELAÇÃO' : 'PONTOS';
+    document.getElementById('score-label').textContent = (currentTest === 'iap' || currentTest === 'sii') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
     document.getElementById('result-interpretation').textContent = resultBand.interpretation;
     
@@ -2133,6 +2185,24 @@ function showResults(score) {
             const maxS = 25;
             const clamped = Math.min(maxS, score);
             targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
+    } else if (currentTest === 'sii') {
+        let targetAngle;
+        if (score < 355) {
+            const minS = 0;
+            const maxS = 355;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 60;
+        } else if (score < 655) {
+            const minS = 355;
+            const maxS = 655;
+            targetAngle = 60 + ((score - minS) / (maxS - minS)) * 60;
+        } else {
+            const minS = 655;
+            const maxS = 1500;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
         }
         percentage = targetAngle / 180;
     } else {
