@@ -1,14 +1,19 @@
-// supabase.js - Inicialização do Cliente Supabase para a plataforma Sisant
+// supabase.js - Inicialização Segura do Cliente Supabase para a plataforma Sisant
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+let supabaseClient = null;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    'Aviso: Supabase URL ou Chave Anon não configurada no arquivo .env.\n' +
-    'Certifique-se de configurar VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.'
-  );
+try {
+    const supabaseUrl = (import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_URL) || '';
+    const supabaseAnonKey = (import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) || '';
+
+    if (supabaseUrl && supabaseAnonKey) {
+        supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+    } else {
+        console.warn('Aviso: Supabase URL ou Chave Anon não configuradas. Integração Supabase desativada.');
+    }
+} catch (e) {
+    console.warn('Erro ao inicializar cliente Supabase:', e.message);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = supabaseClient;
