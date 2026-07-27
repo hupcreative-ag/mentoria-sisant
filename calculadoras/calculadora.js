@@ -1315,6 +1315,10 @@ function transitionScreen(fromScreen, toScreen, onPrepare, onComplete) {
 
 // Open a test from the Hub
 function openTest(testId) {
+    if (!testId || !testsDatabase[testId]) {
+        console.error("Test not found:", testId);
+        return;
+    }
     currentTest = testId;
     testQuestions = testsDatabase[testId].questions;
     currentStep = 0;
@@ -1332,9 +1336,15 @@ function openTest(testId) {
     const fromScreen = document.getElementById('hub-screen');
     const toScreen = document.getElementById('test-wizard');
 
+    if (!fromScreen || !toScreen) {
+        console.error("Screen elements not found in DOM");
+        return;
+    }
+
     transitionScreen(fromScreen, toScreen, () => {
         // Setup Wizard UI Text
-        document.getElementById('test-category').textContent = testsDatabase[testId].title;
+        const catEl = document.getElementById('test-category');
+        if (catEl) catEl.innerHTML = testsDatabase[testId].title;
         renderStep();
     });
 }
@@ -2458,30 +2468,6 @@ function initFilters() {
     });
 }
 
-// Immediately check URL params on module execution and attach event listeners
-try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get('test') || urlParams.get('teste');
-    if (testId && testsDatabase[testId]) {
-        setTimeout(() => openTest(testId), 150);
-    }
-
-    // Attach phone input formatting listener
-    const phoneInput = document.getElementById('reg-phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', (e) => {
-            const cleaned = e.target.value.replace(/\D/g, '');
-            const truncated = cleaned.slice(0, 11);
-            e.target.value = formatPhone(truncated);
-        });
-    }
-
-    // Initialize category filters
-    setTimeout(() => initFilters(), 50);
-} catch(e) {
-    console.error(e);
-}
-
 // Expose functions globally for HTML onclick attributes compatibility under Vite ES Modules
 window.openTest = openTest;
 window.closeTest = closeTest;
@@ -2496,3 +2482,45 @@ window.handleLoginSubmit = handleLoginSubmit;
 window.toggleRegMode = toggleRegMode;
 window.filterCategory = filterCategory;
 window.initFilters = initFilters;
+
+// Initialize category filters & listeners
+try {
+    initFilters();
+} catch (e) {
+    console.error(e);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        initFilters();
+        checkUrlParams();
+    });
+} else {
+    checkUrlParams();
+}
+
+window.addEventListener('load', () => {
+    initFilters();
+});
+
+function checkUrlParams() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const testId = urlParams.get('test') || urlParams.get('teste');
+        if (testId && testsDatabase[testId]) {
+            setTimeout(() => openTest(testId), 150);
+        }
+
+        // Attach phone input formatting listener
+        const phoneInput = document.getElementById('reg-phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                const cleaned = e.target.value.replace(/\D/g, '');
+                const truncated = cleaned.slice(0, 11);
+                e.target.value = formatPhone(truncated);
+            });
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}

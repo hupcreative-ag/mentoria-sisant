@@ -288,7 +288,12 @@
 
             <!-- Category Filters -->
             <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-10 px-4">
-                <!-- Dynamically generated filters -->
+                <button data-cat="Todos" onclick="filterCategory('Todos')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-navy text-white border-navy shadow-sm">Todos</button>
+                <button data-cat="Comportamental" onclick="filterCategory('Comportamental')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-purple-50 text-purple-600 border-purple-100 hover:bg-purple-100/70">Comportamental</button>
+                <button data-cat="Cardiovascular" onclick="filterCategory('Cardiovascular')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-red-50 text-red-600 border-red-100 hover:bg-red-100/70">Cardiovascular</button>
+                <button data-cat="Neurocognitivo" onclick="filterCategory('Neurocognitivo')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100/70">Neurocognitivo</button>
+                <button data-cat="Hormonal" onclick="filterCategory('Hormonal')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100/70">Hormonal</button>
+                <button data-cat="Metabólico" onclick="filterCategory('Metabólico')" class="filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100">Metabólico</button>
             </div>
 
             <!-- Calculators Grid -->
