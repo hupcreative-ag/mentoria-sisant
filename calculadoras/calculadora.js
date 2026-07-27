@@ -1375,6 +1375,68 @@ function transitionScreen(fromScreen, toScreen, onPrepare, onComplete) {
     });
 }
 
+// Dynamic meta tag updater for social link previews & page title per test
+function updateMetaTagsForTest(testId) {
+    if (!testId || !testsDatabase[testId]) return;
+
+    const testData = testsDatabase[testId];
+    const plainTitle = testData.title.replace(/<[^>]*>/g, '').trim();
+    const fullTitle = `${plainTitle} | Dr. Gustavo Sisant`;
+
+    let description = `Avalie seu marcador de saúde (${plainTitle}) de forma prática e integrativa no portal do Dr. Gustavo Sisant.`;
+    if (testId === 'sii') {
+        description = 'Calcule o Índice de Inflamação Imune Sistêmica (SII) derivado do hemograma e avalie o perfil inflamatório imune e vascular.';
+    } else if (testId === 'iap') {
+        description = 'Calcule o Índice Aterogênico do Plasma (IAP) e avalie a proporção TG/HDL e o risco cardiovascular.';
+    } else if (testId === 'organizacao-pessoal') {
+        description = 'Avalie seu Nível de Organização Pessoal e Saúde no Método GTD em 5 domínios e descubra sua faixa de graduação.';
+    } else if (testId === 'ls7-demencia') {
+        description = 'Avalie seus fatores de predisposição à demência com o protocolo Life\'s Simple 7 (LS7).';
+    } else if (testId === 'pps') {
+        description = 'Mensure seu nível de procrastinação em decisões e tarefas na Escala de Procrastinação Pura (PPS).';
+    } else if (testId === 'fadiga-adrenal') {
+        description = 'Avalie seus sinais de fadiga e sobrecarga biológica adaptativa ao estresse.';
+    } else if (testId === 'phr') {
+        description = 'Calcule a Relação Plaquetas / HDL (PHR) para avaliar a atividade tromboinflamatória vascular.';
+    } else if (testId === 'tg-hdl') {
+        description = 'Calcule a Relação Triglicerídeos / HDL-C para avaliar a sensibilidade à insulina e risco metabólico.';
+    } else if (testId === 'apob-apoa1') {
+        description = 'Calcule a Relação Apo B / Apo A1 para avaliar o equilíbrio aterogênico vs protetor.';
+    } else if (testId === 'hdl-apoa1') {
+        description = 'Calcule a Relação HDL / Apo A1 para avaliar a funcionalidade no transporte reverso do colesterol.';
+    }
+
+    document.title = fullTitle;
+
+    const setMeta = (selector, content) => {
+        let el = document.querySelector(selector);
+        if (el) el.setAttribute('content', content);
+    };
+
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', fullTitle);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="twitter:title"]', fullTitle);
+    setMeta('meta[property="twitter:description"]', description);
+}
+
+function resetMetaTags() {
+    const defaultTitle = "Calculadoras & Testes de Saúde Preventiva | Dr. Gustavo Sisant";
+    const defaultDesc = "Avalie seus marcadores biológicos de forma prática e integrativa. Calcule seu IAP, Relação Triglicerídeos/HDL, Apo B/Apo A1, SII e mais.";
+    document.title = defaultTitle;
+
+    const setMeta = (selector, content) => {
+        let el = document.querySelector(selector);
+        if (el) el.setAttribute('content', content);
+    };
+
+    setMeta('meta[name="description"]', defaultDesc);
+    setMeta('meta[property="og:title"]', defaultTitle);
+    setMeta('meta[property="og:description"]', defaultDesc);
+    setMeta('meta[property="twitter:title"]', defaultTitle);
+    setMeta('meta[property="twitter:description"]', defaultDesc);
+}
+
 // Open a test from the Hub
 function openTest(testId) {
     if (!testId || !testsDatabase[testId]) {
@@ -1385,6 +1447,9 @@ function openTest(testId) {
     testQuestions = testsDatabase[testId].questions;
     currentStep = 0;
     answers = [];
+
+    // Dynamically update document title & meta tags for social preview
+    updateMetaTagsForTest(testId);
 
     // Update URL parameter
     try {
@@ -1413,6 +1478,8 @@ function openTest(testId) {
 
 // Close Test Wizard and return to Hub
 function closeTest() {
+    resetMetaTags();
+
     // Remove URL parameter
     try {
         const newUrl = new URL(window.location.href);
@@ -2341,6 +2408,8 @@ function toggleMethodology() {
 
 // Navigate back to the main Hub from any active state
 function goToHub() {
+    resetMetaTags();
+
     // Reset methodology accordion if open
     const content = document.getElementById('methodology-content');
     const arrow = document.getElementById('methodology-arrow');
