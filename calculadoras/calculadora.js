@@ -1248,108 +1248,57 @@ const hdlApoa1Results = [
     }
 ];
 
-// Generic screen transition helper to prevent layout collapse and footer jumping
+// Generic screen transition helper: ultra-smooth, 60fps GPU acceleration
 function transitionScreen(fromScreen, toScreen, onPrepare, onComplete) {
-    if (!fromScreen || !toScreen) {
-        console.error("transitionScreen: Missing screen elements", { fromScreen, toScreen });
+    if (!fromScreen || !toScreen || fromScreen === toScreen) {
+        if (onPrepare) onPrepare();
+        if (onComplete) onComplete();
         return;
     }
 
-    const doInstantTransition = () => {
-        fromScreen.classList.add('hidden');
-        fromScreen.style.opacity = '1';
-        fromScreen.style.transform = 'none';
-
-        if (onPrepare) onPrepare();
-
-        toScreen.classList.remove('hidden');
-        toScreen.style.opacity = '1';
-        toScreen.style.transform = 'none';
-
-        window.scrollTo({ top: 0, behavior: 'instant' });
-
-        if (onComplete) onComplete();
-    };
+    const isEnteringWizardOrResults = toScreen.id === 'test-wizard' || toScreen.id === 'results-screen';
+    const exitY = isEnteringWizardOrResults ? -10 : 10;
+    const enterY = isEnteringWizardOrResults ? 10 : -10;
 
     if (typeof gsap === 'undefined') {
-        doInstantTransition();
+        fromScreen.classList.add('hidden');
+        if (onPrepare) onPrepare();
+        toScreen.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (onComplete) onComplete();
         return;
     }
 
-    let isDone = false;
-    const safeFinish = () => {
-        if (isDone) return;
-        isDone = true;
-        doInstantTransition();
-    };
+    // Smooth GPU fade-out
+    gsap.to(fromScreen, {
+        opacity: 0,
+        y: exitY,
+        duration: 0.18,
+        ease: "power1.out",
+        onComplete: () => {
+            fromScreen.classList.add('hidden');
+            gsap.set(fromScreen, { clearProps: "all" });
 
-    try {
-        const main = document.querySelector('main');
-        const startHeight = main ? main.offsetHeight : 0;
+            if (onPrepare) onPrepare();
 
-        if (main && startHeight) {
-            main.style.minHeight = `${startHeight}px`;
-        }
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
-        const isEnteringWizardOrResults = toScreen.id === 'test-wizard' || toScreen.id === 'results-screen';
-        const exitY = isEnteringWizardOrResults ? -15 : 15;
-        const enterY = isEnteringWizardOrResults ? 15 : -15;
-
-        gsap.to(fromScreen, {
-            opacity: 0,
-            y: exitY,
-            duration: 0.25,
-            ease: "power2.inOut",
-            onComplete: () => {
-                fromScreen.classList.add('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-
-                if (onPrepare) onPrepare();
-
-                toScreen.style.opacity = '0';
-                toScreen.classList.remove('hidden');
-
-                if (main) {
-                    main.style.minHeight = '';
-                    const finalHeight = main.offsetHeight;
-                    main.style.minHeight = `${startHeight}px`;
-
-                    gsap.fromTo(main,
-                        { minHeight: startHeight },
-                        { 
-                            minHeight: finalHeight, 
-                            duration: 0.3, 
-                            ease: "power2.inOut", 
-                            clearProps: "minHeight" 
-                        }
-                    );
-                }
-
-                gsap.fromTo(toScreen,
-                    { opacity: 0, y: enterY },
-                    { 
-                        opacity: 1, 
-                        y: 0, 
-                        duration: 0.3, 
-                        ease: "power2.out",
-                        onComplete: () => {
-                            isDone = true;
-                            if (onComplete) onComplete();
-                        }
+            toScreen.classList.remove('hidden');
+            gsap.fromTo(toScreen,
+                { opacity: 0, y: enterY },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.22, 
+                    ease: "power2.out",
+                    clearProps: "transform,opacity",
+                    onComplete: () => {
+                        if (onComplete) onComplete();
                     }
-                );
-            }
-        });
-
-        // 500ms safety net in case GSAP animation stalls
-        setTimeout(() => {
-            if (!isDone) safeFinish();
-        }, 500);
-
-    } catch (err) {
-        console.warn("GSAP transition failed, fallback:", err);
-        safeFinish();
-    }
+                }
+            );
+        }
+    });
 }
 
 // Open a test from the Hub
@@ -2409,66 +2358,35 @@ try {
 function filterCategory(category) {
     const cards = document.querySelectorAll('.calculator-card');
     const buttons = document.querySelectorAll('.filter-btn');
-    const grid = document.querySelector('#hub-screen .grid');
     
     // Update button states
     buttons.forEach(btn => {
         const cat = btn.getAttribute('data-cat');
         const color = categoryColors[cat.toLowerCase()] || fallbackColors;
         if (cat === category) {
-            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.active}`;
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-200 border cursor-pointer ${color.active}`;
         } else {
-            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-300 border cursor-pointer ${color.inactive}`;
+            btn.className = `filter-btn rounded-full px-5 py-2 text-xs md:text-sm font-bold transition-all duration-200 border cursor-pointer ${color.inactive}`;
         }
     });
 
-    // 1. Capture the initial height of the grid container and cards layout positions
-    const startHeight = grid ? grid.offsetHeight : 0;
-    const state = Flip.getState(cards);
-
-    // 2. Instantly update the layout (toggle hidden class)
+    // Update card visibility smoothly without heavy layout thrashing
     cards.forEach(card => {
         const cat = card.getAttribute('data-category');
         const matches = (category === 'Todos' || cat === category);
 
         if (matches) {
-            card.classList.remove('hidden');
-            // Ensure style transforms and opacities are reset for the final layout state
-            card.style.opacity = '1';
-            card.style.transform = 'none';
+            if (card.classList.contains('hidden')) {
+                card.classList.remove('hidden');
+                if (typeof gsap !== 'undefined') {
+                    gsap.fromTo(card,
+                        { opacity: 0, scale: 0.96 },
+                        { opacity: 1, scale: 1, duration: 0.2, ease: "power1.out", clearProps: "transform,opacity" }
+                    );
+                }
+            }
         } else {
             card.classList.add('hidden');
-        }
-    });
-
-    // 3. Capture the final height of the grid container and animate container height smoothly
-    if (grid) {
-        const finalHeight = grid.offsetHeight;
-        // Lock grid container to startHeight and animate to finalHeight
-        gsap.fromTo(grid, 
-            { height: startHeight, overflow: 'hidden' }, 
-            { height: finalHeight, duration: 0.5, ease: "power2.inOut" }
-        );
-    }
-
-    // 4. Animate the transition between card states smoothly!
-    Flip.from(state, {
-        duration: 0.5,
-        ease: "power2.inOut",
-        absolute: true, // Absolute is crucial for seamless grid transition without layout thrashing/stuttering
-        stagger: 0.02,  // Premium micro-interaction stagger
-        onEnter: elements => gsap.fromTo(elements, 
-            { opacity: 0, scale: 0.9 }, 
-            { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
-        ),
-        onLeave: elements => gsap.to(elements, 
-            { opacity: 0, scale: 0.9, duration: 0.25, ease: "power2.in" }
-        ),
-        onComplete: () => {
-            // Once all Flip reordering and animations are complete, clear inline constraints
-            if (grid) {
-                gsap.set(grid, { clearProps: "height,overflow" });
-            }
         }
     });
 }
