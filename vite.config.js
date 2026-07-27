@@ -7,6 +7,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         calculadoras: resolve(__dirname, 'calculadoras/index.html'),
+        auth: resolve(__dirname, 'auth.html'),
+        perfil: resolve(__dirname, 'perfil.html'),
       },
     },
   },
