@@ -1,3 +1,4 @@
+import { supabase } from '../supabase.js';
 // main.js - Core Logic for Health Calculators & Test Wizard
 
 // Google Sheets Web App URL (Insira sua URL do script do Google Apps Script aqui)
@@ -388,8 +389,308 @@ const testsDatabase = {
                 ]
             }
         ]
+    },
+    'organizacao-pessoal': {
+        title: 'Organização Pessoal e Saúde <span class="block text-xs sm:text-sm font-normal text-gray-500 mt-0.5">(Método GTD & Graduação)</span>',
+        category: 'Comportamental',
+        maxScore: 25,
+        loadingTitle: 'Mapeando Nível de Organização & Saúde...',
+        loadingSubtitle: 'Calculando sua pontuação nas 5 seções comportamentais e definindo sua graduação de faixa.',
+        methodologyTitle: 'Sobre o Método GTD e a Graduação de Organização',
+        methodologyText: `
+            <p>Este instrumento avalia o seu <strong>Nível de Organização Pessoal e Saúde</strong> através de 25 indicadores distribuídos em 5 domínios fundamentais: Planejamento Pessoal, Gestão de Tarefas, Controle de Tempo e Foco, Saúde Física e Mental, e Organização Física e Digital.</p>
+            <p class="mt-2">Inspirado na metodologia de produtividade <strong>Getting Things Done (GTD)</strong> de <em>David Allen</em> e em princípios de medicina integrativa, o teste mede a capacidade de converter intenções em rotinas claras sem gerar sobrecarga mental ou estresse.</p>
+            <p class="mt-2">A pontuação total soma até <strong>25 pontos</strong> (0 a 5 pontos por seção) e classifica seu perfil em 5 níveis de graduação:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>Faixa Branca (Nível 1 — 0 a 6 pts):</strong> Início da jornada de organização e criação de estrutura.</li>
+                <li><strong>Faixa Azul (Nível 2 — 6,5 a 12 pts):</strong> Esforço evidente com necessidade de construir consistência.</li>
+                <li><strong>Faixa Roxa (Nível 3 — 12,5 a 17 pts):</strong> Organização funcional com pontos de otimização.</li>
+                <li><strong>Faixa Marrom (Nível 4 — 17,5 a 21 pts):</strong> Estrutura sólida, disciplina e bom controle de tempo e foco.</li>
+                <li><strong>Faixa Preta (Nível 5 — 21,5 a 25 pts):</strong> Alta performance integrada à saúde e bem-estar.</li>
+            </ul>
+        `,
+        questions: [
+            // SEÇÃO 1: PLANEJAMENTO PESSOAL
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 1: Planejamento Pessoal</span>1. Tenho uma rotina diária com horários definidos para acordar, me alimentar, trabalhar e dormir.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 1: Planejamento Pessoal</span>2. Planejo meu dia com antecedência (na noite anterior ou pela manhã).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 1: Planejamento Pessoal</span>3. Uso uma agenda ou planner para acompanhar tarefas, compromissos e metas (envolvendo corpo físico, mente e espiritualidade).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 1: Planejamento Pessoal</span>4. Faço revisão semanal do que deu certo ou precisa melhorar.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 1: Planejamento Pessoal</span>5. Estabeleço metas de curto e longo prazo e acompanho meu progresso.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+
+            // SEÇÃO 2: GESTÃO DE TAREFAS E PRIORIDADES
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 2: Gestão de Tarefas e Prioridades</span>6. Tenho uma lista clara de tarefas para o dia (em papel ou aplicativo).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 2: Gestão de Tarefas e Prioridades</span>7. Divido projetos ou tarefas maiores em etapas menores e específicas.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 2: Gestão de Tarefas e Prioridades</span>8. Identifico e priorizo tarefas importantes versus urgentes.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 2: Gestão de Tarefas e Prioridades</span>9. Cumpro prazos e raramente me atraso com minhas responsabilidades.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 2: Gestão de Tarefas e Prioridades</span>10. Sei dizer "não" ou adiar tarefas sem culpa quando necessário.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+
+            // SEÇÃO 3: CONTROLE DO TEMPO E FOCO
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 3: Controle do Tempo e Foco</span>11. Planejo blocos de tempo para foco profundo e sem interrupções (tenho clareza do meu tempo de FLOW).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 3: Controle do Tempo e Foco</span>12. Faço pausas estratégicas para manter energia e clareza mental (vinculando pausas ao hábito de beber água).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 3: Controle do Tempo e Foco</span>13. Monitoro como gasto meu tempo ao longo do dia (através de aplicativos ou anotações).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 3: Controle do Tempo e Foco</span>14. Evito ou limito distrações digitais (celular, redes sociais) durante atividades importantes (menos de 3 acessos no período de trabalho).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 3: Controle do Tempo e Foco</span>15. Ajusto meu dia com flexibilidade, mas sem perder o ritmo geral (tenho tempo programado para urgências sem abalar meu planejamento).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+
+            // SEÇÃO 4: SAÚDE FÍSICA E MENTAL
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 4: Saúde Física e Mental</span>16. Tenho uma rotina regular de sono (7 a 9 horas por noite).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 4: Saúde Física e Mental</span>17. Pratico alguma atividade física ao menos 150 minutos por semana.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 4: Saúde Física e Mental</span>18. Me alimento de forma consciente, evitando excessos e priorizando alimentos naturais.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 4: Saúde Física e Mental</span>19. Tiro momentos do dia para respirar, relaxar, praticar mindfulness ou meditação (tenho um momento reservado no dia ou na semana).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 4: Saúde Física e Mental</span>20. Reconheço sinais de cansaço ou estresse e me permito descansar sem culpa.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+
+            // SEÇÃO 5: ORGANIZAÇÃO FÍSICA E DIGITAL
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 5: Organização Física e Digital</span>21. Meu espaço de trabalho é limpo, organizado e funcional (sou consciencioso).',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 5: Organização Física e Digital</span>22. Meus arquivos digitais estão organizados em pastas bem nomeadas.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 5: Organização Física e Digital</span>23. Faço revisões e limpezas frequentes no celular, computador e e-mails.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 5: Organização Física e Digital</span>24. Sei onde encontrar rapidamente documentos e informações importantes.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-purple-600 block mb-1">Seção 5: Organização Física e Digital</span>25. Mantenho objetos pessoais e materiais de estudo/trabalho com fácil acesso e ordem.',
+                options: [
+                    { text: 'Com regularidade (quase sempre)', value: 1 },
+                    { text: 'Às vezes', value: 0.5 },
+                    { text: 'Raramente ou nunca', value: 0 }
+                ]
+            }
+        ]
     }
 };
+
+// Results mapping for Personal Organization & Health (GTD Belt Ranking)
+const organizacaoResults = [
+    {
+        min: 0,
+        max: 6.5,
+        status: 'Faixa Branca (Nível 1) — Iniciante',
+        color: '#94a3b8', // slate-400
+        gaugeClass: 'border-t-slate-400 border-r-slate-400',
+        interpretation: 'Você está iniciando sua jornada de organização. Ainda não possui estrutura sólida ou rotinas bem estabelecidas, mas reconhecer este estado é o primeiro passo para construir uma vida mais previsível, produtiva e saudável.',
+        recommendations: [
+            'Comece definindo apenas 1 a 2 rotinas fixas por semana (como horário para dormir e uma lista simples de 3 tarefas por dia).',
+            'Utilize uma ferramenta básica (bloco de notas ou aplicativo simples) para descarregar a mente e não confiar apenas na memória.',
+            'Elimine o excesso de bagunça física no seu local de trabalho para reduzir a carga cognitiva imediata.'
+        ]
+    },
+    {
+        min: 6.5,
+        max: 12.5,
+        status: 'Faixa Azul (Nível 2) — Em Construção',
+        color: '#3b82f6', // blue-500
+        gaugeClass: 'border-t-blue-500 border-r-blue-500',
+        interpretation: 'Há sinais evidentes de esforço e boas intenções na sua rotina, mas a consistência diária ainda precisa ser construída. Este é o momento ideal para transformar ações isoladas em hábitos duradouros.',
+        recommendations: [
+            'Implemente uma revisão semanal fixa de 15 minutos para planejar os compromissos e metas dos próximos 7 dias.',
+            'Pratique o método de blocos de tempo (Time-blocking) separando horários específicos para trabalho focado e pausas.',
+            'Reforce a disciplina no controle do tempo digital, limitando o uso de redes sociais nos horários de produção.'
+        ]
+    },
+    {
+        min: 12.5,
+        max: 17.5,
+        status: 'Faixa Roxa (Nível 3) — Funcional',
+        color: '#a855f7', // purple-500
+        gaugeClass: 'border-t-purple-500 border-r-purple-500',
+        interpretation: 'Sua organização é funcional, contando com bons hábitos e uma estrutura equilibrada de tarefas e saúde. No entanto, ainda há pontos a otimizar para evitar sobrecargas e momentos de distração.',
+        recommendations: [
+            'Aprimore a diferenciação entre tarefas importantes e urgentes, aprendendo a delegar ou dizer "não" com mais firmeza.',
+            'Integre pausas ativas vinculadas à hidratação e momentos de respiração para manter o nível de energia ao longo do dia.',
+            'Organize seus arquivos digitais e caixas de entrada para reduzir a fricção na busca por informações.'
+        ]
+    },
+    {
+        min: 17.5,
+        max: 21.5,
+        status: 'Faixa Marrom (Nível 4) — Avançado',
+        color: '#b45309', // amber-700
+        gaugeClass: 'border-t-amber-700 border-r-amber-700',
+        interpretation: 'Você possui excelente estrutura, disciplina e boa consciência do tempo, saúde e foco. Consegue priorizar responsabilidades, manter prazos e gerenciar imprevistos com serenidade. Parabéns!',
+        recommendations: [
+            'Mantenha o acompanhamento de metas de longo prazo associando o desenvolvimento profissional ao bem-estar pessoal.',
+            'Proteja seus momentos de descanso e lazer sem culpa, garantindo a sustentabilidade da sua alta performance.',
+            'Refine seus momentos de estado de FLOW para atingir o máximo potencial criativo sem exaustão.'
+        ]
+    },
+    {
+        min: 21.5,
+        max: 999,
+        status: 'Faixa Preta (Nível 5) — Alta Performance',
+        color: '#1e293b', // slate-800
+        gaugeClass: 'border-t-slate-800 border-r-slate-800',
+        interpretation: 'Você é altamente organizado e equilibrado. Integra produtividade, gestão de tempo, clareza mental e saúde de forma impecável, sendo uma inspiração e referência de consistência para os outros.',
+        recommendations: [
+            'Compartilhe suas práticas e metodologias com sua equipe e pessoas ao redor para inspirar uma cultura mais saudável.',
+            'Continue revisando e adaptando seus sistemas à medida que novos desafios e projetos surgirem.',
+            'Desfrute da liberdade e clareza mental conquistadas através do domínio da autogestão.'
+        ]
+    }
+];
 
 // Results mapping for Life's Simple 7 (LS7) Dementia Risk Score
 const ls7Results = [
@@ -1354,6 +1655,9 @@ function handleRegistrationSubmit(event) {
     
     const payload = { nome, email, telefone, idade, sexo, cidade, teste: testTitle, resultado: formattedScore };
 
+    // Salvar lead no Supabase de forma assíncrona
+    saveLeadToSupabase(nome, email, telefone);
+
     sendLeadToGoogleSheets(payload, () => {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHTML;
@@ -1418,6 +1722,9 @@ function handleLoginSubmit(event) {
         : calculatedScore;
 
     const payload = { nome, email, telefone, idade, sexo, cidade, teste: testTitle, resultado: formattedScore };
+
+    // Salvar lead no Supabase de forma assíncrona
+    saveLeadToSupabase(nome, email, telefone);
 
     sendLeadToGoogleSheets(payload, () => {
         submitBtn.disabled = false;
@@ -1497,6 +1804,29 @@ function sendLeadToGoogleSheets(payload, callback) {
     });
 }
 
+// Save Lead Data to Supabase PostgreSQL Database
+async function saveLeadToSupabase(nome, email, telefone) {
+    if (!supabase) return;
+    try {
+        const { error } = await supabase.from('leads').insert([
+            { name: nome, email: email, phone: telefone }
+        ]);
+        if (error) {
+            // Se o lead já existir (erro 23505 de e-mail duplicado), atualiza os dados
+            if (error.code === '23505') {
+                console.log('Lead com este e-mail já existe. Atualizando nome/telefone...');
+                await supabase.from('leads').update({ name: nome, phone: telefone }).eq('email', email);
+            } else {
+                throw error;
+            }
+        } else {
+            console.log('Lead gravado com sucesso no Supabase.');
+        }
+    } catch (err) {
+        console.error('Erro ao gravar lead no Supabase:', err);
+    }
+}
+
 // Helper to convert hex to rgba
 function hexToRgba(hex, alpha) {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -1530,6 +1860,9 @@ function showResults(score) {
     } else if (currentTest === 'ls7-demencia') {
         resultBand = ls7Results.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = ls7Results[ls7Results.length - 1];
+    } else if (currentTest === 'organizacao-pessoal') {
+        resultBand = organizacaoResults.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = organizacaoResults[organizacaoResults.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -1539,7 +1872,7 @@ function showResults(score) {
     const testData = testsDatabase[currentTest];
     document.getElementById('result-title').innerHTML = testData.title;
 
-    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? score.toFixed(2) : score;
+    const displayScore = (currentTest === 'iap' || currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? score.toFixed(2) : (currentTest === 'organizacao-pessoal' ? (Number.isInteger(score) ? score : score.toFixed(1)) : score);
     document.getElementById('score-display').textContent = displayScore;
     document.getElementById('score-label').textContent = (currentTest === 'iap') ? 'ÍNDICE' : (currentTest === 'tg-hdl' || currentTest === 'apob-apoa1' || currentTest === 'hdl-apoa1' || currentTest === 'phr') ? 'RELAÇÃO' : 'PONTOS';
     document.getElementById('status-tag').textContent = resultBand.status;
@@ -1774,6 +2107,32 @@ function showResults(score) {
         } else {
             const minS = 13;
             const maxS = 14;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
+        }
+        percentage = targetAngle / 180;
+    } else if (currentTest === 'organizacao-pessoal') {
+        let targetAngle;
+        if (score < 6.5) {
+            const minS = 0;
+            const maxS = 6.5;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 36;
+        } else if (score < 12.5) {
+            const minS = 6.5;
+            const maxS = 12.5;
+            targetAngle = 36 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 17.5) {
+            const minS = 12.5;
+            const maxS = 17.5;
+            targetAngle = 72 + ((score - minS) / (maxS - minS)) * 36;
+        } else if (score < 21.5) {
+            const minS = 17.5;
+            const maxS = 21.5;
+            targetAngle = 108 + ((score - minS) / (maxS - minS)) * 36;
+        } else {
+            const minS = 21.5;
+            const maxS = 25;
             const clamped = Math.min(maxS, score);
             targetAngle = 144 + ((clamped - minS) / (maxS - minS)) * 36;
         }
