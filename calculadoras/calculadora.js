@@ -676,18 +676,18 @@ const testsDatabase = {
         questions: [
             {
                 text: `
-                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">1 de 8 — Alimentação</span>Como você avalia a qualidade geral da sua dieta (padrão DASH / Mediterrâneo — MEPA)?</div>
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">1 de 8 — Alimentação</span>Como você avalia a qualidade geral da sua alimentação?</div>
                     <ul class="mt-3 mb-2 space-y-1 text-xs sm:text-sm text-gray-600 list-disc pl-5 font-normal">
                         <li><strong>Fatores protetores:</strong> frutas e vegetais diários, grãos integrais, leguminosas, peixes e oleaginosas.</li>
                         <li><strong>Fatores a limitar:</strong> bebidas açucaradas, carnes processadas, excesso de sódio e ultraprocessados.</li>
                     </ul>
                 `,
                 options: [
-                    { text: 'Excelente (padrão DASH/MEPA 15–16): alimentação natural e rica em vegetais/fibras diariamente, quase sem ultraprocessados ou açúcar', value: 100 },
-                    { text: 'Boa (padrão DASH/MEPA 12–14): maioria das refeições equilibradas, com consumo esporádico de industrializados', value: 80 },
-                    { text: 'Moderada (padrão DASH/MEPA 8–11): consumo razoável de alimentos naturais, mas presença frequente de sódio, doces ou processados', value: 50 },
-                    { text: 'Baixa (padrão DASH/MEPA 4–7): poucas frutas, vegetais e fibras; consumo regular de carnes processadas e bebidas açucaradas', value: 25 },
-                    { text: 'Muito baixa (padrão DASH/MEPA 0–3): dieta predominantemente ultraprocessada, rica em sódio e bebidas açucaradas', value: 0 }
+                    { text: 'Excelente: alimentação natural e rica em vegetais e fibras diariamente, quase sem ultraprocessados ou açúcar', value: 100 },
+                    { text: 'Boa: maioria das refeições equilibradas, com consumo esporádico de industrializados', value: 80 },
+                    { text: 'Moderada: consumo razoável de alimentos naturais, mas presença frequente de sódio, doces ou processados', value: 50 },
+                    { text: 'Baixa: poucas frutas, vegetais e fibras; consumo regular de carnes processadas e bebidas açucaradas', value: 25 },
+                    { text: 'Muito baixa: dieta predominantemente ultraprocessada, rica em sódio e bebidas açucaradas', value: 0 }
                 ]
             },
             {
@@ -759,10 +759,10 @@ const testsDatabase = {
                 ]
             },
             {
-                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">6 de 8 — Tratamento de Lipídios</span>Você utiliza alguma medicação hipolipemiante (para baixar colesterol, ex.: estatina, ezetimiba)?',
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">6 de 8 — Tratamento de Colesterol</span>Você utiliza alguma medicação para baixar o colesterol (ex.: estatina, ezetimiba)?',
                 options: [
                     { text: 'Não utilizo medicação para colesterol', value: 0 },
-                    { text: 'Sim, utilizo medicação hipolipemiante', value: -20 }
+                    { text: 'Sim, utilizo medicação para colesterol', value: -20 }
                 ]
             },
             {
@@ -791,10 +791,10 @@ const testsDatabase = {
                 ]
             },
             {
-                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">8 de 8 — Tratamento da Pressão Arterial</span>Você utiliza medicação anti-hipertensiva?',
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">8 de 8 — Tratamento da Pressão Arterial</span>Você utiliza alguma medicação para pressão alta?',
                 options: [
-                    { text: 'Não utilizo medicação anti-hipertensiva', value: 0 },
-                    { text: 'Sim, utilizo medicação anti-hipertensiva', value: -20 }
+                    { text: 'Não utilizo medicação para pressão', value: 0 },
+                    { text: 'Sim, utilizo medicação para pressão', value: -20 }
                 ]
             }
         ]
