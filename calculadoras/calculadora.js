@@ -629,7 +629,7 @@ const testsDatabase = {
         loadingSubtitle: 'Calculando a relação (Plaquetas × Neutrófilos) / Linfócitos com base no estudo NHANES (Xia et al., 2023).',
         methodologyTitle: 'Sobre o Índice de Inflamação Imune Sistêmica (SII)',
         methodologyText: `
-            <p>O <strong>Índice de Inflamação Imune Sistêmica (SII)</strong> é um marcador inflamatório e imune de última geração, calculated a partir da relação direta entre imunidade inata, hemostasia e imunidade adaptativa extraídas do hemograma simples:</p>
+            <p>O <strong>Índice de Inflamação Imune Sistêmica (SII)</strong> é um marcador inflamatório e imune de última geração, calculado a partir da relação direta entre imunidade inata, hemostasia e imunidade adaptativa extraídas do hemograma simples:</p>
             <div class="my-3 p-3 bg-gray-50 rounded-lg border border-gray-200 text-center font-mono text-sm text-navy font-bold">
                 SII = (Plaquetas × Neutrófilos) / Linfócitos
             </div>
@@ -648,6 +648,153 @@ const testsDatabase = {
                     { id: 'plaquetas', label: 'Plaquetas (em mil/µL ou /µL, ex: 250 ou 250.000):', placeholder: 'Ex: 250', min: 10, max: 1000000 },
                     { id: 'neutrofilos', label: 'Neutrófilos Absolutos (em /µL ou mil/µL, ex: 4200 ou 4.2):', placeholder: 'Ex: 4200 ou 4.2', min: 0.1, max: 50000 },
                     { id: 'linfocitos', label: 'Linfócitos Absolutos (em /µL ou mil/µL, ex: 2100 ou 2.1):', placeholder: 'Ex: 2100 ou 2.1', min: 0.1, max: 50000 }
+                ]
+            }
+        ]
+    },
+    'le8': {
+        title: 'Life\'s Essential 8 <span class="block text-xs sm:text-sm font-normal text-gray-500 mt-0.5">(Saúde Cardiovascular — AHA 2022)</span>',
+        category: 'Cardiovascular',
+        maxScore: 100,
+        loadingTitle: 'Calculando Escore Life\'s Essential 8...',
+        loadingSubtitle: 'Consolidando seus 8 domínios comportamentais e clínicos segundo a American Heart Association (AHA, 2022).',
+        methodologyTitle: 'Sobre o Protocolo Life\'s Essential 8 (LE8 — AHA 2022)',
+        methodologyText: `
+            <p>O <strong>Life's Essential 8 (LE8)</strong> é o protocolo atualizado da <em>American Heart Association (AHA, 2022)</em> para quantificar a saúde cardiovascular global em adultos por meio de <strong>8 componentes essenciais</strong> — 4 comportamentos de saúde (alimentação, atividade física, exposição à nicotina e sono) e 4 fatores clínicos (IMC, lipídios não-HDL, glicemia/HbA1c e pressão arterial).</p>
+            <div class="my-3 p-3 bg-gray-50 rounded-lg border border-gray-200 text-center font-mono text-sm text-navy font-bold">
+                LE8 = (Soma dos 8 componentes de 0 a 100) ÷ 8
+            </div>
+            <p class="mt-2"><strong>Classificação de Saúde Cardiovascular (0 a 100 pontos):</strong></p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li><strong>0 a 49 pontos:</strong> Saúde cardiovascular baixa — prioridade máxima para intervenções clínicas e de estilo de vida.</li>
+                <li><strong>50 a 79 pontos:</strong> Saúde cardiovascular intermediária — margem expressiva para otimização preventiva.</li>
+                <li><strong>80 a 100 pontos:</strong> Saúde cardiovascular alta — perfil associado à maior longevidade e menor risco de eventos vasculares.</li>
+            </ul>
+            <p class="mt-3 text-xs text-gray-500 leading-relaxed"><strong>Notas Metodológicas:</strong> O LE8 não substitui avaliação clínica completa ou estratificação de risco. A pontuação da dieta utiliza faixas padronizadas (ex.: DASH / MEPA). A classificação CKM 0–4 e a presença de placa carotídea são avaliadas de forma independente. Apneia e qualidade do sono devem ser investigadas à parte.</p>
+            <p class="mt-2 text-xs text-gray-500"><strong>Referência Científica:</strong> Lloyd-Jones DM et al. <em>Life's Essential 8: Updating and Enhancing the American Heart Association's Construct of Cardiovascular Health.</em> Circulation. 2022;146:e18–e43. DOI: 10.1161/CIR.0000000000001078.</p>
+        `,
+        questions: [
+            {
+                text: `
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">1 de 8 — Alimentação</span>Como você avalia a qualidade geral da sua dieta (padrão DASH / Mediterrâneo — MEPA)?</div>
+                    <ul class="mt-3 mb-2 space-y-1 text-xs sm:text-sm text-gray-600 list-disc pl-5 font-normal">
+                        <li><strong>Fatores protetores:</strong> frutas e vegetais diários, grãos integrais, leguminosas, peixes e oleaginosas.</li>
+                        <li><strong>Fatores a limitar:</strong> bebidas açucaradas, carnes processadas, excesso de sódio e ultraprocessados.</li>
+                    </ul>
+                `,
+                options: [
+                    { text: 'Excelente (padrão DASH/MEPA 15–16): alimentação natural e rica em vegetais/fibras diariamente, quase sem ultraprocessados ou açúcar', value: 100 },
+                    { text: 'Boa (padrão DASH/MEPA 12–14): maioria das refeições equilibradas, com consumo esporádico de industrializados', value: 80 },
+                    { text: 'Moderada (padrão DASH/MEPA 8–11): consumo razoável de alimentos naturais, mas presença frequente de sódio, doces ou processados', value: 50 },
+                    { text: 'Baixa (padrão DASH/MEPA 4–7): poucas frutas, vegetais e fibras; consumo regular de carnes processadas e bebidas açucaradas', value: 25 },
+                    { text: 'Muito baixa (padrão DASH/MEPA 0–3): dieta predominantemente ultraprocessada, rica em sódio e bebidas açucaradas', value: 0 }
+                ]
+            },
+            {
+                text: `
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">2 de 8 — Atividade Física</span>Quantos minutos equivalentes de atividade física você realiza por semana?</div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-500 font-normal">Cálculo: <strong>Total equivalente = minutos de atividade moderada + (2 × minutos de atividade vigorosa)</strong>.</p>
+                `,
+                options: [
+                    { text: '≥ 150 minutos equivalentes/semana', value: 100 },
+                    { text: '120 a 149 minutos equivalentes/semana', value: 90 },
+                    { text: '90 a 119 minutos equivalentes/semana', value: 80 },
+                    { text: '60 a 89 minutos equivalentes/semana', value: 60 },
+                    { text: '30 a 59 minutos equivalentes/semana', value: 40 },
+                    { text: '1 a 29 minutos equivalentes/semana', value: 20 },
+                    { text: '0 minutos (nenhuma atividade física semanal)', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">3 de 8 — Exposição à Nicotina</span>Qual é o seu histórico de uso de cigarro, vape ou outro produto de nicotina?',
+                options: [
+                    { text: 'Nunca usou', value: 100 },
+                    { text: 'Ex-usuário há 5 anos ou mais (≥ 5 anos)', value: 75 },
+                    { text: 'Ex-usuário há 1 a menos de 5 anos', value: 50 },
+                    { text: 'Ex-usuário há menos de 1 ano', value: 25 },
+                    { text: 'Uso atual (cigarro convencional, vape ou outro derivado)', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">3 de 8 — Exposição Passiva</span>Há exposição passiva à fumaça de tabaco/nicotina em casa ou no trabalho?',
+                options: [
+                    { text: 'Não há exposição passiva', value: 0 },
+                    { text: 'Sim, há exposição passiva em casa ou no trabalho', value: -20 }
+                ]
+            },
+            {
+                text: `
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">4 de 8 — Sono</span>Qual é a sua duração média de sono efetivo por noite?</div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-500 font-normal">Média semanal = <strong>(5 × horas em dias úteis + 2 × horas em dias livres) ÷ 7</strong>.</p>
+                `,
+                options: [
+                    { text: '7 a menos de 9 horas por noite', value: 100 },
+                    { text: '9 a menos de 10 horas por noite', value: 90 },
+                    { text: '6 a menos de 7 horas por noite', value: 70 },
+                    { text: '5 a menos de 6 horas por noite', value: 40 },
+                    { text: '10 horas ou mais por noite (≥ 10h)', value: 40 },
+                    { text: '4 a menos de 5 horas por noite', value: 20 },
+                    { text: 'Menos de 4 horas por noite', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">5 de 8 — Índice de Massa Corporal (IMC)</span>Informe seu peso e sua altura para calcularmos automaticamente seu IMC:',
+                type: 'numeric',
+                inputs: [
+                    { id: 'peso', label: 'Peso atual (kg):', placeholder: 'Ex: 72', min: 25, max: 300 },
+                    { id: 'altura', label: 'Altura (em metros ou centímetros, ex: 1.75 ou 175):', placeholder: 'Ex: 1.75 ou 175', min: 0.9, max: 250 }
+                ]
+            },
+            {
+                text: `
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">6 de 8 — Lipídios (Colesterol Não-HDL)</span>Qual é o seu nível de Colesterol Não-HDL?</div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-500 font-normal">Cálculo: <strong>Colesterol Não-HDL = Colesterol Total − HDL-Colesterol</strong> (em mg/dL).</p>
+                `,
+                options: [
+                    { text: 'Menor que 130 mg/dL (< 130)', value: 100 },
+                    { text: '130 a 159 mg/dL', value: 60 },
+                    { text: '160 a 189 mg/dL', value: 40 },
+                    { text: '190 a 219 mg/dL', value: 20 },
+                    { text: '220 mg/dL ou mais (≥ 220)', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">6 de 8 — Tratamento de Lipídios</span>Você utiliza alguma medicação hipolipemiante (para baixar colesterol, ex.: estatina, ezetimiba)?',
+                options: [
+                    { text: 'Não utilizo medicação para colesterol', value: 0 },
+                    { text: 'Sim, utilizo medicação hipolipemiante', value: -20 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">7 de 8 — Glicemia</span>Qual opção melhor descreve sua glicemia de jejum / hemoglobina glicada (HbA1c) e histórico de diabetes?',
+                options: [
+                    { text: 'Sem diabetes: glicemia < 100 mg/dL ou HbA1c < 5,7%', value: 100 },
+                    { text: 'Sem diabetes: glicemia 100–125 mg/dL ou HbA1c 5,7–6,4%', value: 60 },
+                    { text: 'Diabetes diagnosticado: HbA1c < 7,0%', value: 40 },
+                    { text: 'Diabetes diagnosticado: HbA1c 7,0–7,9%', value: 30 },
+                    { text: 'Diabetes diagnosticado: HbA1c 8,0–8,9%', value: 20 },
+                    { text: 'Diabetes diagnosticado: HbA1c 9,0–9,9%', value: 10 },
+                    { text: 'Diabetes diagnosticado: HbA1c ≥ 10,0%', value: 0 }
+                ]
+            },
+            {
+                text: `
+                    <div><span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">8 de 8 — Pressão Arterial</span>Qual é a sua pressão arterial média padronizada (mmHg)?</div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-500 font-normal">Caso sistólica e diastólica fiquem em faixas diferentes, selecione a <strong>categoria mais desfavorável</strong>.</p>
+                `,
+                options: [
+                    { text: 'Sistólica < 120 E diastólica < 80 mmHg', value: 100 },
+                    { text: 'Sistólica 120–129 E diastólica < 80 mmHg', value: 75 },
+                    { text: 'Sistólica 130–139 OU diastólica 80–89 mmHg', value: 50 },
+                    { text: 'Sistólica 140–159 OU diastólica 90–99 mmHg', value: 25 },
+                    { text: 'Sistólica ≥ 160 OU diastólica ≥ 100 mmHg', value: 0 }
+                ]
+            },
+            {
+                text: '<span class="text-xs font-bold uppercase tracking-wider text-red-600 block mb-1">8 de 8 — Tratamento da Pressão Arterial</span>Você utiliza medicação anti-hipertensiva?',
+                options: [
+                    { text: 'Não utilizo medicação anti-hipertensiva', value: 0 },
+                    { text: 'Sim, utilizo medicação anti-hipertensiva', value: -20 }
                 ]
             }
         ]
@@ -969,6 +1116,49 @@ const siiResults = [
             'Agende uma avaliação médica detalhada para investigar possíveis focos inflamatórios e endoteliais.',
             'Investigue marcadores complementares como PCR ultra-sensível, homocisteína e perfil lipídico completo.',
             'Adote um protocolo intensivo de estilo de vida focado na redução da inflamação sistêmica.'
+        ]
+    }
+];
+
+// Results mapping for Life's Essential 8 (AHA 2022)
+const le8Results = [
+    {
+        min: 0,
+        max: 50,
+        status: 'Saúde Cardiovascular Baixa (0–49)',
+        color: '#ef4444', // red-500
+        gaugeClass: 'border-t-red-500 border-r-red-500',
+        interpretation: 'Seu escore no Life\'s Essential 8 está na faixa de Saúde Cardiovascular Baixa (0 a 49 pontos). Isso sinaliza acúmulo de fatores comportamentais e/ou clínicos desfavoráveis que elevam o risco cardiovascular a longo prazo. A boa notícia é que cada domínio possui margem expressiva de reversão com plano estruturado.',
+        recommendations: [
+            'Agende uma avaliação médica integrativa completa para estratificação de risco cardiovascular e plano individualizado.',
+            'Priorize ajustes imediatos nos pilares de maior impacto: controle pressórico, glicêmico, lipídico (não-HDL) e cessação de nicotina.',
+            'Construa progressivamente 150 min/semana de atividade física, higiene do sono (7–9h) e padrão alimentar rico em alimentos in natura.'
+        ]
+    },
+    {
+        min: 50,
+        max: 80,
+        status: 'Saúde Cardiovascular Intermediária (50–79)',
+        color: '#f59e0b', // amber-500
+        gaugeClass: 'border-t-amber-500 border-r-amber-500',
+        interpretation: 'Seu escore no Life\'s Essential 8 indica Saúde Cardiovascular Intermediária (50 a 79 pontos). Você já mantém bons hábitos ou marcadores sob controle em alguns domínios, mas ainda há pontos-chave que podem ser otimizados para alcançar o patamar ideal de proteção vascular e longevidade.',
+        recommendations: [
+            'Identifique quais dos 8 pilares puxaram sua média para baixo (dieta, sono, exercício, IMC, lipídios, glicemia ou pressão) e foque em 2 melhorias por vez.',
+            'Otimize a qualidade da dieta (reduzindo ultraprocessados e sódio) e garanta consistência semanal no sono e nos treinos.',
+            'Realize acompanhamento laboratorial periódico (colesterol não-HDL, glicemia/HbA1c) para monitorar sua evolução rumo aos ≥ 80 pontos.'
+        ]
+    },
+    {
+        min: 80,
+        max: 101,
+        status: 'Saúde Cardiovascular Alta (80–100)',
+        color: '#22c55e', // green-500
+        gaugeClass: 'border-t-green-500 border-r-green-500',
+        interpretation: 'Parabéns! Seu escore no Life\'s Essential 8 alcançou a faixa de Saúde Cardiovascular Alta (80 a 100 pontos). Segundo a American Heart Association (AHA, 2022), adultos neste patamar apresentam menor incidência de eventos cardiovasculares, melhor envelhecimento vascular e maior expectativa de vida saudável.',
+        recommendations: [
+            'Mantenha a constância dos seus 4 comportamentos protetores: alimentação natural, atividade física regular, sono reparador (7–9h) e ausência de nicotina.',
+            'Continue realizando check-ups preventivos anuais para preservar pressão arterial, glicemia/HbA1c e colesterol não-HDL em níveis ótimos.',
+            'Lembre-se de que o LE8 complementa — e não substitui — a avaliação médica individualizada (incluindo exames de imagem vascular quando indicados).'
         ]
     }
 ];
@@ -1404,6 +1594,8 @@ function updateMetaTagsForTest(testId) {
         description = 'Calcule a Relação Apo B / Apo A1 para avaliar o equilíbrio aterogênico vs protetor.';
     } else if (testId === 'hdl-apoa1') {
         description = 'Calcule a Relação HDL / Apo A1 para avaliar a funcionalidade no transporte reverso do colesterol.';
+    } else if (testId === 'le8') {
+        description = 'Calcule seu escore Life\'s Essential 8 (AHA 2022) nos 8 pilares da saúde cardiovascular (0 a 100 pontos).';
     }
 
     document.title = fullTitle;
@@ -1558,8 +1750,9 @@ function renderStep() {
         actionBtn.id = 'submit-numeric-btn';
         actionBtn.onclick = () => submitNumericStep();
         actionBtn.className = 'w-full bg-blue-medium hover:bg-opacity-95 text-white font-extrabold py-5 px-6 rounded-xl text-base transition-all shadow-md flex items-center justify-center gap-2 mt-4 hover:shadow-lg active:scale-[0.98] animate-pulse-btn';
+        const isLastStep = currentStep === totalSteps - 1;
         actionBtn.innerHTML = `
-            Calcular Resultado
+            ${isLastStep ? 'Calcular Resultado' : 'Próxima Pergunta'}
             <i class="ph-bold ph-caret-right"></i>
         `;
         wrapper.appendChild(actionBtn);
@@ -1691,6 +1884,29 @@ function finishTest() {
         let linfo = Number(answers[0].linfocitos);
         if (plaq > 1000) plaq = plaq / 1000;
         calculatedScore = (plaq * neutro) / linfo;
+    } else if (currentTest === 'le8') {
+        const dietScore = answers[0].value;
+        const activityScore = answers[1].value;
+        const nicotineScore = Math.max(0, answers[2].value + answers[3].value);
+        const sleepScore = answers[4].value;
+
+        const peso = Number(answers[5].peso);
+        let altura = Number(answers[5].altura);
+        if (altura > 3) altura = altura / 100;
+        const imc = peso / (altura * altura);
+        let bmiScore = 0;
+        if (imc < 25) bmiScore = 100;
+        else if (imc < 30) bmiScore = 70;
+        else if (imc < 35) bmiScore = 30;
+        else if (imc < 40) bmiScore = 15;
+        else bmiScore = 0;
+
+        const lipidsScore = Math.max(0, answers[6].value + answers[7].value);
+        const glycemiaScore = answers[8].value;
+        const bpScore = Math.max(0, answers[9].value + answers[10].value);
+
+        const sum = dietScore + activityScore + nicotineScore + sleepScore + bmiScore + lipidsScore + glycemiaScore + bpScore;
+        calculatedScore = Math.round(sum / 8);
     } else {
         calculatedScore = answers.reduce((acc, curr) => acc + curr.value, 0);
     }
@@ -2011,6 +2227,9 @@ function showResults(score) {
     } else if (currentTest === 'sii') {
         resultBand = siiResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = siiResults[siiResults.length - 1];
+    } else if (currentTest === 'le8') {
+        resultBand = le8Results.find(band => score >= band.min && score < band.max);
+        if (!resultBand) resultBand = le8Results[le8Results.length - 1];
     } else {
         resultBand = adrenalResults.find(band => score >= band.min && score < band.max);
         if (!resultBand) resultBand = adrenalResults[adrenalResults.length - 1];
@@ -2303,6 +2522,24 @@ function showResults(score) {
             targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
         }
         percentage = targetAngle / 180;
+    } else if (currentTest === 'le8') {
+        let targetAngle;
+        if (score < 50) {
+            const minS = 0;
+            const maxS = 50;
+            const clamped = Math.max(minS, score);
+            targetAngle = ((clamped - minS) / (maxS - minS)) * 60;
+        } else if (score < 80) {
+            const minS = 50;
+            const maxS = 80;
+            targetAngle = 60 + ((score - minS) / (maxS - minS)) * 60;
+        } else {
+            const minS = 80;
+            const maxS = 100;
+            const clamped = Math.min(maxS, score);
+            targetAngle = 120 + ((clamped - minS) / (maxS - minS)) * 60;
+        }
+        percentage = targetAngle / 180;
     } else {
         const maxScore = testsDatabase[currentTest].maxScore;
         percentage = score / maxScore;
@@ -2387,7 +2624,7 @@ function restartTest() {
     transitionScreen(fromScreen, toScreen, () => {
         currentStep = 0;
         answers = [];
-        document.getElementById('test-category').textContent = testsDatabase[currentTest].title;
+        document.getElementById('test-category').innerHTML = testsDatabase[currentTest].title;
         renderStep();
     });
 }
